@@ -1,0 +1,24 @@
+train_graphs : "data/raw/train_graphs.pkl"
+val_graphs : "data/raw/validation_graphs.pkl"
+test_graphs : "data/raw/test_graphs.pkl"
+
+train_emb_csv : "data/processed/baseline_train_embeddings.csv"
+val_emb_csv : "data/processed/baseline_validation_embeddings.csv"
+
+model_output_path : models/
+
+# training parameters
+batch_size : 32
+epochs : 5
+lr : 1e-3
+
+exp_name : Basline
+######### Predict params  #############
+# This config can also be used to make predictions
+results_output_path : submissions/
+
+
+##### Hydra params #####
+hydra:
+  run:
+    dir: ./outputs/${exp_name}

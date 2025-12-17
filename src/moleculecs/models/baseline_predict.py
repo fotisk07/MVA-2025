@@ -1,23 +1,20 @@
 import os
+from pathlib import Path
 
+import hydra
 import pandas as pd
 import torch
 import torch.nn.functional as F
-from data_utils import (
+from omegaconf import DictConfig
+from torch.utils.data import DataLoader
+
+from moleculecs.data_utils import (
     PreprocessedGraphDataset,
     collate_fn,
     load_descriptions_from_graphs,
     load_id2emb,
 )
-from torch.utils.data import DataLoader
-
-from moleculecs.models.baseline_train import (
-    DEVICE,
-    TEST_GRAPHS,
-    TRAIN_EMB_CSV,
-    TRAIN_GRAPHS,
-    MolGNN,
-)
+from moleculecs.models.baseline_train import MolGNN
 
 
 @torch.no_grad()
@@ -83,12 +80,25 @@ def retrieve_descriptions(
     return results_df
 
 
-def main():
+@hydra.main(
+    version_base=None,
+    config_path="../conf/model",
+    config_name="baseline",
+)
+def main(cfg: DictConfig) -> None:
+    TRAIN_GRAPHS = cfg.train_graphs
+    TEST_GRAPHS = cfg.test_graphs
+
+    TRAIN_EMB_CSV = cfg.train_emb_csv
+    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
     print(f"Device: {DEVICE}")
 
-    output_csv = "test_retrieved_descriptions.csv"
+    output_csv = Path(cfg.results_output_path)
+    output_csv.mkdir(parents=True, exist_ok=True)
+    output_csv = output_csv / "baseline_results.csv"
 
-    model_path = "model_checkpoint.pt"
+    model_path = Path(cfg.model_output_path) / "baseline_model_checkpoint.pt"
     if not os.path.exists(model_path):
         print(f"Error: Model checkpoint '{model_path}' not found.")
         print("Please train a model first using train_gcn.py")

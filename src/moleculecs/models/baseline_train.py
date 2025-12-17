@@ -1,32 +1,20 @@
 import os
+from pathlib import Path
 
+import hydra
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from omegaconf import DictConfig
 from torch.utils.data import DataLoader
-
 from torch_geometric.data import Batch
 from torch_geometric.nn import GCNConv, global_add_pool
 
-from data_utils import load_id2emb, PreprocessedGraphDataset, collate_fn
-
+from moleculecs.data_utils import PreprocessedGraphDataset, collate_fn, load_id2emb
 
 # =========================================================
 # CONFIG
 # =========================================================
-# Data paths
-TRAIN_GRAPHS = "data/train_graphs.pkl"
-VAL_GRAPHS = "data/validation_graphs.pkl"
-TEST_GRAPHS = "data/test_graphs.pkl"
-
-TRAIN_EMB_CSV = "data/train_embeddings.csv"
-VAL_EMB_CSV = "data/validation_embeddings.csv"
-
-# Training parameters
-BATCH_SIZE = 32
-EPOCHS = 5
-LR = 1e-3
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 # =========================================================
@@ -124,7 +112,27 @@ def eval_retrieval(data_path, emb_dict, mol_enc, device):
 # =========================================================
 # Main Training Loop
 # =========================================================
-def main():
+
+
+@hydra.main(
+    version_base=None,
+    config_path="../conf/model",
+    config_name="baseline",
+)
+def main(cfg: DictConfig) -> None:
+    # Data paths
+    TRAIN_GRAPHS = cfg.train_graphs
+    VAL_GRAPHS = cfg.val_graphs
+
+    TRAIN_EMB_CSV = cfg.train_emb_csv
+    VAL_EMB_CSV = cfg.val_emb_csv
+
+    # Training parameters
+    BATCH_SIZE = cfg.batch_size
+    EPOCHS = cfg.epochs
+    LR = cfg.lr
+
+    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Device: {DEVICE}")
 
     train_emb = load_id2emb(TRAIN_EMB_CSV)
@@ -154,7 +162,9 @@ def main():
             val_scores = {}
         print(f"Epoch {ep + 1}/{EPOCHS} - loss={train_loss:.4f} - val={val_scores}")
 
-    model_path = "model_checkpoint.pt"
+    model_path = Path(cfg.model_output_path)
+    model_path.mkdir(parents=True, exist_ok=True)
+    model_path = model_path / "baseline_model_checkpoint.pt"
     torch.save(mol_enc.state_dict(), model_path)
     print(f"\nModel saved to {model_path}")
 

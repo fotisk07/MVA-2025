@@ -1,3 +1,42 @@
-data/
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Ignore everything under data
+data/*
+
+# Re-include directories
+!data/raw/
+!data/processed/
+
+# Ignore everything inside them
+data/raw/*
+data/processed/*
+
+# Except .gitkeep
+!data/raw/download_data.sh
+!data/processed/.gitkeep
+
+
 .ruff_cache
 .venv
+submissions
