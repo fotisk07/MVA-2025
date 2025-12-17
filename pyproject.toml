@@ -8,6 +8,7 @@ dependencies = [
     "hydra-core>=1.3.2",
     "nltk>=3.8.0",
     "pandas>=1.5.0",
+    "pre-commit>=4.3.0",
     "rdkit>=2023.3.1",
     "torch>=2.0.0",
     "torch-geometric>=2.3.0",
@@ -30,10 +31,12 @@ target-version = "py39"
 select = ["E4", "E7", "E9", "F"]
 ignore = []
 fixable = ["ALL"]
+exclude = ["*.ipynb"]
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+exclude = ["*.ipynb"]
 
 [build-system]
 requires = ["uv_build>=0.9.18,<0.10.0"]
