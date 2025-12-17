@@ -3,16 +3,21 @@ import os
 import pandas as pd
 import torch
 import torch.nn.functional as F
-from torch.utils.data import DataLoader
-
 from data_utils import (
-    load_id2emb,
-    load_descriptions_from_graphs,
     PreprocessedGraphDataset,
     collate_fn,
+    load_descriptions_from_graphs,
+    load_id2emb,
 )
+from torch.utils.data import DataLoader
 
-from train_gcn import MolGNN, DEVICE, TRAIN_GRAPHS, TEST_GRAPHS, TRAIN_EMB_CSV
+from moleculecs.models.baseline_train import (
+    DEVICE,
+    TEST_GRAPHS,
+    TRAIN_EMB_CSV,
+    TRAIN_GRAPHS,
+    MolGNN,
+)
 
 
 @torch.no_grad()

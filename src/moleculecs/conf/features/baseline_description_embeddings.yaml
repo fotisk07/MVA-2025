@@ -1,0 +1,5 @@
+#### Data ####
+data_path : "data/raw"
+output_path : "data/processed"
+
+max_token_length : 128
