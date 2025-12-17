@@ -8,10 +8,7 @@ from torch.utils.data import DataLoader
 from torch_geometric.data import Batch
 from torch_geometric.nn import GCNConv, global_add_pool
 
-from data_utils import (
-    load_id2emb,
-    PreprocessedGraphDataset, collate_fn
-)
+from data_utils import load_id2emb, PreprocessedGraphDataset, collate_fn
 
 
 # =========================================================
@@ -19,11 +16,11 @@ from data_utils import (
 # =========================================================
 # Data paths
 TRAIN_GRAPHS = "data/train_graphs.pkl"
-VAL_GRAPHS   = "data/validation_graphs.pkl"
-TEST_GRAPHS  = "data/test_graphs.pkl"
+VAL_GRAPHS = "data/validation_graphs.pkl"
+TEST_GRAPHS = "data/test_graphs.pkl"
 
 TRAIN_EMB_CSV = "data/train_embeddings.csv"
-VAL_EMB_CSV   = "data/validation_embeddings.csv"
+VAL_EMB_CSV = "data/validation_embeddings.csv"
 
 # Training parameters
 BATCH_SIZE = 32
@@ -52,7 +49,7 @@ class MolGNN(nn.Module):
         # Initialize all nodes with the same learnable embedding
         num_nodes = batch.x.size(0)
         h = self.node_init.unsqueeze(0).expand(num_nodes, -1)
-        
+
         for conv in self.convs:
             h = conv(h, batch.edge_index)
             h = F.relu(h)
@@ -124,7 +121,6 @@ def eval_retrieval(data_path, emb_dict, mol_enc, device):
     return results
 
 
-
 # =========================================================
 # Main Training Loop
 # =========================================================
@@ -140,9 +136,11 @@ def main():
         print(f"Error: Preprocessed graphs not found at {TRAIN_GRAPHS}")
         print("Please run: python prepare_graph_data.py")
         return
-    
+
     train_ds = PreprocessedGraphDataset(TRAIN_GRAPHS, train_emb)
-    train_dl = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True, collate_fn=collate_fn)
+    train_dl = DataLoader(
+        train_ds, batch_size=BATCH_SIZE, shuffle=True, collate_fn=collate_fn
+    )
 
     mol_enc = MolGNN(out_dim=emb_dim).to(DEVICE)
 
@@ -154,8 +152,8 @@ def main():
             val_scores = eval_retrieval(VAL_GRAPHS, val_emb, mol_enc, DEVICE)
         else:
             val_scores = {}
-        print(f"Epoch {ep+1}/{EPOCHS} - loss={train_loss:.4f} - val={val_scores}")
-    
+        print(f"Epoch {ep + 1}/{EPOCHS} - loss={train_loss:.4f} - val={val_scores}")
+
     model_path = "model_checkpoint.pt"
     torch.save(mol_enc.state_dict(), model_path)
     print(f"\nModel saved to {model_path}")

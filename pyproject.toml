@@ -1,5 +1,5 @@
 [project]
-name = "challenge"
+name = "moleculecs"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -13,3 +13,27 @@ dependencies = [
     "tqdm>=4.65.0",
     "transformers>=4.30.0",
 ]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.31.0",
+    "ruff>=0.14.9",
+]
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+ignore = []
+fixable = ["ALL"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[build-system]
+requires = ["uv_build>=0.9.18,<0.10.0"]
+build-backend = "uv_build"
