@@ -1,0 +1,11 @@
+train_graphs: data/raw/train_graphs.pkl
+test_graphs: data/raw/test_graphs.pkl
+train_emb_csv: data/processed/baseline_train_embeddings.csv
+batch_size: 32
+exp_name: Baseline
+task:
+  _target_: moleculecs.tasks.embedding_retrieval.GraphTextEmbeddingRetrievalBaseline
+model:
+  _target_: moleculecs.models.gcn_graph_encoder.GCNGraphEncoder
+  hidden: 128
+  layers: 3

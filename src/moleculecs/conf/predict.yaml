@@ -1,0 +1,17 @@
+defaults:
+  - _self_
+  - task: baseline
+  - model: gcn
+
+train_graphs: "data/raw/train_graphs.pkl"
+test_graphs: "data/raw/test_graphs.pkl"
+
+train_emb_csv: "data/processed/baseline_train_embeddings.csv"
+
+batch_size: 32
+
+exp_name: Baseline
+
+hydra:
+  run:
+    dir: ./outputs/${exp_name}/predict
