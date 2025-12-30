@@ -129,18 +129,18 @@ hydra:
   runtime:
     version: 1.3.2
     version_base: '1.3'
-    cwd: /home/fotis/MVA/AlteGrad/Challenge
+    cwd: /raid/home/fotis/MVA/AlteGrad-Challenge
     config_sources:
     - path: hydra.conf
       schema: pkg
       provider: hydra
-    - path: /home/fotis/MVA/AlteGrad/Challenge/src/moleculecs/conf
+    - path: /raid/home/fotis/MVA/AlteGrad-Challenge/src/moleculecs/conf
       schema: file
       provider: main
     - path: ''
       schema: structured
       provider: schema
-    output_dir: /home/fotis/MVA/AlteGrad/Challenge/outputs/Baseline/train
+    output_dir: /raid/home/fotis/MVA/AlteGrad-Challenge/outputs/Baseline/train
     choices:
       model: gcn
       task: baseline
