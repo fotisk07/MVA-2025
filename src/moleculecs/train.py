@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 
@@ -11,6 +12,8 @@ from moleculecs.data_utils import (
     collate_fn,
     load_id2emb,
 )
+
+logger = logging.getLogger()
 
 
 @hydra.main(
@@ -88,7 +91,7 @@ def main(cfg: DictConfig):
         else:
             val_metrics = {}
 
-        print(
+        logger.info(
             f"Epoch {epoch + 1}/{cfg.epochs} | "
             f"loss={train_loss:.4f} | val={val_metrics}"
         )

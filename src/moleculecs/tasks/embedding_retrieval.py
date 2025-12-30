@@ -115,3 +115,97 @@ class GraphTextEmbeddingRetrievalBaseline:
                 retrieved_ids.append(train_ids[idx])
 
         return retrieved_ids
+
+
+class GraphTextContrastiveRetrieval:
+    """
+    Improved retrieval task:
+    - Graph ↔ Text alignment
+    - InfoNCE loss with in-batch negatives
+    - Symmetric (graph→text + text→graph)
+    """
+
+    def __init__(self, temperature: float = 0.07):
+        self.temperature = temperature
+
+    def train_epoch(self, model, loader, optimizer, device):
+        model.train()
+        total_loss, total = 0.0, 0
+
+        for graphs, text_emb in loader:
+            graphs = graphs.to(device)
+            text_emb = text_emb.to(device)
+
+            graph_emb = model(graphs)  # (B, D), normalized
+            text_emb = F.normalize(text_emb, dim=-1)  # (B, D)
+
+            # Similarity matrix (B, B)
+            logits = (graph_emb @ text_emb.t()) / self.temperature
+            targets = torch.arange(logits.size(0), device=device)
+
+            loss_g2t = F.cross_entropy(logits, targets)
+            loss_t2g = F.cross_entropy(logits.t(), targets)
+            loss = 0.5 * (loss_g2t + loss_t2g)
+
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            bs = graphs.num_graphs
+            total_loss += loss.item() * bs
+            total += bs
+
+        return total_loss / total
+
+    @torch.no_grad()
+    def evaluate(self, model, loader, device):
+        model.eval()
+
+        all_graph_emb, all_text_emb = [], []
+
+        for graphs, text_emb in loader:
+            graphs = graphs.to(device)
+            text_emb = text_emb.to(device)
+
+            all_graph_emb.append(model(graphs))
+            all_text_emb.append(F.normalize(text_emb, dim=-1))
+
+        graph_emb = torch.cat(all_graph_emb, dim=0)
+        text_emb = torch.cat(all_text_emb, dim=0)
+
+        sims = text_emb @ graph_emb.t()
+        ranks = sims.argsort(dim=-1, descending=True)
+
+        N = text_emb.size(0)
+        correct = torch.arange(N, device=sims.device)
+        pos = (ranks == correct.unsqueeze(1)).nonzero()[:, 1] + 1
+
+        results = {"MRR": (1.0 / pos.float()).mean().item()}
+        for k in (1, 5, 10):
+            results[f"R@{k}"] = (pos <= k).float().mean().item()
+        return results
+
+    @torch.no_grad()
+    def predict(
+        self,
+        model,
+        test_loader,
+        train_text_embeddings,
+        train_ids,
+        device,
+    ):
+        model.eval()
+        train_text_embeddings = F.normalize(train_text_embeddings.to(device), dim=-1)
+
+        retrieved_ids = []
+
+        for graphs in test_loader:
+            graphs = graphs.to(device)
+            test_graph_emb = model(graphs)
+
+            sims = test_graph_emb @ train_text_embeddings.t()
+            nn_indices = sims.argmax(dim=-1)
+
+            retrieved_ids.extend(train_ids[i] for i in nn_indices.tolist())
+
+        return retrieved_ids

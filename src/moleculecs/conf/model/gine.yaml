@@ -1,0 +1,4 @@
+_target_: moleculecs.models.gcn_graph_encoder.GINEGraphEncoder
+hidden: 256
+layers: 4
+dropout: 0.1

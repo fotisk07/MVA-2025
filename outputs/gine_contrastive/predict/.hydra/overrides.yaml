@@ -1,0 +1,3 @@
+- model=gine
+- task=constrastive
+- exp_name=ginve_constrastive
