@@ -236,3 +236,78 @@ class GraphTextContrastiveRetrieval:
                 )
 
         return predictions
+
+
+class GraphTextKNNCaptions(GraphTextContrastiveRetrieval):
+    """
+    KNN-based caption retrieval with similarity-constrained,
+    weighted medoid selection.
+    """
+
+    def __init__(
+        self,
+        temperature: float = 0.07,
+        k: int = 50,
+        rel_sim_threshold: float = 0.95,
+        alpha: float = 20.0,
+    ):
+        super().__init__(temperature=temperature)
+        self.k = k
+        self.rel_sim_threshold = rel_sim_threshold
+        self.alpha = alpha
+
+    @torch.no_grad()
+    def predict(
+        self,
+        model,
+        test_loader,
+        train_text_embeddings,
+        train_ids,
+        train_id2desc,
+        device,
+    ):
+        model.eval()
+        train_text_embeddings = F.normalize(train_text_embeddings.to(device), dim=-1)
+
+        predictions = []
+
+        for graphs in test_loader:
+            graphs = graphs.to(device)
+            test_graph_emb = model(graphs)  # (B, D)
+
+            sims = test_graph_emb @ train_text_embeddings.t()  # (B, N_train)
+            topk_vals, topk_idx = sims.topk(self.k, dim=-1)
+
+            for test_id, vals, idxs in zip(graphs.id, topk_vals, topk_idx):
+                vals = vals.cpu()
+                idxs = idxs.tolist()
+
+                best_sim = vals[0].item()
+
+                keep = [
+                    i
+                    for i, v in zip(idxs, vals)
+                    if v.item() >= self.rel_sim_threshold * best_sim
+                ]
+
+                if not keep:
+                    keep = [idxs[0]]
+
+                caps = [train_id2desc[train_ids[i]] for i in keep]
+                cap_embs = train_text_embeddings[keep]
+
+                weights = torch.exp(self.alpha * vals[: len(keep)]).to(device)
+                weights = weights / weights.sum()
+
+                centroid = (weights.unsqueeze(1) * cap_embs).sum(dim=0, keepdim=True)
+                dists = torch.norm(cap_embs - centroid, dim=1)
+                best_idx = dists.argmin().item()
+
+                predictions.append(
+                    {
+                        "ID": test_id,
+                        "description": caps[best_idx],
+                    }
+                )
+
+        return predictions
