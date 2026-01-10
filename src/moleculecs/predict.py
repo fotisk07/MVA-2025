@@ -37,7 +37,7 @@ def main(cfg: DictConfig):
     # --------------------------------------------------
     # Load checkpoint
     # --------------------------------------------------
-    ckpt_path = GLOBAL_DIR / "train" / "model.pt"
+    ckpt_path = Path(cfg.model_path)
     if not ckpt_path.exists():
         raise FileNotFoundError(f"Checkpoint not found: {ckpt_path}")
 

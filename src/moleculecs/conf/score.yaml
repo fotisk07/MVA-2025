@@ -1,0 +1,20 @@
+defaults:
+  - _self_
+  - task: KNN
+  - model: gine
+
+train_graphs: "data/raw/train_graphs.pkl"
+test_graphs: "data/raw/test_graphs.pkl"
+val_graphs : "data/raw/validation_graphs.pkl"
+val_emb_csv : "data/processed/baseline_validation_embeddings.csv"
+
+train_emb_csv: "data/processed/baseline_train_embeddings.csv"
+model_path : "models/gine_contrastive_final/model.pt"
+
+batch_size: 128
+
+exp_name: new_task
+
+hydra:
+  run:
+    dir: ./outputs/${exp_name}/score

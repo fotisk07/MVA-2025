@@ -1,6 +1,6 @@
 defaults:
   - _self_
-  - task: contrastive
+  - task: KNN
   - model: gine
 
 train_graphs: "data/raw/train_graphs.pkl"
@@ -8,9 +8,10 @@ test_graphs: "data/raw/test_graphs.pkl"
 
 train_emb_csv: "data/processed/baseline_train_embeddings.csv"
 
-batch_size: 64
+batch_size: 128
 
-exp_name: Baseline
+model_path : "models/gine_contrastive_final/model.pt"
+exp_name: KNN
 
 hydra:
   run:
