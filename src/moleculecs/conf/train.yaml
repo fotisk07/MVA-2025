@@ -1,7 +1,7 @@
 defaults:
   - _self_
-  - task: baseline
-  - model: gcn
+  - task: contrastive
+  - model: gine
 
 
 train_graphs : "data/raw/train_graphs.pkl"
@@ -9,12 +9,12 @@ val_graphs : "data/raw/validation_graphs.pkl"
 train_emb_csv : "data/processed/baseline_train_embeddings.csv"
 val_emb_csv : "data/processed/baseline_validation_embeddings.csv"
 
-batch_size : 32
+batch_size : 64
 epochs : 5
 lr : 1e-3
 # output_dir: models/${exp_name}/
 
-exp_name : Baseline
+exp_name : gine_contrastive
 
 hydra:
   run:

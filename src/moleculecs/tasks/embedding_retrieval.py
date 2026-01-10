@@ -83,6 +83,7 @@ class GraphTextEmbeddingRetrievalBaseline:
         test_loader,
         train_text_embeddings,
         train_ids,
+        train_id2desc,
         device,
     ):
         """
@@ -102,7 +103,7 @@ class GraphTextEmbeddingRetrievalBaseline:
 
         train_text_embeddings = F.normalize(train_text_embeddings.to(device), dim=-1)
 
-        retrieved_ids = []
+        predictions = []
 
         for graphs in test_loader:
             graphs = graphs.to(device)
@@ -111,10 +112,15 @@ class GraphTextEmbeddingRetrievalBaseline:
             sims = test_graph_emb @ train_text_embeddings.t()
             nn_indices = sims.argmax(dim=-1)
 
-            for idx in nn_indices.tolist():
-                retrieved_ids.append(train_ids[idx])
+            for test_id, idx in zip(graphs.id, nn_indices.tolist()):
+                predictions.append(
+                    {
+                        "ID": test_id,
+                        "description": train_id2desc[train_ids[idx]],
+                    }
+                )
 
-        return retrieved_ids
+        return predictions
 
 
 class GraphTextContrastiveRetrieval:
@@ -192,12 +198,27 @@ class GraphTextContrastiveRetrieval:
         test_loader,
         train_text_embeddings,
         train_ids,
+        train_id2desc,
         device,
     ):
+        """
+        Predict by nearest-neighbor retrieval.
+
+        Args:
+            model: trained graph encoder
+            test_loader: DataLoader yielding test graphs
+            train_text_embeddings: (N_train, D) tensor
+            train_ids: list of train IDs aligned with embeddings
+            device: torch device
+
+        Returns:
+            list of retrieved train IDs (one per test sample)
+        """
         model.eval()
+
         train_text_embeddings = F.normalize(train_text_embeddings.to(device), dim=-1)
 
-        retrieved_ids = []
+        predictions = []
 
         for graphs in test_loader:
             graphs = graphs.to(device)
@@ -206,6 +227,12 @@ class GraphTextContrastiveRetrieval:
             sims = test_graph_emb @ train_text_embeddings.t()
             nn_indices = sims.argmax(dim=-1)
 
-            retrieved_ids.extend(train_ids[i] for i in nn_indices.tolist())
+            for test_id, idx in zip(graphs.id, nn_indices.tolist()):
+                predictions.append(
+                    {
+                        "ID": test_id,
+                        "description": train_id2desc[train_ids[idx]],
+                    }
+                )
 
-        return retrieved_ids
+        return predictions

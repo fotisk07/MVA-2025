@@ -72,22 +72,15 @@ def main(cfg: DictConfig):
     # --------------------------------------------------
     # Run prediction via task
     # --------------------------------------------------
-    retrieved_train_ids = task.predict(
+    predictions = task.predict(
         model=model,
         test_loader=test_loader,
         train_text_embeddings=train_text_embeddings,
         train_ids=train_ids,
         device=device,
+        train_id2desc=train_id2desc,
     )
-
-    # --------------------------------------------------
-    # Build submission dataframe
-    # --------------------------------------------------
-    results = []
-    for test_id, train_id in zip(test_ds.ids, retrieved_train_ids):
-        results.append({"ID": test_id, "description": train_id2desc[train_id]})
-
-    df = pd.DataFrame(results)
+    df = pd.DataFrame(predictions)
 
     # --------------------------------------------------
     # Save results
