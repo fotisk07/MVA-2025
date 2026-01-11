@@ -1,3 +1,0 @@
-_target_: moleculecs.models.gcn_graph_encoder.GCNGraphEncoder
-hidden: 128
-layers: 3

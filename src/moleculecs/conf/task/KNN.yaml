@@ -1,6 +1,0 @@
-_target_: moleculecs.tasks.embedding_retrieval.GraphTextKNNCaptions
-
-temperature: 0.07
-k: 100
-rel_sim_threshold: 0.80
-alpha: 10.0
