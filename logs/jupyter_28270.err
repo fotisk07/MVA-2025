@@ -71,3 +71,59 @@ Error: Cannot find module 'worker_threads'
 [I 2026-02-13 19:41:14.105 ServerApp] Connecting to kernel 8cf88816-f433-4a9d-a759-cf30d5a2b5aa.
 [W 2026-02-13 19:41:15.110 ServerApp] 404 GET /nbextensions/jupyter-js-widgets/extension.js (337a94adb9a5486482edc512c55db601@127.0.0.1) 1.25ms referer=None
 [W 2026-02-13 19:41:15.110 ServerApp] 404 GET /nbextensions/jupyter-js-widgets/extension.js (9839ae8eb07d4c6393550d337869d314@127.0.0.1) 1.66ms referer=None
+[I 2026-02-13 19:48:15.961 ServerApp] Starting buffering for 8cf88816-f433-4a9d-a759-cf30d5a2b5aa:91abb4e6-9f56-4d67-810f-785bab49d4da
+[I 2026-02-13 19:49:14.253 ServerApp] 302 GET / (@127.0.0.1) 0.38ms
+[I 2026-02-13 19:49:14.263 ServerApp] 302 GET / (@127.0.0.1) 0.41ms
+[I 2026-02-13 19:49:14.263 ServerApp] 302 GET / (@127.0.0.1) 0.48ms
+[I 2026-02-13 19:49:14.264 ServerApp] 302 GET / (@127.0.0.1) 0.69ms
+[I 2026-02-13 19:49:14.264 ServerApp] 302 GET / (@127.0.0.1) 0.70ms
+[I 2026-02-13 19:49:14.265 ServerApp] 302 GET / (@127.0.0.1) 0.71ms
+[I 2026-02-13 19:49:14.265 ServerApp] 302 GET / (@127.0.0.1) 0.72ms
+[I 2026-02-13 19:49:14.297 ServerApp] 302 GET / (@138.195.195.185) 0.41ms
+[I 2026-02-13 19:49:14.297 ServerApp] 302 GET / (@138.195.195.185) 0.23ms
+[W 2026-02-13 19:49:14.798 ServerApp] 404 GET /login? (33bfdceee4cd4127a681c8c060eb8b47@138.195.195.185) 1.20ms referer=None
+[W 2026-02-13 19:49:14.799 ServerApp] 404 GET /login? (8be2e6138c1649f1b72846eae6cc28ba@127.0.0.1) 0.74ms referer=None
+[W 2026-02-13 19:49:14.800 ServerApp] 404 GET /login? (d54f3535761441988a0ca890467304e2@127.0.0.1) 0.72ms referer=None
+[W 2026-02-13 19:49:14.801 ServerApp] 404 GET /login? (3f4e7520d57746cb9ab6ccb1340b3b9c@127.0.0.1) 0.87ms referer=None
+[W 2026-02-13 19:49:14.802 ServerApp] 404 GET /login? (f8bea5944c3a4a5bb6a72c363cbc1195@127.0.0.1) 1.37ms referer=None
+[W 2026-02-13 19:49:14.803 ServerApp] 404 GET /login? (bae557371ecd49c1a2ced1bfc514470e@127.0.0.1) 0.88ms referer=None
+[W 2026-02-13 19:49:14.809 ServerApp] 404 GET /login? (f379f5456e724e8d9f342678710c7a76@127.0.0.1) 1.61ms referer=None
+[W 2026-02-13 19:49:14.810 ServerApp] 404 GET /login? (0f69c91ebfab4fe8b5787f23b3406670@138.195.195.185) 2.20ms referer=None
+[W 2026-02-13 19:49:14.810 ServerApp] 404 GET /login? (91736ee8d04e4aff809b07bc57877b44@127.0.0.1) 2.72ms referer=None
+[I 2026-02-13 19:51:18.768 ServerApp] 302 GET / (@127.0.0.1) 0.39ms
+[I 2026-02-13 19:51:18.770 ServerApp] 302 GET / (@127.0.0.1) 0.31ms
+[I 2026-02-13 19:51:18.771 ServerApp] 302 GET / (@127.0.0.1) 0.54ms
+[I 2026-02-13 19:51:18.771 ServerApp] 302 GET / (@127.0.0.1) 0.54ms
+[I 2026-02-13 19:51:18.771 ServerApp] 302 GET / (@127.0.0.1) 0.53ms
+[I 2026-02-13 19:51:18.772 ServerApp] 302 GET / (@127.0.0.1) 0.43ms
+[I 2026-02-13 19:51:18.772 ServerApp] 302 GET / (@127.0.0.1) 0.42ms
+[I 2026-02-13 19:51:18.803 ServerApp] 302 GET / (@138.195.195.185) 0.37ms
+[I 2026-02-13 19:51:18.803 ServerApp] 302 GET / (@138.195.195.185) 0.22ms
+[W 2026-02-13 19:51:18.872 ServerApp] 404 GET /login? (7d1414068bb643d985e7f2a0f4be6bb1@127.0.0.1) 7.27ms referer=None
+[W 2026-02-13 19:51:18.883 ServerApp] 404 GET /login? (787ec70b45dc4e2ebc930810f68b52a2@127.0.0.1) 10.21ms referer=None
+[W 2026-02-13 19:51:18.884 ServerApp] 404 GET /login? (bb47e8c452ab41d1b424e4ea9668b879@127.0.0.1) 10.77ms referer=None
+[W 2026-02-13 19:51:18.885 ServerApp] 404 GET /login? (8a46f798f5894e2a8876e9c9423ee1ea@127.0.0.1) 3.71ms referer=None
+[W 2026-02-13 19:51:18.887 ServerApp] 404 GET /login? (39d9387821014649ab5e1147168373c0@127.0.0.1) 2.74ms referer=None
+[W 2026-02-13 19:51:18.887 ServerApp] 404 GET /login? (e7ebdd0c0abc4073a98117006eef3f68@127.0.0.1) 3.12ms referer=None
+[W 2026-02-13 19:51:18.892 ServerApp] 404 GET /login? (5f348dda244848adbd07944d19432b01@127.0.0.1) 4.21ms referer=None
+[W 2026-02-13 19:51:18.892 ServerApp] 404 GET /login? (357c7c7e6cd94bbbbe0262a88bf1c1de@138.195.195.185) 4.62ms referer=None
+[W 2026-02-13 19:51:18.893 ServerApp] 404 GET /login? (5dc53b7146ae4b38a2e5959ba04b6b52@138.195.195.185) 5.04ms referer=None
+[I 2026-02-13 20:21:16.073 ServerApp] 302 GET / (@127.0.0.1) 0.37ms
+[I 2026-02-13 20:21:16.073 ServerApp] 302 GET / (@127.0.0.1) 0.25ms
+[I 2026-02-13 20:21:16.074 ServerApp] 302 GET / (@127.0.0.1) 0.27ms
+[I 2026-02-13 20:21:16.074 ServerApp] 302 GET / (@127.0.0.1) 0.50ms
+[I 2026-02-13 20:21:16.075 ServerApp] 302 GET / (@127.0.0.1) 0.50ms
+[I 2026-02-13 20:21:16.075 ServerApp] 302 GET / (@127.0.0.1) 0.52ms
+[I 2026-02-13 20:21:16.107 ServerApp] 302 GET / (@138.195.195.185) 0.34ms
+[I 2026-02-13 20:21:16.107 ServerApp] 302 GET / (@127.0.0.1) 0.38ms
+[I 2026-02-13 20:21:16.107 ServerApp] 302 GET / (@138.195.195.185) 0.36ms
+[W 2026-02-13 20:21:16.445 ServerApp] 404 GET /login? (6045ae1adb42490cacf6f619f702f565@127.0.0.1) 1.50ms referer=None
+[W 2026-02-13 20:21:16.465 ServerApp] 404 GET /login? (57120681e9b5482eae2df38b06e0a708@127.0.0.1) 10.89ms referer=None
+[W 2026-02-13 20:21:16.466 ServerApp] 404 GET /login? (ec336d78c12d43e8ba6329589f215264@127.0.0.1) 11.54ms referer=None
+[W 2026-02-13 20:21:16.524 ServerApp] 404 GET /login? (d1362138e4ba40d0a033ff05b85ab067@127.0.0.1) 1.62ms referer=None
+[W 2026-02-13 20:21:16.525 ServerApp] 404 GET /login? (fdb94d7cdc5f435da9920b851c51e833@127.0.0.1) 2.20ms referer=None
+[W 2026-02-13 20:21:16.526 ServerApp] 404 GET /login? (f5da510773574818bb51840a0422ad81@127.0.0.1) 2.74ms referer=None
+[W 2026-02-13 20:21:16.543 ServerApp] 404 GET /login? (1b11c4f1f51646b4ad61ce73f4258a4d@138.195.195.185) 1.13ms referer=None
+[W 2026-02-13 20:21:16.587 ServerApp] 404 GET /login? (2f0ff4a55727450c8402c93935bb2f1d@127.0.0.1) 1.49ms referer=None
+[W 2026-02-13 20:21:16.589 ServerApp] 404 GET /login? (2501276b956c4e098d117e7728072e5a@138.195.195.185) 1.21ms referer=None
+slurmstepd: error: *** JOB 28270 ON dgxa100 CANCELLED AT 2026-02-13T20:33:22 ***
