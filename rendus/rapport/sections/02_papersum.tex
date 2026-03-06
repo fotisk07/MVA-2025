@@ -1,0 +1,50 @@
+\section{Paper Summary}
+\label{sec:summary}
+
+\citeauthor{wortsman2023smallscale} argue that large-scale Transformer
+training instabilities are not caused by scale per se, but by the interaction
+between architecture, optimizer, and learning rate.
+As a result, the same failure modes can be elicited in small models at high
+learning rates, making them cheap to study and fix.
+To quantify this, the authors introduce \emph{LR sensitivity}, defined as:
+\begin{equation}
+  \mathcal{S} = \mathbb{E}_{\eta \in [a,b]}\bigl[
+    \min\!\bigl(\ell(\mathcal{A}(\eta)),\, \ell_0\bigr) - \ell^*
+  \bigr],
+  \label{eq:lr_sensitivity}
+\end{equation}
+where $\ell(\mathcal{A}(\eta))$ is the validation loss when training with
+learning rate $\eta$, $\ell^* = \min_\eta \ell(\mathcal{A}(\eta))$ is the
+best achievable loss over the swept range, and $\ell_0$ is the loss at
+initialisation (which caps diverged runs).
+A high $\mathcal{S}$ means the model requires careful LR tuning and is likely
+to diverge if $\eta$ is even slightly too large.
+
+\paragraph{Attention logit growth.}
+In self-attention, the logits $z_{ij} = \langle q_i, k_j\rangle / \sqrt{d_h}$
+depend on the \emph{product} of query and key vectors.
+Because both $q_i$ and $k_j$ grow linearly with their respective weight matrix
+norms, the logit magnitudes grow \emph{quadratically} with parameter norm ---
+much faster than any other feature in the network.
+Once logits become very large, the softmax saturates into a near-one-hot
+distribution: every token attends to a single fixed position regardless of content, and the
+model stops learning.
+First reported in a 22\,B parameter ViT~\cite{dehghani2023scaling}, the paper
+shows this also occurs in 9\,M parameter models at high LR.
+The mitigation is \textbf{qk-layernorm}: apply LayerNorm to $q$ and $k$
+before the dot product, which pins their norms and breaks the quadratic
+dependence.
+
+\paragraph{Output logit divergence.}
+The model's output logits $y \in \mathbb{R}^V$ produce token probabilities
+$p_i = e^{y_i}/Z$ where $Z = \sum_j e^{y_j}$.
+Without weight decay, the logits drift collectively towards very negative
+values late in training.
+As $y_i \to -\infty$, $Z \to 0$ and the log-probabilities $\log p_i = y_i -
+\log Z$ decouple from the logits, causing the loss to stall.
+First reported in PaLM~\cite{chowdhery2022palm}, the paper reproduces it in a
+2.4\,M parameter model.
+The mitigation is a \textbf{z-loss} auxiliary penalty $\alpha\log^2\!Z$ (with
+$\alpha = 10^{-4}$), which softly keeps $\log Z \approx 0$ throughout
+training.
+

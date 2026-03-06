@@ -1,0 +1,50 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Scaling Transformer-based models has driven much of the recent progress in
+deep learning, from large language models to vision systems.
+Yet larger models do not always train smoothly: practitioners have repeatedly
+reported training instabilities that only appear at scale, making them costly
+and difficult to study~\cite{chowdhery2022palm, dehghani2023scaling}.
+A team at a large lab may only discover a failure mode after burning weeks of
+compute on a multi-billion-parameter run, with little insight into the root
+cause.
+
+\citet{wortsman2023smallscale} propose a practical remedy: \emph{small models
+can serve as proxies for large-scale instabilities}.
+Their key observation is that the same failure modes that appear in models with
+tens of billions of parameters can be reproduced in models with just a few
+million parameters, simply by training at unusually high learning rates.
+This makes the instabilities cheap to study, ablate, and fix.
+
+The paper identifies two concrete instabilities and their mitigations:
+\begin{itemize}
+  \item \textbf{Attention logit growth}~\cite{dehghani2023scaling}: the
+    queries and keys in self-attention layers grow unboundedly, causing the
+    softmax to collapse to a one-hot distribution and learning to stall.
+    The proposed fix is \emph{qk-layernorm}, which applies LayerNorm to
+    queries and keys before the dot product.
+  \item \textbf{Output logit divergence}~\cite{chowdhery2022palm}: the output
+    logits drift to very negative values, decoupling them from the log
+    probabilities.
+    The proposed fix is an auxiliary \emph{z-loss} term that penalises
+    $\log^2 Z$, keeping the softmax partition function near~1.
+\end{itemize}
+
+To summarise the sensitivity of a model to learning rate across all these
+conditions, the authors introduce a scalar metric called \emph{LR sensitivity},
+which measures the expected deviation from optimal loss when sweeping the
+learning rate over three orders of magnitude.
+
+\wip{Clearly write what we did}
+\paragraph{Our contribution.}
+In this report we independently reproduce both instabilities at small scale
+and verify that the proposed mitigations work as claimed.
+Concretely, we train decoder-only Transformers with fewer than 10\,M
+parameters on the \todo{what dataset, FineWeb probs ? }, sweep learning rates from $3\times10^{-4}$ to
+$3\times10^{-1}$, and confirm that (i)~attention logit growth and its
+characteristic loss divergence appear at high learning rates without
+qk-layernorm, and (ii)~output logit divergence appears without weight decay,
+and is reliably cured by z-loss.
+Our experiments require only modest compute and constitute a self-contained
+verification of the paper's central claim.

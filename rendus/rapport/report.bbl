@@ -1,0 +1,28 @@
+\begin{thebibliography}{3}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Chowdhery et~al.(2022)]{chowdhery2022palm}
+A.~Chowdhery et~al.
+\newblock {PaLM}: Scaling language modeling with pathways.
+\newblock \emph{arXiv preprint arXiv:2204.02311}, 2022.
+
+\bibitem[Dehghani et~al.(2023)]{dehghani2023scaling}
+M.~Dehghani et~al.
+\newblock Scaling vision transformers to 22 billion parameters.
+\newblock 2023.
+
+\bibitem[Wortsman et~al.(2023)Wortsman, Liu, Xiao, Everett, Alemi, Adlam,
+  Co-Reyes, Gur, Kumar, Novak, Pennington, Sohl-Dickstein, Xu, Lee, Gilmer, and
+  Kornblith]{wortsman2023smallscale}
+M.~Wortsman, P.~J. Liu, L.~Xiao, K.~Everett, A.~Alemi, B.~Adlam, J.~D.
+  Co-Reyes, I.~Gur, A.~Kumar, R.~Novak, J.~Pennington, J.~Sohl-Dickstein,
+  K.~Xu, J.~Lee, J.~Gilmer, and S.~Kornblith.
+\newblock Small-scale proxies for large-scale {Transformer} training
+  instabilities.
+\newblock \emph{arXiv preprint arXiv:2309.14322}, 2023.
+
+\end{thebibliography}
