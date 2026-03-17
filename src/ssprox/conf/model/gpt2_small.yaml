@@ -1,0 +1,10 @@
+_target_: ssprox.model.GPT
+config:
+  _target_: ssprox.model.GPTConfig
+  block_size: ${block_size}
+  vocab_size: null
+  n_layer: 6
+  n_head: 6
+  n_embd: 384
+  dropout: 0.2
+  bias: false

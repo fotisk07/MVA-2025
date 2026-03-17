@@ -1,0 +1,45 @@
+defaults:
+  - model: gpt2_small
+  - override hydra/hydra_logging: disabled
+  - override hydra/job_logging: disabled
+  - _self_
+
+out_dir: out/shakespeare-char
+eval_interval: 250
+log_interval: 10
+eval_iters: 50
+eval_only: false
+always_save_checkpoint: false
+save_initial_checkpoint: false
+checkpoint_name: ckpt.pt
+
+data_dir: data/shakespeare
+gradient_accumulation_steps: 1
+batch_size: 64
+block_size: 256
+
+learning_rate: 1.0e-3
+max_iters: 5000
+weight_decay: 0.1
+beta1: 0.9
+beta2: 0.99
+grad_clip: 1.0
+
+decay_lr: true
+min_lr: 1.0e-4
+
+dtype: auto
+compile: true
+seed: 1337
+
+wandb_log: false
+wandb_project: ssprox
+wandb_run_name: gpt2-small
+wandb_mode: online
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null
+  job:
+    chdir: false
