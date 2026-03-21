@@ -1,0 +1,55 @@
+# default setup inspired by small GPT-2 style decoder-only training
+
+# I/O
+out_dir: out-shakespeare-char
+eval_interval: 250
+eval_iters: 200
+log_interval: 10
+eval_only: false
+always_save_checkpoint: false
+
+# wandb logging
+wandb_log: false
+wandb_project: shakespeare-char
+wandb_run_name: mini-gpt
+
+# data
+# dataset handling intentionally unchanged
+dataset: shakespeare_char
+gradient_accumulation_steps: 1
+batch_size: 256
+block_size: 512
+vocab_size: 32101
+
+# model
+n_layer: 6
+n_head: 6
+n_embd: 384
+dropout: 0.0
+bias: false
+ln_eps: 1.0e-6
+
+# adamw optimizer
+learning_rate: 3.0e-4
+min_lr: 1.0e-5
+max_iters: 100000
+warmup_iters: 5000
+weight_decay: 1.0e-4
+beta1: 0.9
+beta2: 0.95
+adam_eps: 1.0e-8
+grad_clip: 1.0
+z_loss_coef: 1.0e-4
+
+# system
+seed: 1337
+device: cuda
+dtype: bfloat16
+compile: true
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null
+  job:
+    chdir: false

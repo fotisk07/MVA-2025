@@ -167,7 +167,13 @@ def main(cfg: DictConfig) -> None:
     torch.backends.cudnn.allow_tf32 = True
 
     use_cuda = torch.cuda.is_available()
-    device = torch.device("cuda" if use_cuda else "cpu")
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    elif torch.backends.mps.is_available():
+        device = torch.device("mps")
+    else:
+        device = torch.device("cpu")
+    print(f"using device {device}")
     dtype = resolve_dtype(cfg.dtype)
     ctx = build_autocast(device.type, dtype)
     train_loader = build_dataloader(
@@ -210,6 +216,7 @@ def main(cfg: DictConfig) -> None:
 
     iter_num = 0
     best_val_loss = float("inf")
+    max_att_logits = []
     tokens_per_iter = cfg.gradient_accumulation_steps * cfg.batch_size * cfg.block_size
     print(f"tokens per iteration will be: {tokens_per_iter:,}")
 
@@ -253,7 +260,7 @@ def main(cfg: DictConfig) -> None:
         for _ in range(cfg.gradient_accumulation_steps):
             x, y = move_batch(next(train_batches), device)
             with ctx:
-                _, loss = model(x, y)
+                _, loss, max_attn_logit = model(x, y) # add here the max attention logit ? 
                 loss = loss / cfg.gradient_accumulation_steps
             scaler.scale(loss).backward()
 
