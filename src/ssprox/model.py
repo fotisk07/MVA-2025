@@ -41,8 +41,15 @@ class CausalSelfAttention(nn.Module):
         self.n_head = config.n_head
         self.n_embd = config.n_embd
         self.dropout = config.dropout
+        self.qk_layernorm = config.qk_layernorm
+        self.head_dim = config.n_embd // config.n_head
         # flash attention make GPU go brrrrr but support is only in PyTorch >= 2.0
         self.flash = hasattr(torch.nn.functional, 'scaled_dot_product_attention')
+        if self.qk_layernorm:
+            # per-head LN, en cohérence avec le papier
+            self.q_ln = LayerNorm(self.head_dim, bias=config.bias)
+            self.k_ln = LayerNorm(self.head_dim, bias=config.bias)
+
         if not self.flash:
             print("WARNING: using slow attention. Flash Attention requires PyTorch >= 2.0")
             # causal mask to ensure that attention is only applied to the left in the input sequence
@@ -57,6 +64,11 @@ class CausalSelfAttention(nn.Module):
         k = k.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
         q = q.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
         v = v.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
+
+        # MODIFICATION - qk layernorm 
+        if self.qk_layernorm:
+            q = self.q_ln(q)
+            k = self.k_ln(k)
 
         # MODIFICATION - added logits attention tracking
         att_logits = (q @ k.transpose(-2,-1)) * (1.0 / math.sqrt(k.size(-1)))
@@ -124,6 +136,7 @@ class GPTConfig:
     n_embd: int = 768
     dropout: float = 0.0
     bias: bool = True # True: bias in Linears and LayerNorms, like GPT-2. False: a bit better and faster
+    qk_layernorm: bool = False
 
 class GPT(nn.Module):
 

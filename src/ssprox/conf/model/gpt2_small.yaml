@@ -8,3 +8,4 @@ config:
   n_embd: 384
   dropout: 0.2
   bias: false
+  qk_layernorm: false
