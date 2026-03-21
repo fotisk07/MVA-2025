@@ -6,6 +6,11 @@ config:
   n_layer: 6
   n_head: 6
   n_embd: 384
-  dropout: 0.2
+  dropout: 0.0
   bias: false
-  qk_layernorm: false
+  qk_layernorm: true
+  ln_eps: 1e-6
+  use_rope: true
+  rope_base: 10000
+  weight_tying: false
+  init_mode: paper

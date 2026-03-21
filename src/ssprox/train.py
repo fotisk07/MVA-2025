@@ -3,6 +3,7 @@ import time
 from contextlib import nullcontext
 from itertools import cycle
 from pathlib import Path
+import math 
 
 import hydra
 import torch
@@ -97,6 +98,21 @@ def build_dataloader(
     )
 
 
+def get_lr(it: int, cfg: DictConfig) -> float:
+    # 1) warmup
+    if it < cfg.warmup_iters:
+        return cfg.learning_rate * it / cfg.warmup_iters
+
+    # 2) after decay
+    if it > cfg.lr_decay_iters:
+        return cfg.min_lr
+
+    # 3) cosine decay
+    decay_ratio = (it - cfg.warmup_iters) / (cfg.lr_decay_iters - cfg.warmup_iters)
+    assert 0.0 <= decay_ratio <= 1.0
+    coeff = 0.5 * (1.0 + math.cos(math.pi * decay_ratio))
+    return cfg.min_lr + coeff * (cfg.learning_rate - cfg.min_lr)
+
 def move_batch(
     batch: tuple[torch.Tensor, torch.Tensor],
     device: torch.device,
@@ -118,6 +134,11 @@ def build_scheduler(optimizer: torch.optim.Optimizer, cfg: DictConfig):
         T_max=cfg.max_iters,
         eta_min=cfg.min_lr,
     )
+
+def compute_z_loss(logits: torch.Tensor, coeff: float) -> torch.Tensor:
+    # logits: (B, T, V)
+    z = torch.logsumexp(logits, dim=-1)
+    return coeff * (z ** 2).mean()
 
 
 @torch.no_grad()
@@ -199,7 +220,17 @@ def main(cfg: DictConfig) -> None:
     model: GPT = instantiate(cfg.model)
     model.to(device)
     raw_model = model
+    num_params = raw_model.get_num_params()
 
+    wandb_run = maybe_init_wandb(cfg)
+    if wandb_run is not None:
+        wandb_run.config.update(
+            {
+                "num_params": num_params,
+                "num_params_millions": num_params / 1e6,
+            },
+            allow_val_change=True,
+        )
     optimizer = raw_model.configure_optimizers(
         weight_decay=cfg.weight_decay,
         learning_rate=cfg.learning_rate,
@@ -225,7 +256,9 @@ def main(cfg: DictConfig) -> None:
     t0 = time.time()
 
     while True:
-        lr = optimizer.param_groups[0]["lr"]
+        lr = get_lr(iter_num, cfg) if cfg.decay_lr else cfg.learning_rate
+        for param_group in optimizer.param_groups:
+            param_group["lr"] = lr
 
         if iter_num % cfg.eval_interval == 0:
             val_loss = validate(raw_model, val_loader, cfg.eval_iters, ctx, device)
@@ -262,7 +295,13 @@ def main(cfg: DictConfig) -> None:
             x, y = move_batch(next(train_batches), device)
             with ctx:
 
-                _, loss, attn_logits_l0 = model(x, y, return_layer0_attn_logits=True) # add here the max attention 
+                logits, loss, attn_logits_l0 = model(x, y, return_layer0_attn_logits=True)
+                if cfg.z_loss_coeff > 0:
+                    z_loss = compute_z_loss(logits, cfg.z_loss_coeff)
+                    loss = loss + z_loss
+                else:
+                    z_loss = torch.tensor(0.0, device=device)
+                
                 loss = loss / cfg.gradient_accumulation_steps
                 batch_max = attn_logits_l0.max().item()
                 iter_max_attn_logit = max(iter_max_attn_logit, batch_max)
@@ -274,9 +313,17 @@ def main(cfg: DictConfig) -> None:
 
         scaler.step(optimizer)
         scaler.update()
+
+        # approximation de leur optimiser ; θ ← θ − st (ηΔ − λθ) au lieu de θ ← θ − st η (Δ − λθ)
+        if cfg.independent_weight_decay > 0:
+            with torch.no_grad():
+                for group in optimizer.param_groups:
+                    if group.get("apply_independent_decay", False):
+                        for p in group["params"]:
+                            if p.grad is not None:
+                                p.mul_(1.0 - cfg.independent_weight_decay)
         optimizer.zero_grad(set_to_none=True)
-        if scheduler is not None:
-            scheduler.step()
+        
 
         t1 = time.time()
         dt = t1 - t0
@@ -301,6 +348,7 @@ def main(cfg: DictConfig) -> None:
                         "iter/lr": lr,
                         "iter/mfu": running_mfu * 100 if running_mfu >= 0 else None,
                         "iter/max_attn_logit_l0": iter_max_attn_logit,
+                        "iter/z_loss": z_loss.item(),
                     },
                     step=iter_num,
                 )

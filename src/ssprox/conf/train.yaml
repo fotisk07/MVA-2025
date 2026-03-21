@@ -4,7 +4,7 @@ defaults:
   - override hydra/job_logging: disabled
   - _self_
 
-out_dir: out/shakespeare-char
+out_dir: out/open-web
 eval_interval: 250
 log_interval: 10
 eval_iters: 50
@@ -13,20 +13,26 @@ always_save_checkpoint: false
 save_initial_checkpoint: false
 checkpoint_name: ckpt.pt
 
-data_dir: data/shakespeare
+data_dir: data/openweb 
 gradient_accumulation_steps: 1
-batch_size: 64
+batch_size: 32
 block_size: 256
 
-learning_rate: 1.0e-3
+learning_rate: 0.01
+min_lr: 1e-5
+decay_lr: true
+warmup_iters: 5000
+lr_decay_iters: 100000
 max_iters: 5000
 weight_decay: 0.1
 beta1: 0.9
-beta2: 0.99
+beta2: 0.95
 grad_clip: 1.0
 
-decay_lr: true
-min_lr: 1.0e-4
+z_loss_coeff: 1e-4
+
+
+independent_weight_decay: 1e-4
 
 dtype: auto
 compile: true

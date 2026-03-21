@@ -15,16 +15,30 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
+
+
+
 class LayerNorm(nn.Module):
     """ LayerNorm but with an optional bias. PyTorch doesn't support simply bias=False """
 
-    def __init__(self, ndim, bias):
+    def __init__(self, ndim, bias, eps=1e-6):
         super().__init__()
         self.weight = nn.Parameter(torch.ones(ndim))
         self.bias = nn.Parameter(torch.zeros(ndim)) if bias else None
+        self.eps = eps # PAPER REPRODUCTION : added custom eps 
 
     def forward(self, input):
-        return F.layer_norm(input, self.weight.shape, self.weight, self.bias, 1e-5)
+        return F.layer_norm(input, self.weight.shape, self.weight, self.bias, self.eps)
+
+# helpers for RoPE in CausalAttention 
+def rotate_half(x):
+    x1 = x[..., : x.shape[-1] // 2]
+    x2 = x[..., x.shape[-1] // 2 :]
+    return torch.cat((-x2, x1), dim=-1)
+
+def apply_rope(x, cos, sin):
+    return (x * cos) + (rotate_half(x) * sin)
+
 
 class CausalSelfAttention(nn.Module):
 
@@ -47,14 +61,27 @@ class CausalSelfAttention(nn.Module):
         self.flash = hasattr(torch.nn.functional, 'scaled_dot_product_attention')
         if self.qk_layernorm:
             # per-head LN, en cohérence avec le papier
-            self.q_ln = LayerNorm(self.head_dim, bias=config.bias)
-            self.k_ln = LayerNorm(self.head_dim, bias=config.bias)
+            self.q_ln = LayerNorm(self.head_dim, bias=config.bias, eps=config.ln_eps)
+            self.k_ln = LayerNorm(self.head_dim, bias=config.bias, eps=config.ln_eps)
+        self.use_rope = config.use_rope
+        self.rope_base = config.rope_base
 
         if not self.flash:
             print("WARNING: using slow attention. Flash Attention requires PyTorch >= 2.0")
             # causal mask to ensure that attention is only applied to the left in the input sequence
             self.register_buffer("bias", torch.tril(torch.ones(config.block_size, config.block_size))
                                         .view(1, 1, config.block_size, config.block_size))
+
+    def _build_rope_cache(self, T, device, dtype):
+        half_dim = self.head_dim // 2
+        freq_seq = torch.arange(half_dim, device=device, dtype=torch.float32)
+        inv_freq = 1.0 / (self.rope_base ** (freq_seq / half_dim))
+        t = torch.arange(T, device=device, dtype=torch.float32)
+        freqs = torch.outer(t, inv_freq)  # (T, half_dim)
+        emb = torch.cat((freqs, freqs), dim=-1)  # (T, head_dim)
+        cos = emb.cos()[None, None, :, :].to(dtype=dtype)
+        sin = emb.sin()[None, None, :, :].to(dtype=dtype)
+        return cos, sin
 
     def forward(self, x, return_attn_logits=False):
         B, T, C = x.size() # batch size, sequence length, embedding dimensionality (n_embd)
@@ -65,13 +92,24 @@ class CausalSelfAttention(nn.Module):
         q = q.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
         v = v.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
 
+        assert self.head_dim % 2 == 0, "RoPE requires even head_dim"
+        # MODIFICATION - RoPE 
+        if self.use_rope:
+            cos, sin = self._build_rope_cache(T, x.device, q.dtype)
+            q = apply_rope(q, cos, sin)
+            k = apply_rope(k, cos, sin)
+
         # MODIFICATION - qk layernorm 
         if self.qk_layernorm:
             q = self.q_ln(q)
             k = self.k_ln(k)
 
         # MODIFICATION - added logits attention tracking
-        att_logits = (q @ k.transpose(-2,-1)) * (1.0 / math.sqrt(k.size(-1)))
+        att_logits = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(self.head_dim))
+        if return_attn_logits and not self.flash:
+            valid_logits = att_logits.masked_fill(self.bias[:, :, :T, :T] == 0, float("-inf"))
+        else:
+            valid_logits = att_logits
 
         # causal self-attention; Self-attend: (B, nh, T, hs) x (B, nh, hs, T) -> (B, nh, T, T)
         if self.flash:
@@ -112,9 +150,9 @@ class Block(nn.Module):
 
     def __init__(self, config):
         super().__init__()
-        self.ln_1 = LayerNorm(config.n_embd, bias=config.bias)
+        self.ln_1 = LayerNorm(config.n_embd, bias=config.bias, eps=config.ln_eps)
         self.attn = CausalSelfAttention(config)
-        self.ln_2 = LayerNorm(config.n_embd, bias=config.bias)
+        self.ln_2 = LayerNorm(config.n_embd, bias=config.bias, eps=config.ln_eps)
         self.mlp = MLP(config)
 
     def forward(self, x, return_attn_logits=False):
@@ -135,8 +173,13 @@ class GPTConfig:
     n_head: int = 12
     n_embd: int = 768
     dropout: float = 0.0
-    bias: bool = True # True: bias in Linears and LayerNorms, like GPT-2. False: a bit better and faster
-    qk_layernorm: bool = False
+    bias: bool = False # PAPER REPRO
+    qk_layernorm: bool = False # PAPER REPRO
+    ln_eps: float = 1e-6 # PAPER REPRO
+    use_rope: bool = False # PAPER REPRO
+    rope_base: int = 10000 # PAPER REPRO
+    weight_tying: bool = False # PAPER REPRO
+    init_mode: str = "paper"   # PAPER REPRO : init
 
 class GPT(nn.Module):
 
@@ -146,27 +189,33 @@ class GPT(nn.Module):
         assert config.block_size is not None
         self.config = config
 
-        self.transformer = nn.ModuleDict(dict(
-            wte = nn.Embedding(config.vocab_size, config.n_embd),
-            wpe = nn.Embedding(config.block_size, config.n_embd),
+        modules = dict(
+             wte = nn.Embedding(config.vocab_size, config.n_embd), # PAPER REPRO : added ROPE 
             drop = nn.Dropout(config.dropout),
             h = nn.ModuleList([Block(config) for _ in range(config.n_layer)]),
-            ln_f = LayerNorm(config.n_embd, bias=config.bias),
-        ))
+            ln_f = LayerNorm(config.n_embd, bias=config.bias, eps=config.ln_eps),
+        )
+        if not config.use_rope:
+            modules["wpe"] = nn.Embedding(config.block_size, config.n_embd)
+
+        self.transformer = nn.ModuleDict(modules)
         self.lm_head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
         # with weight tying when using torch.compile() some warnings get generated:
         # "UserWarning: functional_call was passed multiple values for tied weights.
         # This behavior is deprecated and will be an error in future versions"
         # not 100% sure what this is, so far seems to be harmless. TODO investigate
-        self.transformer.wte.weight = self.lm_head.weight # https://paperswithcode.com/method/weight-tying
+        if config.weight_tying:
+            self.transformer.wte.weight = self.lm_head.weight # https://paperswithcode.com/method/weight-tying
 
         # init all weights
         self.apply(self._init_weights)
-        # apply special scaled init to the residual projections, per GPT-2 paper
-        for pn, p in self.named_parameters():
-            if pn.endswith('c_proj.weight'):
-                torch.nn.init.normal_(p, mean=0.0, std=0.02/math.sqrt(2 * config.n_layer))
 
+        # apply special scaled init to the residual projections, per GPT-2 paper
+        # for pn, p in self.named_parameters():
+        #     if pn.endswith('c_proj.weight'):
+        #         torch.nn.init.normal_(p, mean=0.0, std=0.02/math.sqrt(2 * config.n_layer))
+        # PAPER REPRO ; removed
+        
         # report number of parameters
         print("number of parameters: %.2fM" % (self.get_num_params()/1e6,))
 
@@ -178,17 +227,31 @@ class GPT(nn.Module):
         params are actually used as weights in the final layer, so we include them.
         """
         n_params = sum(p.numel() for p in self.parameters())
-        if non_embedding:
+        if non_embedding and hasattr(self.transformer, "wpe"):
             n_params -= self.transformer.wpe.weight.numel()
         return n_params
 
     def _init_weights(self, module):
-        if isinstance(module, nn.Linear):
-            torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
+        if self.config.init_mode == "gpt2":
+            if isinstance(module, nn.Linear):
+                torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
+                if module.bias is not None:
+                    torch.nn.init.zeros_(module.bias)
+            elif isinstance(module, nn.Embedding):
+                torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
+            return
+
+        # paper-like init
+        if isinstance(module, nn.Embedding):
+            std = 1.0 / math.sqrt(self.config.n_embd)
+            torch.nn.init.normal_(module.weight, mean=0.0, std=std)
+
+        elif isinstance(module, nn.Linear):
+            fan_in = module.weight.shape[1]
+            std = 1.0 / math.sqrt(fan_in)
+            nn.init.trunc_normal_(module.weight, mean=0.0, std=std, a=-2*std, b=2*std)
             if module.bias is not None:
                 torch.nn.init.zeros_(module.bias)
-        elif isinstance(module, nn.Embedding):
-            torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
 
     def forward(self, idx, targets=None, return_layer0_attn_logits=False):
         device = idx.device
@@ -197,9 +260,12 @@ class GPT(nn.Module):
         pos = torch.arange(0, t, dtype=torch.long, device=device) # shape (t)
 
         # forward the GPT model itself
-        tok_emb = self.transformer.wte(idx) # token embeddings of shape (b, t, n_embd)
-        pos_emb = self.transformer.wpe(pos) # position embeddings of shape (t, n_embd)
-        x = self.transformer.drop(tok_emb + pos_emb)
+        tok_emb = self.transformer.wte(idx)
+        if self.config.use_rope:
+            x = self.transformer.drop(tok_emb)
+        else:
+            pos_emb = self.transformer.wpe(pos)
+            x = self.transformer.drop(tok_emb + pos_emb)
         
         layer0_attn_logits = None
         for i,block in enumerate(self.transformer.h):
@@ -217,17 +283,26 @@ class GPT(nn.Module):
             # inference-time mini-optimization: only forward the lm_head on the very last position
             logits = self.lm_head(x[:, [-1], :]) # note: using list [-1] to preserve the time dim
             loss = None
+
+        # MODIFICATION : adding z-loss as in the paper
+        z_loss = None
+        if targets is not None:
+            logits = self.lm_head(x)
+            loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1), ignore_index=-1)
+        else:
+            logits = self.lm_head(x[:, [-1], :])
+            loss = None
+
+        
         if return_layer0_attn_logits:
             return logits, loss, layer0_attn_logits
         return logits, loss 
 
     def crop_block_size(self, block_size):
-        # model surgery to decrease the block size if necessary
-        # e.g. we may load the GPT2 pretrained model checkpoint (block size 1024)
-        # but want to use a smaller block size for some smaller, simpler model
         assert block_size <= self.config.block_size
         self.config.block_size = block_size
-        self.transformer.wpe.weight = nn.Parameter(self.transformer.wpe.weight[:block_size])
+        if hasattr(self.transformer, "wpe"):
+            self.transformer.wpe.weight = nn.Parameter(self.transformer.wpe.weight[:block_size])
         for block in self.transformer.h:
             if hasattr(block.attn, 'bias'):
                 block.attn.bias = block.attn.bias[:,:,:block_size,:block_size]
@@ -298,10 +373,13 @@ class GPT(nn.Module):
         # i.e. all weight tensors in matmuls + embeddings decay, all biases and layernorms don't.
         decay_params = [p for n, p in param_dict.items() if p.dim() >= 2]
         nodecay_params = [p for n, p in param_dict.items() if p.dim() < 2]
+        
+        # MODIFICATION - independent decay
         optim_groups = [
-            {'params': decay_params, 'weight_decay': weight_decay},
-            {'params': nodecay_params, 'weight_decay': 0.0}
+        {'params': decay_params, 'weight_decay': 0.0, 'apply_independent_decay': True},
+        {'params': nodecay_params, 'weight_decay': 0.0, 'apply_independent_decay': False},
         ]
+        
         num_decay_params = sum(p.numel() for p in decay_params)
         num_nodecay_params = sum(p.numel() for p in nodecay_params)
         print(f"num decayed parameter tensors: {len(decay_params)}, with {num_decay_params:,} parameters")
