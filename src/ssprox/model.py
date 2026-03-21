@@ -49,7 +49,7 @@ class CausalSelfAttention(nn.Module):
             self.register_buffer("bias", torch.tril(torch.ones(config.block_size, config.block_size))
                                         .view(1, 1, config.block_size, config.block_size))
 
-    def forward(self, x):
+    def forward(self, x, return_attn_logits=False):
         B, T, C = x.size() # batch size, sequence length, embedding dimensionality (n_embd)
 
         # calculate query, key, values for all heads in batch and move head forward to be the batch dim
@@ -58,13 +58,16 @@ class CausalSelfAttention(nn.Module):
         q = q.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
         v = v.view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
 
+        # MODIFICATION - added logits attention tracking
+        att_logits = (q @ k.transpose(-2,-1)) * (1.0 / math.sqrt(k.size(-1)))
+
         # causal self-attention; Self-attend: (B, nh, T, hs) x (B, nh, hs, T) -> (B, nh, T, T)
         if self.flash:
             # efficient attention using Flash Attention CUDA kernels
             y = torch.nn.functional.scaled_dot_product_attention(q, k, v, attn_mask=None, dropout_p=self.dropout if self.training else 0, is_causal=True)
         else:
             # manual implementation of attention
-            att = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(k.size(-1)))
+            att = att_logits
             att = att.masked_fill(self.bias[:,:,:T,:T] == 0, float('-inf'))
             att = F.softmax(att, dim=-1)
             att = self.attn_dropout(att)
@@ -73,6 +76,8 @@ class CausalSelfAttention(nn.Module):
 
         # output projection
         y = self.resid_dropout(self.c_proj(y))
+        if return_attn_logits : 
+            return y, att_logits
         return y
 
 class MLP(nn.Module):
@@ -100,7 +105,12 @@ class Block(nn.Module):
         self.ln_2 = LayerNorm(config.n_embd, bias=config.bias)
         self.mlp = MLP(config)
 
-    def forward(self, x):
+    def forward(self, x, return_attn_logits=False):
+        if return_attn_logits :
+            attn_out, attn_logits = self.attn(self.ln_1(x),return_attn_logits=True)
+            x = x + attn_out
+            x = x + self.mlp(self.ln_2(x))
+            return x, attn_logits
         x = x + self.attn(self.ln_1(x))
         x = x + self.mlp(self.ln_2(x))
         return x
@@ -167,7 +177,7 @@ class GPT(nn.Module):
         elif isinstance(module, nn.Embedding):
             torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
 
-    def forward(self, idx, targets=None):
+    def forward(self, idx, targets=None, return_layer0_attn_logits=False):
         device = idx.device
         b, t = idx.size()
         assert t <= self.config.block_size, f"Cannot forward sequence of length {t}, block size is only {self.config.block_size}"
@@ -177,8 +187,13 @@ class GPT(nn.Module):
         tok_emb = self.transformer.wte(idx) # token embeddings of shape (b, t, n_embd)
         pos_emb = self.transformer.wpe(pos) # position embeddings of shape (t, n_embd)
         x = self.transformer.drop(tok_emb + pos_emb)
-        for block in self.transformer.h:
-            x = block(x)
+        
+        layer0_attn_logits = None
+        for i,block in enumerate(self.transformer.h):
+            if i==0 and return_layer0_attn_logits :
+                x,layer0_attn_logits = block(x,return_attn_logits=True)
+            else : 
+                x = block(x)
         x = self.transformer.ln_f(x)
 
         if targets is not None:
@@ -189,8 +204,9 @@ class GPT(nn.Module):
             # inference-time mini-optimization: only forward the lm_head on the very last position
             logits = self.lm_head(x[:, [-1], :]) # note: using list [-1] to preserve the time dim
             loss = None
-
-        return logits, loss, max_attention_logit 
+        if return_layer0_attn_logits:
+            return logits, loss, layer0_attn_logits
+        return logits, loss 
 
     def crop_block_size(self, block_size):
         # model surgery to decrease the block size if necessary

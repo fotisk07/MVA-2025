@@ -32,9 +32,9 @@ dtype: auto
 compile: true
 seed: 1337
 
-wandb_log: false
+wandb_log: true
 wandb_project: ssprox
-wandb_run_name: gpt2-small
+wandb_run_name: "test_attn_logit"
 wandb_mode: online
 
 hydra:

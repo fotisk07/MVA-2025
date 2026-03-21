@@ -257,11 +257,15 @@ def main(cfg: DictConfig) -> None:
             if iter_num == 0 and cfg.eval_only:
                 break
 
+        iter_max_attn_logit = -float("inf") # for accumulated attn logit 
         for _ in range(cfg.gradient_accumulation_steps):
             x, y = move_batch(next(train_batches), device)
             with ctx:
-                _, loss, max_attn_logit = model(x, y) # add here the max attention logit ? 
+
+                _, loss, attn_logits_l0 = model(x, y, return_layer0_attn_logits=True) # add here the max attention 
                 loss = loss / cfg.gradient_accumulation_steps
+                batch_max = attn_logits_l0.max().item()
+                iter_max_attn_logit = max(iter_max_attn_logit, batch_max)
             scaler.scale(loss).backward()
 
         if cfg.grad_clip > 0:
@@ -296,6 +300,7 @@ def main(cfg: DictConfig) -> None:
                         "iter/train_loss": lossf,
                         "iter/lr": lr,
                         "iter/mfu": running_mfu * 100 if running_mfu >= 0 else None,
+                        "iter/max_attn_logit_l0": iter_max_attn_logit,
                     },
                     step=iter_num,
                 )
