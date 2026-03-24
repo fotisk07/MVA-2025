@@ -1,2 +1,9 @@
 *.bin
 /wandb/*
+logs
+__pycache__/
+*.bin
+*.pkl
+*.pt
+*.pyc
+nanoGPT
