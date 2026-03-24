@@ -7,3 +7,12 @@ __pycache__/
 *.pt
 *.pyc
 nanoGPT
+
+*.fls
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.gz
+*.fdb_latexmk

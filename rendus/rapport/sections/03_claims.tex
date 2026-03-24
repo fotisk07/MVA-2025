@@ -1,7 +1,7 @@
 \section{Claims Under Verification}
 \label{sec:claims}
 
-\wip{This is not yet definite, to be changed when experiments are done}
+\todo{Pour TRISTAN : A preciser le claim}
 \textbf{Claim 1.}
 \textit{Attention logit growth appears in small Transformers at high learning
 rates, and qk-layernorm resolves it at both small and large scale, measurably
@@ -11,10 +11,12 @@ learning rates, tracking the max attention logit over training, and computing
 LR sensitivity for each configuration (Section~3.1.1 and Figures~1--2
 of~\cite{wortsman2023smallscale}).
 
+
 \textbf{Claim 2.}
-\textit{Output logit divergence occurs in models of any size when weight decay
-is absent, and z-loss reliably prevents it.}
-We verify this by training the four combinations of $\{$z-loss, no z-loss$\}
-\times \{$weight decay, no weight decay$\}$ and monitoring the output logit
-mean throughout training (Section~3.1.2 and Figures~3--4
-of~\cite{wortsman2023smallscale}).
+\textit{Output logit divergence occurs in Transformer models when weight decay is absent, and z-loss prevents this instability.}
+
+We evaluate this claim by training models under the four configurations
+$\{$z-loss, no z-loss$\} \times \{$weight decay, no weight decay$\}$
+and tracking the mean and variance of the output logits throughout training.
+
+Contrary to the findings of~\cite{wortsman2023smallscale}, we do not observe clear logit divergence in the absence of weight decay.

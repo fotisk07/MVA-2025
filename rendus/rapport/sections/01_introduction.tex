@@ -36,15 +36,6 @@ conditions, the authors introduce a scalar metric called \emph{LR sensitivity},
 which measures the expected deviation from optimal loss when sweeping the
 learning rate over three orders of magnitude.
 
-\wip{Clearly write what we did}
 \paragraph{Our contribution.}
-In this report we independently reproduce both instabilities at small scale
-and verify that the proposed mitigations work as claimed.
-Concretely, we train decoder-only Transformers with fewer than 10\,M
-parameters on the \todo{what dataset, FineWeb probs ? }, sweep learning rates from $3\times10^{-4}$ to
-$3\times10^{-1}$, and confirm that (i)~attention logit growth and its
-characteristic loss divergence appear at high learning rates without
-qk-layernorm, and (ii)~output logit divergence appears without weight decay,
-and is reliably cured by z-loss.
-Our experiments require only modest compute and constitute a self-contained
-verification of the paper's central claim.
+In this report we independently attempt to reproduce both instabilities at small scale
+and verify that the proposed mitigations work as claimed. We manage to reproduce one of the two central paper claims of the paper. Our experiments require only modest compute and constitute a self-contained verification of the paper's central claim. 
