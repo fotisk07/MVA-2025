@@ -1,0 +1,65 @@
+defaults:
+  - model: gpt_tiny
+  - override hydra/hydra_logging: disabled
+  - override hydra/job_logging: disabled
+  - _self_
+
+# --- Claim 2: Output logit divergence (~19M param model) ---
+# Key knobs: z_loss_coeff, weight_decay, independent_weight_decay
+# Key metric: iter/output_logit_mean
+# Run 4 conditions:
+#   z_loss_coeff=0.0  weight_decay=0.0  independent_weight_decay=0.0   wandb_run_name=claim2_no-zloss_no-wd
+#   z_loss_coeff=0.0  weight_decay=0.1  independent_weight_decay=1e-4  wandb_run_name=claim2_no-zloss_wd
+#   z_loss_coeff=1e-4 weight_decay=0.0  independent_weight_decay=0.0   wandb_run_name=claim2_zloss_no-wd
+#   z_loss_coeff=1e-4 weight_decay=0.1  independent_weight_decay=1e-4  wandb_run_name=claim2_zloss_wd
+
+# QK-LayerNorm fixed ON so attention logit growth (claim 1) doesn't interfere
+model:
+  config:
+    qk_layernorm: true
+    weight_tying: false  # weight tying stabilizes lm head — must be off to see divergence
+
+# Default condition: no z-loss, no weight decay (worst-case, expected to diverge)
+z_loss_coeff: 0.0
+weight_decay: 0.0
+independent_weight_decay: 0.0
+
+out_dir: out/claim2/${wandb_run_name}
+eval_interval: 500
+log_interval: 50
+eval_iters: 50
+eval_only: false
+always_save_checkpoint: false
+save_initial_checkpoint: false
+checkpoint_name: ckpt.pt
+
+data_dir: data/openweb
+gradient_accumulation_steps: 1
+batch_size: 32
+block_size: 256
+
+learning_rate: 0.1
+min_lr: 1e-5
+decay_lr: false  # constant LR — keeps pressure on divergence throughout
+warmup_iters: 5000
+lr_decay_iters: 95000
+max_iters: 1e5
+beta1: 0.9
+beta2: 0.95
+grad_clip: 0.0  # disabled — clipping suppresses logit divergence
+
+dtype: bfloat16
+compile: true
+seed: 1337
+
+wandb_log: true
+wandb_project: ssprox
+wandb_run_name: "claim2_no-zloss_no-wd"
+wandb_mode: online
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null
+  job:
+    chdir: false

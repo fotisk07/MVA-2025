@@ -1,0 +1,16 @@
+_target_: ssprox.model.GPT
+config:
+  _target_: ssprox.model.GPTConfig
+  block_size: ${block_size}
+  vocab_size: null
+  n_layer: 4
+  n_head: 4
+  n_embd: 128
+  dropout: 0.0
+  bias: false
+  qk_layernorm: false   # override per claim
+  ln_eps: 1e-6
+  use_rope: true
+  rope_base: 10000
+  weight_tying: false
+  init_mode: paper

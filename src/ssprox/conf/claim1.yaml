@@ -1,0 +1,63 @@
+defaults:
+  - model: gpt_tiny
+  - override hydra/hydra_logging: disabled
+  - override hydra/job_logging: disabled
+  - _self_
+
+# --- Claim 1: Attention logit growth (~19M param model) ---
+# Key knob: model.config.qk_layernorm (false = shows growth, true = fix)
+# Key metric: iter/max_attn_logit_l0
+# Run conditions:
+#   qk_layernorm=false wandb_run_name=claim1_no-qkln
+#   qk_layernorm=true  wandb_run_name=claim1_qkln
+# Sweep over learning_rate: 3e-4, 1e-3, 3e-3, 1e-2, 3e-2, 1e-1
+
+# Default: no QK-LayerNorm (shows the instability)
+model:
+  config:
+    qk_layernorm: false
+
+# Weight decay and z-loss are not the focus here; keep them fixed
+z_loss_coeff: 0.0
+weight_decay: 0.1
+independent_weight_decay: 1e-4
+
+out_dir: out/claim1/${wandb_run_name}
+eval_interval: 500
+log_interval: 10
+eval_iters: 50
+eval_only: false
+always_save_checkpoint: false
+save_initial_checkpoint: false
+checkpoint_name: ckpt.pt
+
+data_dir: data/openweb
+gradient_accumulation_steps: 1
+batch_size: 32
+block_size: 256
+
+learning_rate: 0.1
+min_lr: 1e-5
+decay_lr: true
+warmup_iters: 5000
+lr_decay_iters: 95000
+max_iters: 1e5
+beta1: 0.9
+beta2: 0.95
+grad_clip: 1.0
+
+dtype: bfloat16
+compile: true
+seed: 1337
+
+wandb_log: true
+wandb_project: ssprox
+wandb_run_name: "claim1_no-qkln"
+wandb_mode: online
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null
+  job:
+    chdir: false

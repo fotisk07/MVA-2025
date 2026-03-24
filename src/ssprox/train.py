@@ -1,9 +1,9 @@
+import math
 import pickle
 import time
 from contextlib import nullcontext
 from itertools import cycle
 from pathlib import Path
-import math 
 
 import hydra
 import torch
@@ -113,6 +113,7 @@ def get_lr(it: int, cfg: DictConfig) -> float:
     coeff = 0.5 * (1.0 + math.cos(math.pi * decay_ratio))
     return cfg.min_lr + coeff * (cfg.learning_rate - cfg.min_lr)
 
+
 def move_batch(
     batch: tuple[torch.Tensor, torch.Tensor],
     device: torch.device,
@@ -135,10 +136,15 @@ def build_scheduler(optimizer: torch.optim.Optimizer, cfg: DictConfig):
         eta_min=cfg.min_lr,
     )
 
+
 def compute_z_loss(logits: torch.Tensor, coeff: float) -> torch.Tensor:
     # logits: (B, T, V)
     z = torch.logsumexp(logits, dim=-1)
-    return coeff * (z ** 2).mean()
+    return coeff * (z**2).mean()
+
+
+def compute_output_logit_mean(logits: torch.Tensor) -> torch.Tensor:
+    return logits.mean()
 
 
 @torch.no_grad()
@@ -148,16 +154,18 @@ def validate(
     eval_iters: int,
     ctx,
     device: torch.device,
-) -> float:
+) -> tuple[float, float]:
     losses = torch.zeros(eval_iters)
+    output_logit_means = torch.zeros(eval_iters)
     model.eval()
     for idx, batch in zip(range(eval_iters), cycle(val_loader)):
         x, y = move_batch(batch, device)
         with ctx:
-            _, loss = model(x, y)
+            logits, loss = model(x, y)
         losses[idx] = loss.item()
+        output_logit_means[idx] = compute_output_logit_mean(logits).item()
     model.train()
-    return float(losses.mean().item())
+    return float(losses.mean().item()), float(output_logit_means.mean().item())
 
 
 def maybe_init_wandb(cfg: DictConfig):
@@ -243,8 +251,6 @@ def main(cfg: DictConfig) -> None:
     if cfg.compile:
         model = torch.compile(model)
 
-    wandb_run = maybe_init_wandb(cfg)
-
     iter_num = 0
     best_val_loss = float("inf")
     max_att_logits = []
@@ -261,13 +267,16 @@ def main(cfg: DictConfig) -> None:
             param_group["lr"] = lr
 
         if iter_num % cfg.eval_interval == 0:
-            val_loss = validate(raw_model, val_loader, cfg.eval_iters, ctx, device)
-            print(f"step {iter_num}: val loss {val_loss:.4f}")
+            val_loss, val_output_logit_mean = validate(raw_model, val_loader, cfg.eval_iters, ctx, device)
+            print(
+                f"step {iter_num}: val loss {val_loss:.4f}, val output logit mean {val_output_logit_mean:.4f}",
+            )
             if wandb_run is not None:
                 wandb_run.log(
                     {
                         "iter": iter_num,
                         "val/loss": val_loss,
+                        "val/output_logit_mean": val_output_logit_mean,
                         "lr": lr,
                         "mfu": running_mfu * 100 if running_mfu >= 0 else None,
                     },
@@ -290,21 +299,24 @@ def main(cfg: DictConfig) -> None:
             if iter_num == 0 and cfg.eval_only:
                 break
 
-        iter_max_attn_logit = -float("inf") # for accumulated attn logit 
+        iter_max_attn_logit = -float("inf")  # for accumulated attn logit
+        iter_output_logit_mean = 0.0
         for _ in range(cfg.gradient_accumulation_steps):
             x, y = move_batch(next(train_batches), device)
             with ctx:
-
                 logits, loss, attn_logits_l0 = model(x, y, return_layer0_attn_logits=True)
                 if cfg.z_loss_coeff > 0:
                     z_loss = compute_z_loss(logits, cfg.z_loss_coeff)
                     loss = loss + z_loss
                 else:
                     z_loss = torch.tensor(0.0, device=device)
-                
+
                 loss = loss / cfg.gradient_accumulation_steps
                 batch_max = attn_logits_l0.max().item()
                 iter_max_attn_logit = max(iter_max_attn_logit, batch_max)
+                iter_output_logit_mean += (
+                    compute_output_logit_mean(logits).item() / cfg.gradient_accumulation_steps
+                )
             scaler.scale(loss).backward()
 
         if cfg.grad_clip > 0:
@@ -323,7 +335,6 @@ def main(cfg: DictConfig) -> None:
                             if p.grad is not None:
                                 p.mul_(1.0 - cfg.independent_weight_decay)
         optimizer.zero_grad(set_to_none=True)
-        
 
         t1 = time.time()
         dt = t1 - t0
@@ -347,6 +358,7 @@ def main(cfg: DictConfig) -> None:
                         "iter/train_loss": lossf,
                         "iter/lr": lr,
                         "iter/mfu": running_mfu * 100 if running_mfu >= 0 else None,
+                        "iter/output_logit_mean": iter_output_logit_mean,
                         "iter/max_attn_logit_l0": iter_max_attn_logit,
                         "iter/z_loss": z_loss.item(),
                     },
