@@ -8,12 +8,10 @@ To reproduce Claim 1, we monitor the \textbf{maximum attention logits} in the fi
 We compare two configurations: with \texttt{qk-layernorm} and without \texttt{qk-layernorm}, and for each setting we run the experiments with learning rate $\eta \in \{0.1,\ 0.03,\ 0.01,\ 0.003\}$
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{figures/C1_max_attn_logits.png}
+    \includegraphics[width=0.7\linewidth]{figures/C1_max_attn_logits.png}
     \caption{Evolution of the maximum attention logits in the first layer. Divergence occurs at high learning rates when qk-layernorm is not used.}
 \end{figure}
-We observe that attention logits diverge when: $\eta \geq 0.03 \quad \text{and qk-layernorm is disabled}$. And this behavior is consistent with their findings.
-
-We then report the following learning rate sensitivy : \textbf{0.025} with qk-layernorm and \textbf{1.37} without, and  (unfortunately it is not a curve depending, only for a given parameters size, here $\approx$50M), which follows their results. 
+We observe that attention logits diverge when: $\eta \geq 0.03 \quad \text{and qk-layernorm is disabled}$. And this behavior is consistent with their findings. We then report the following learning rate sensitivy : \textbf{0.025} with qk-layernorm and \textbf{1.37} without, and  (unfortunately it is not a curve depending, only for a given parameters size, here $\approx$50M), which follows their results. 
 
 
 
