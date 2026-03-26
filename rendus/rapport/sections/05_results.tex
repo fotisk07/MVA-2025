@@ -3,7 +3,61 @@
 
 \subsection{Claim 1}
 
-\todo{TRISTAN}
+\paragraph{Tracking Attention Logits}
+To reproduce Claim 1, we monitor the \textbf{maximum attention logits} in the first Transformer layer. This choice is motivated their empirical observations showing that early layers exhibit the largest logits and are the first to diverge.
+We compare two configurations: with \texttt{qk-layernorm} and without \texttt{qk-layernorm}, and for each setting we run the experiments with learning rate $\eta \in \{0.1,\ 0.03,\ 0.01,\ 0.003\}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/C1_max_attn_logits.png}
+    \caption{Evolution of the maximum attention logits in the first layer. Divergence occurs at high learning rates when qk-layernorm is not used.}
+\end{figure}
+We observe that attention logits diverge when: $\eta \geq 0.03 \quad \text{and qk-layernorm is disabled}$. And this behavior is consistent with their findings.
+
+- we then report the following learning rate sensitivy : \textbf{0.025} with qk-layernorm and \textbf{1.37} without, and  (unfortunately it is not a curve depending, only for a given parameters size, here $\approx$50M), which follows their results. 
+
+
+
+\paragraph{Origin of the Instability: Norm Explosion} To confirm the origin of this divergence, we track the mean norms of queries and keys, and observe that the norms of $Q$ and $K$ increase rapidly, reproducing the results proposed in appendix of the paper. 
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/C1_qnorm.png}
+    \caption{Mean norm of $Q$}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/C1_knorm.png}
+    \caption{Mean norm of $K$}
+\end{subfigure}
+\caption{Evolution of query and key norms in the first attention layer.}
+\end{figure}
+
+
+\paragraph{Optimizer vs Data: Robustness Analysis}
+The original work suggests that this instability is optimizer-driven rather than data-dependent. We validate this hypothesis by comparing different dataset constructions.
+A dataset is said to be IID (independent and identically distributed) if: $x_1, x_2, \dots, x_n \sim \mathcal{D}$ where all samples are independent and drawn from the same distribution. In practice, this removes any sequential or structural dependencies. A shuffled dataset consists of the same samples but randomly permuted. Unlike IID data, local dependencies may still exist, but global ordering is destroyed. As we observe that logit divergence occurs in all settings, this confirm that the instabilities comes from the optimization. 
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/C1_multiple_data.png}
+    \caption{Maximum attention logits}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/C1_losses_datasets.png}
+    \caption{Validation loss}
+\end{subfigure}
+\caption{Comparison across standard, shuffled, and IID datasets. Note that for iid and shuffled it is higher as the model can only overfit the training data without learning to generalize.}
+\end{figure}
+
+
+
+
 
 \subsection{Claim 2}
 
@@ -40,7 +94,7 @@ configuration, we observed either no clear divergence in the output logit mean
 or severe overall optimisation instability, but not the clean qualitative
 pattern described in the original paper.
 
-\begin{figure}[t]
+\begin{figure}[H]
     \centering
 
     % -------- Row 1: Stable --------

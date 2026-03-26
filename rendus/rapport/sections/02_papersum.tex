@@ -25,7 +25,7 @@ In self-attention, the logits $z_{ij} = \langle q_i, k_j\rangle / \sqrt{d_h}$
 depend on the \emph{product} of query and key vectors.
 Because both $q_i$ and $k_j$ grow linearly with their respective weight matrix
 norms, the logit magnitudes grow \emph{quadratically} with parameter norm ---
-much faster than any other feature in the network.
+much faster than any other feature in the network, which plays a central role in the instability.
 Once logits become very large, the softmax saturates into a near-one-hot
 distribution: every token attends to a single fixed position regardless of content, and the
 model stops learning.

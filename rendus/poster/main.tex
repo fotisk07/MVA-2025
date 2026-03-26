@@ -299,26 +299,51 @@ The instability is completely prevented.
 
 \vspace{6pt}
 \section{Claim 1 — Curves}
-% Placeholder for the claim 1 figure
-\begin{tcolorbox}[
-  enhanced, colback=lightgray, colframe=medgray,
-  title=\textbf{Figure: Claim 1 — Placeholder for Curves},
-  fonttitle=\small\bfseries, boxrule=0.8pt, arc=4pt
-]
-\begin{center}
-\begin{tikzpicture}
-  \node[draw=medgray, dashed, fill=white, rounded corners=3pt,
-        minimum width=0.92\linewidth, minimum height=5cm,
-        text=darkgray, font=\small\itshape]
-    {$\leftarrow$ Insert your Claim 1 figure here:\quad train loss curves + max attention logit over training steps, with/without qk-layernorm $\rightarrow$};
-\end{tikzpicture}
-\end{center}
-\vspace{2pt}
-{\footnotesize\color{darkgray}
-\textit{Suggested content:} training loss and max attention logit over training steps,
-with and without qk-layernorm.}
-\end{tcolorbox}
 
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../rapport/figures/C1_max_attn_logits.png}
+    
+    {\footnotesize Maximum attention logit over training. Divergence appears at high learning rates without qk-layernorm.}
+\end{minipage}
+
+\vspace{4pt}
+
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{../rapport/figures/C1_qnorm.png}
+    
+    {\footnotesize Mean query norm}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{../rapport/figures/C1_knorm.png}
+    
+    {\footnotesize Mean key norm}
+\end{minipage}
+
+\vspace{4pt}
+
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{../rapport/figures/C1_multiple_data.png}
+    
+    {\footnotesize Max logits across datasets}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{../rapport/figures/C1_losses_datasets.png}
+    
+    {\footnotesize Validation loss across datasets}
+\end{minipage}
+
+{\footnotesize
+\textbf{Top:} Attention logit divergence appears at high learning rates when qk-layernorm is disabled. 
+\textbf{Middle:} The norms of queries and keys increase sharply before divergence, indicating that the instability is driven by norm growth rather than improved alignment. 
+\textbf{Bottom:} The same behavior is observed on standard, shuffled, and IID datasets, supporting the claim that the instability is optimizer-driven rather than data-dependent.
+}
 \newpage
 
 % ══════════════════════════════════════════════════════════════════════════════

@@ -1,7 +1,7 @@
 \section{Claims Under Verification}
 \label{sec:claims}
 
-\todo{Pour TRISTAN : A preciser le claim}
+
 \textbf{Claim 1.}
 \textit{Attention logit growth appears in small Transformers at high learning
 rates, and qk-layernorm resolves it at both small and large scale, measurably
@@ -9,14 +9,9 @@ reducing LR sensitivity.}
 We verify this by training models with and without qk-layernorm across several
 learning rates, tracking the max attention logit over training, and computing
 LR sensitivity for each configuration (Section~3.1.1 and Figures~1--2
-of~\cite{wortsman2023smallscale}).
+of~\cite{wortsman2023smallscale}). We investigate the origin of this instability by explicitly tracking the norms of the query and key projections. We also perform experiments on shuffled and IID datasets, showing that the same divergence behavior occurs regardless of data structure, thereby supporting the claim that this instability is primarily driven by optimizer dynamics rather than data properties.
 
 
 \textbf{Claim 2.}
-\textit{Output logit divergence occurs in Transformer models when weight decay is absent, and z-loss prevents this instability.}
-
-We evaluate this claim by training models under the four configurations
-$\{$z-loss, no z-loss$\} \times \{$weight decay, no weight decay$\}$
-and tracking the mean and variance of the output logits throughout training.
-
-Contrary to the findings of~\cite{wortsman2023smallscale}, we do not observe clear logit divergence in the absence of weight decay.
+\textit{Output logit divergence occurs in Transformer models when weight decay is absent, and z-loss prevents this instability.} We evaluate this claim by training models under the four configurations
+$\{$z-loss, no z-loss$\} \times \{$weight decay, no weight decay$\}$ and tracking the mean and variance of the output logits throughout training. Contrary to the findings of~\cite{wortsman2023smallscale}, we do not observe clear logit divergence in the absence of weight decay.
