@@ -17,4 +17,4 @@ The default batch size is 32 sequences of length 256, with one gradient
 accumulation step.
 Training is performed in bfloat16 when available, with \texttt{torch.compile}
 enabled.
-We use AdamW with $\beta_1=0.9$ and $\beta_2=0.95$.
+We use AdamW with $\beta_1=0.9$ and $\beta_2=0.95$ and decoupled (independent) weight decay as defined in their paper. 

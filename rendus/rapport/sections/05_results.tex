@@ -34,8 +34,14 @@ We observe that attention logits diverge when: $\eta \geq 0.03 \quad \text{and q
 
 
 \paragraph{Optimizer vs Data: Robustness Analysis}
-The original work suggests that this instability is optimizer-driven rather than data-dependent. We validate this hypothesis by comparing different dataset constructions.
-A dataset is said to be IID (independent and identically distributed) if: $x_1, x_2, \dots, x_n \sim \mathcal{D}$ where all samples are independent and drawn from the same distribution. In practice, this removes any sequential or structural dependencies. A shuffled dataset consists of the same samples but randomly permuted. Unlike IID data, local dependencies may still exist, but global ordering is destroyed. As we observe that logit divergence occurs in all settings, this confirm that the instabilities comes from the optimization. 
+In theory, for gradient descent, to avoid divergence, one requires with $\eta$ the learning rate : 
+\[
+\eta < \frac{2}{\lambda_{\max}(H)} \text{  and where $H$ is the Hessian of the loss: } H_{ij} = \frac{\partial^2 \mathcal{L}}{\partial \theta_i \partial \theta_j}
+\]
+This quantity is too large to compute in practice, but can be approximated. Moreover, $H$ depends on the parameters, but also on the training process and therefore on the data $\mathcal{D}$ : $H = H(\theta_{\text{step}}, \mathcal{D})$
+where the dynamic is included in $\theta_{\text{step}}$ (as noted by the authors, the curvature varies during training). The \textit{data-driven} aspect can be interpreted as defining the global loss landscape, while the \textit{optimization-driven} aspect determines where we are located in this landscape and how we evolve within it.
+
+The original work suggests that this instability is optimizer-driven rather than data-dependent. We validate this hypothesis by comparing different dataset constructions. A dataset is said to be IID (independent and identically distributed) if: $x_1, x_2, \dots, x_n \sim \mathcal{D}$ where all samples are independent and drawn from the same distribution. In practice, this removes any sequential or structural dependencies. A shuffled dataset consists of the same samples but randomly permuted. Unlike IID data, local dependencies may still exist, but global ordering is destroyed. 
 
 \begin{figure}[H]
 \centering
@@ -52,7 +58,11 @@ A dataset is said to be IID (independent and identically distributed) if: $x_1, 
 \end{subfigure}
 \caption{Comparison across standard, shuffled, and IID datasets. Note that for iid and shuffled it is higher as the model can only overfit the training data without learning to generalize.}
 \end{figure}
-
+As we observe that logit divergence occurs in all settings, our experiments confirm that instabilities are more driven by the dynamics:
+\[
+\text{stability} \sim \frac{\eta}{\lambda_{\max}(H(\theta_{\text{step}}, \mathcal{D}))}
+\approx \frac{\eta}{\lambda_{\max}(H(\theta_{\text{step}}))}.
+\]
 
 
 

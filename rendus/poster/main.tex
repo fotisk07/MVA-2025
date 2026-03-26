@@ -221,37 +221,206 @@ The output logits drift to very negative values, decoupling them from the log pr
 %  PAGE 2 — INSTABILITY 1: ATTENTION LOGIT GROWTH
 % ══════════════════════════════════════════════════════════════════════════════
 
+% \begin{tcolorbox}[
+%   enhanced, colback=midblue!15, colframe=midblue,
+%   arc=6pt, boxrule=1.5pt, left=10pt, right=10pt, top=6pt, bottom=6pt
+% ]
+%   {\large\bfseries\color{deepblue} Instability \#1 — Attention Logit Growth}
+% \end{tcolorbox}
+
+% \vspace{8pt}
+
+% \begin{multicols}{2}
+
+% \section{Mechanism}
+
+% In self-attention, the logit between position $i$ and $j$ in a head of dimension $d_h$ is:
+% \[
+% z_{ij} = \frac{\langle q_i,\, k_j\rangle}{\sqrt{d_h}}
+% \]
+% Both $q_i$ and $k_j$ grow linearly with their weight matrix norms, so $z_{ij}$ grows
+% \textbf{quadratically} with parameter norm — \important{much faster} than any other quantity
+% in the network.
+
+% \medskip
+% \begin{claimbox}[What happens next]{alertred}
+% \small
+% Once logits are very large, the softmax collapses to a \textbf{one-hot distribution}:
+% every token attends to a single fixed position regardless of content.
+% The attention mechanism becomes \emph{content-independent} and learning stalls.
+% \end{claimbox}
+% \columnbreak
+
+% \begin{claimbox}[Why this instability appears]{midblue}
+% \small
+% From a gradient descent perspective, stability requires:
+% \[
+% \eta < \frac{2}{\lambda_{\max}(H)}, \quad H = \nabla^2_\theta \mathcal{L}(\theta)
+% \]
+
+% In general, the Hessian depends on both the parameters and the data:
+% \[
+% H = H(\theta_{\text{step}}, \mathcal{D})
+% \]
+
+% \medskip
+% \textbf{Interpretation:}
+% \begin{itemize}[leftmargin=10pt, itemsep=1pt]
+% \item Data shapes the \emph{loss landscape}
+% \item Optimization determines the \emph{trajectory}
+% \end{itemize}
+
+% \medskip
+% \textbf{Our result:} We observe the same instability across standard, shuffled,
+% and IID datasets. This suggests that the data dependence of the Hessian plays a
+% secondary role in this regime.
+
+% \medskip
+% \begin{center}
+% \[
+% \lambda_{\max}(H(\theta_{\text{step}}, \mathcal{D}))
+% \;\approx\;
+% \lambda_{\max}(H(\theta_{\text{step}}))
+% \]
+% \end{center}
+
+% \medskip
+% \textbf{Key insight:} Increasing the learning rate pushes the model into
+% high-curvature regions, triggering instability \emph{independently of the dataset}.
+% \end{claimbox}
+
+% \section{The Fix — qk-LayerNorm}
+
+% \begin{center}
+% \begin{tikzpicture}[font=\small, node distance=8pt, >=Stealth]
+%   % Without
+%   \node[draw=alertred, fill=lightalert, rounded corners=3pt,
+%         minimum width=0.4\linewidth, text width=0.38\linewidth,
+%         align=center, minimum height=20pt] (wq) {\textbf{Q}, \textbf{K}\\grow unbounded};
+%   \node[draw=alertred, fill=lightalert, rounded corners=3pt,
+%         minimum width=0.4\linewidth, text width=0.38\linewidth,
+%         align=center, minimum height=20pt, below=of wq] (wz) {$z_{ij} \to \infty$\\(quadratic growth)};
+%   \node[draw=alertred, fill=lightalert, rounded corners=3pt,
+%         minimum width=0.4\linewidth, text width=0.38\linewidth,
+%         align=center, minimum height=20pt, below=of wz] (wc) {softmax $\to$ one-hot\\learning stalls};
+%   \draw[->, alertred, thick] (wq)--(wz);
+%   \draw[->, alertred, thick] (wz)--(wc);
+%   \node[above=2pt of wq, color=alertred, font=\bfseries\small] {Without fix};
+
+%   % With
+%   \node[draw=successgreen, fill=lightgreen, rounded corners=3pt,
+%         minimum width=0.4\linewidth, text width=0.38\linewidth,
+%         align=center, minimum height=20pt, right=20pt of wq] (gq)
+%         {\textbf{Q}, \textbf{K}\\go through LayerNorm};
+%   \node[draw=successgreen, fill=lightgreen, rounded corners=3pt,
+%         minimum width=0.4\linewidth, text width=0.38\linewidth,
+%         align=center, minimum height=20pt, below=of gq] (gz)
+%         {norms pinned\\$z_{ij}$ stays bounded};
+%   \node[draw=successgreen, fill=lightgreen, rounded corners=3pt,
+%         minimum width=0.4\linewidth, text width=0.38\linewidth,
+%         align=center, minimum height=20pt, below=of gz] (gc)
+%         {softmax healthy\\training continues};
+%   \draw[->, successgreen, thick] (gq)--(gz);
+%   \draw[->, successgreen, thick] (gz)--(gc);
+%   \node[above=2pt of gq, color=successgreen, font=\bfseries\small] {With qk-LayerNorm};
+% \end{tikzpicture}
+% \end{center}
+
+% \begin{claimbox}[Mitigation]{successgreen}
+% \small
+% \textbf{qk-LayerNorm}: apply LayerNorm to $q$ and $k$ \emph{before} computing the dot
+% product. This pins their norms, \textbf{breaking the quadratic dependence} on parameter norm.
+% The instability is completely prevented.
+% \end{claimbox}
+
+% \end{multicols}
+
 \begin{tcolorbox}[
   enhanced, colback=midblue!15, colframe=midblue,
   arc=6pt, boxrule=1.5pt, left=10pt, right=10pt, top=6pt, bottom=6pt
 ]
-  {\large\bfseries\color{deepblue} Instability \#1 — Attention Logit Growth}
+  {\large\bfseries\color{deepblue} Instability \#1 --- Attention Logit Growth}
 \end{tcolorbox}
 
 \vspace{8pt}
 
-\begin{multicols}{2}
-
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
 \section{Mechanism}
 
 In self-attention, the logit between position $i$ and $j$ in a head of dimension $d_h$ is:
 \[
 z_{ij} = \frac{\langle q_i,\, k_j\rangle}{\sqrt{d_h}}
 \]
+
 Both $q_i$ and $k_j$ grow linearly with their weight matrix norms, so $z_{ij}$ grows
-\textbf{quadratically} with parameter norm — \important{much faster} than any other quantity
+\textbf{quadratically} with parameter norm --- \important{much faster} than any other quantity
 in the network.
 
-\medskip
+\vspace{12pt}
+
 \begin{claimbox}[What happens next]{alertred}
 \small
 Once logits are very large, the softmax collapses to a \textbf{one-hot distribution}:
 every token attends to a single fixed position regardless of content.
 The attention mechanism becomes \emph{content-independent} and learning stalls.
 \end{claimbox}
-\columnbreak
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\vspace{0pt}
 
-\section{The Fix — qk-LayerNorm}
+\begin{claimbox}[Why this instability appears]{midblue}
+\small
+From a gradient descent perspective, stability requires:
+\[
+\eta < \frac{2}{\lambda_{\max}(H)}, \qquad H = \nabla^2_\theta \mathcal{L}(\theta)
+\]
+
+In general, the Hessian depends on both the parameters and the data:
+\[
+H = H(\theta_{\text{step}}, \mathcal{D})
+\]
+
+\medskip
+\textbf{Our result:} We observe the same instability across standard, shuffled,
+and IID datasets, suggesting that the data dependence of the Hessian plays a
+secondary role in this regime:
+\[
+\lambda_{\max}(H(\theta_{\text{step}}, \mathcal{D}))
+\;\approx\;
+\lambda_{\max}(H(\theta_{\text{step}}))
+\]
+\end{claimbox}
+
+\vspace{8pt}
+
+\begin{tcolorbox}[
+  enhanced,
+  colback=accentyellow,
+  colframe=accentorange,
+  fonttitle=\bfseries\small,
+  title=Interpretation,
+  boxrule=1pt,
+  arc=4pt,
+  left=6pt, right=6pt, top=4pt, bottom=4pt
+]
+\small
+\textbf{Interpretation:}
+\begin{itemize}[leftmargin=12pt, itemsep=2pt]
+\item Data shapes the \emph{loss landscape}
+\item Optimization determines the \emph{trajectory}
+\end{itemize}
+
+\medskip
+\textbf{Key insight:} Increasing the learning rate pushes the model into
+high-curvature regions, triggering instability \emph{independently of the dataset}.
+\end{tcolorbox}
+\end{minipage}
+
+\vspace{10pt}
+
+\section{The Fix --- qk-LayerNorm}
 
 \begin{center}
 \begin{tikzpicture}[font=\small, node distance=8pt, >=Stealth]
@@ -294,8 +463,6 @@ The attention mechanism becomes \emph{content-independent} and learning stalls.
 product. This pins their norms, \textbf{breaking the quadratic dependence} on parameter norm.
 The instability is completely prevented.
 \end{claimbox}
-
-\end{multicols}
 
 \vspace{6pt}
 \section{Claim 1 — Curves}
