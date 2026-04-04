@@ -2,8 +2,7 @@
 #SBATCH --job-name=jupyter_gpu
 #SBATCH --output=logs/jupyter_%j.out
 #SBATCH --error=logs/jupyter_%j.err
-#SBATCH --partition=prod40
-#SBATCH --gres=gpu:3g.40gb:1
+#SBATCH --partition=prod10
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 
