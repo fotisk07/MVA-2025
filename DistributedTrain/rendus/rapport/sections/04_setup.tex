@@ -1,0 +1,20 @@
+\section{Experimental Setup}
+\label{sec:setup}
+
+All experiments are run with the same decoder-only Transformer training code based on the nanoGPT implementation(\cite{karpathy_nanogpt}) and configured through Hydra.
+Our goal is not to match the largest models studied in the original paper, but
+to reproduce the same failure modes in a compact setting that is cheap to run
+and easy to ablate.
+
+\paragraph{Model.}
+We closely follow the paper's implementation : The model uses rotary positional embeddings, no dropout, bias-free linear layers, and no weight tying between the token embedding matrix and the output
+projection.
+
+\paragraph{Data and optimisation.}
+Due to size constraints we chose to train on the OpenWebText-style dataset provided in our pipeline, using the
+standard next-token prediction objective and not on the C4 dataset.
+The default batch size is 32 sequences of length 256, with one gradient
+accumulation step.
+Training is performed in bfloat16 when available, with \texttt{torch.compile}
+enabled.
+We use AdamW with $\beta_1=0.9$ and $\beta_2=0.95$ and decoupled (independent) weight decay as defined in their paper. 

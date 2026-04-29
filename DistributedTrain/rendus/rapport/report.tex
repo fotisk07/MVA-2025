@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage[preprint]{neurips_2025}
+
+\usepackage{amsmath,amssymb}  
+\usepackage[colorlinks=true,
+            linkcolor=blue,
+            citecolor=blue,
+            urlcolor=blue]{hyperref} 
+\usepackage{cleveref}          
+\usepackage{xcolor}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+
+% Convenience math macros ##################################################
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\RMS}{\operatorname{RMS}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\todo}[1]{%
+  \textcolor{red}{\textbf{[TODO: #1]}}%
+}
+
+\newcommand{\wip}[1]{%
+  \textcolor{orange}{\textbf{[WIP: #1]}}%
+}
+
+% Title block ##############################################################
+\title{%
+  Small-Scale Proxies for Large-Scale\\
+  Transformer Training Instabilities\\[0.3em]
+  \large Report --- MVA 2025--2026
+}
+
+\author{
+  Tristan Beruard, Fotios Kapotos\\
+  CentraleSupélec / MVA\\
+  \texttt{tristanberuard@gmail.com, fotiskapotos@gmail.com}\\
+  https://github.com/fotisk07/DisTrain-project.git
+}
+
+\begin{document}
+
+\maketitle
+
+% ## Abstract #################################################################
+\begin{abstract}
+We reproduce and investigate two training instabilities described in
+\citet{wortsman2023smallscale}: \emph{attention logit growth} and
+\emph{output logit divergence}.
+We show that both phenomena can be elicited in small Transformers
+(under 10\,M parameters) by training at high learning rates, and that the
+mitigations proposed by the authors---\textbf{qk-layernorm} and
+\textbf{z-loss} regularization---are equally effective at small scale.
+Our experiments validate the paper's central claim that small models serve as
+reliable proxies for studying large-scale instabilities, without requiring
+massive compute.
+\end{abstract}
+
+% ## Body #####################################################################
+\input{sections/01_introduction}
+\input{sections/02_papersum}
+\input{sections/03_claims}
+\input{sections/04_setup}
+\input{sections/05_results}
+% \input{sections/06_discussion}
+% \input{sections/07_conclusion}
+
+% ## Bibliography #############################################################
+\bibliographystyle{abbrvnat}
+\bibliography{references}
+
+\end{document}
