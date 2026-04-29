@@ -1,0 +1,16 @@
+train_graphs: data/raw/train_graphs.pkl
+val_graphs: data/raw/validation_graphs.pkl
+train_emb_csv: data/processed/baseline_train_embeddings.csv
+val_emb_csv: data/processed/baseline_validation_embeddings.csv
+batch_size: 64
+epochs: 15
+lr: 0.001
+exp_name: gine_contrastive_final
+task:
+  _target_: moleculecs.tasks.embedding_retrieval.GraphTextContrastiveRetrieval
+  temperature: 0.07
+model:
+  _target_: moleculecs.models.gcn_graph_encoder.GINEGraphEncoder
+  hidden: 256
+  layers: 4
+  dropout: 0.1
