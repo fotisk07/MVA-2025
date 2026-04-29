@@ -1,0 +1,54 @@
+Downloading scikit-image (14.2MiB)
+ Downloaded scikit-image
+Installed 7 packages in 12ms
+Installed 101 packages in 159ms
+[I 2026-04-04 21:22:03.351 ServerApp] jupyter_lsp | extension was successfully linked.
+[I 2026-04-04 21:22:03.355 ServerApp] jupyter_server_terminals | extension was successfully linked.
+[W 2026-04-04 21:22:03.357 LabApp] 'token' has moved from NotebookApp to ServerApp. This config will be passed to ServerApp. Be sure to update your config before our next release.
+[W 2026-04-04 21:22:03.359 ServerApp] ServerApp.token config is deprecated in 2.0. Use IdentityProvider.token.
+[I 2026-04-04 21:22:03.359 ServerApp] jupyterlab | extension was successfully linked.
+[I 2026-04-04 21:22:03.363 ServerApp] notebook | extension was successfully linked.
+[I 2026-04-04 21:22:03.984 ServerApp] notebook_shim | extension was successfully linked.
+[W 2026-04-04 21:22:04.019 ServerApp] All authentication is disabled.  Anyone who can connect to this server will be able to run code.
+[I 2026-04-04 21:22:04.020 ServerApp] notebook_shim | extension was successfully loaded.
+[I 2026-04-04 21:22:04.022 ServerApp] jupyter_lsp | extension was successfully loaded.
+[I 2026-04-04 21:22:04.023 ServerApp] jupyter_server_terminals | extension was successfully loaded.
+[I 2026-04-04 21:22:04.026 LabApp] JupyterLab extension loaded from /raid/home/students/fotis/.cache/uv/archive-v0/wwIa--vPUwJNrWGU3bT31/lib/python3.9/site-packages/jupyterlab
+[I 2026-04-04 21:22:04.026 LabApp] JupyterLab application directory is /raid/home/students/fotis/.cache/uv/archive-v0/wwIa--vPUwJNrWGU3bT31/share/jupyter/lab
+[I 2026-04-04 21:22:04.026 LabApp] Extension Manager is 'pypi'.
+[I 2026-04-04 21:22:04.113 ServerApp] jupyterlab | extension was successfully loaded.
+[I 2026-04-04 21:22:04.116 ServerApp] notebook | extension was successfully loaded.
+[I 2026-04-04 21:22:04.117 ServerApp] Serving notebooks from local directory: /raid/home/students/fotis/MVA/RepLear
+[I 2026-04-04 21:22:04.117 ServerApp] Jupyter Server 2.17.0 is running at:
+[I 2026-04-04 21:22:04.117 ServerApp] http://dgx-a100:8888/tree
+[I 2026-04-04 21:22:04.117 ServerApp]     http://127.0.0.1:8888/tree
+[I 2026-04-04 21:22:04.117 ServerApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[I 2026-04-04 21:22:04.139 ServerApp] Skipped non-installed server(s): basedpyright, bash-language-server, dockerfile-language-server-nodejs, javascript-typescript-langserver, jedi-language-server, julia-language-server, pyrefly, pyright, python-language-server, python-lsp-server, r-languageserver, sql-language-server, texlab, typescript-language-server, unified-language-server, vscode-css-languageserver-bin, vscode-html-languageserver-bin, vscode-json-languageserver-bin, yaml-language-server
+[W 2026-04-04 21:22:24.335 ServerApp] 404 GET /hub/api (f216365cca5e4193a28fe0469ed8a133@127.0.0.1) 13.70ms referer=None
+[I 2026-04-04 21:22:24.339 ServerApp] 302 GET / (@127.0.0.1) 0.27ms
+[W 2026-04-04 21:22:24.354 ServerApp] 404 GET /login? (142edace0aed4c938a90d925c778245f@127.0.0.1) 0.75ms referer=None
+[W 2026-04-04 21:22:37.855 ServerApp] 404 GET /hub/api (d76330cd31eb4e67ba372af0e416aaa9@127.0.0.1) 1.39ms referer=None
+[I 2026-04-04 21:22:37.859 ServerApp] 302 GET / (@127.0.0.1) 0.28ms
+[W 2026-04-04 21:22:37.867 ServerApp] 404 GET /login? (635507ab047b453fa86d2cc5d8a95548@127.0.0.1) 0.74ms referer=None
+[I 2026-04-04 21:22:43.250 ServerApp] Kernel started: 2f9b1238-f7b8-4219-a588-76102d486137
+[I 2026-04-04 21:22:43.905 ServerApp] Connecting to kernel 2f9b1238-f7b8-4219-a588-76102d486137.
+[W 2026-04-04 21:22:43.906 ServerApp] The websocket_ping_timeout (90000) cannot be longer than the websocket_ping_interval (30000).
+    Setting websocket_ping_timeout=30000
+[I 2026-04-04 21:22:44.122 ServerApp] 302 GET / (@127.0.0.1) 0.34ms
+[I 2026-04-04 21:22:44.123 ServerApp] 302 GET / (@127.0.0.1) 1.46ms
+[I 2026-04-04 21:22:44.124 ServerApp] 302 GET / (@127.0.0.1) 1.47ms
+[I 2026-04-04 21:22:44.124 ServerApp] 302 GET / (@127.0.0.1) 1.50ms
+[I 2026-04-04 21:22:44.124 ServerApp] 302 GET / (@127.0.0.1) 1.50ms
+[I 2026-04-04 21:22:44.124 ServerApp] 302 GET / (@127.0.0.1) 1.51ms
+[I 2026-04-04 21:22:44.124 ServerApp] 302 GET / (@127.0.0.1) 1.51ms
+[I 2026-04-04 21:22:44.125 ServerApp] 302 GET / (@127.0.0.1) 1.51ms
+[W 2026-04-04 21:22:44.206 ServerApp] 404 GET /login? (4b0c555f47504263a836844e88a52f58@127.0.0.1) 2.84ms referer=None
+[W 2026-04-04 21:22:44.289 ServerApp] 404 GET /login? (c258c54b5b67491f9659c792cc2448c2@127.0.0.1) 1.05ms referer=None
+[W 2026-04-04 21:22:44.290 ServerApp] 404 GET /login? (def14ed438024b1eb37bcd7eff05f8cf@127.0.0.1) 1.63ms referer=None
+[W 2026-04-04 21:22:44.291 ServerApp] 404 GET /login? (fdc5bd748bc049c69cb1e5dd89cae694@127.0.0.1) 1.00ms referer=None
+[W 2026-04-04 21:22:44.292 ServerApp] 404 GET /login? (2aa545b496e34de3bd35d7f97f0ee1b5@127.0.0.1) 1.54ms referer=None
+[W 2026-04-04 21:22:44.293 ServerApp] 404 GET /login? (adf3452bc86b4eda91919db98af4a8bf@127.0.0.1) 0.81ms referer=None
+[W 2026-04-04 21:22:44.294 ServerApp] 404 GET /login? (aef825b5b6a24df79cee28f279570d9b@127.0.0.1) 0.81ms referer=None
+[W 2026-04-04 21:22:49.794 ServerApp] 404 GET /nbextensions/jupyter-js-widgets/extension.js (f43b9c5327c1485fb0188bd6790469ba@127.0.0.1) 1.01ms referer=None
+[W 2026-04-04 21:22:49.795 ServerApp] 404 GET /nbextensions/jupyter-js-widgets/extension.js (0fd0cd4babef46d7a531e293932973a5@127.0.0.1) 0.75ms referer=None
+[I 2026-04-04 22:06:11.788 ServerApp] Kernel interrupted: 2f9b1238-f7b8-4219-a588-76102d486137

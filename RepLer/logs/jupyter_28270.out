@@ -1,0 +1,8 @@
+=====================================================================
+ Job running on node: dgxa100
+ To connect from your local machine, run the following command:
+
+   ssh -L 8888:dgxa100:8888 fotis@dgx
+
+ Then open in your browser: http://localhost:8888
+=====================================================================

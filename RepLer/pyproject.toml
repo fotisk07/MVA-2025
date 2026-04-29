@@ -1,0 +1,28 @@
+[project]
+name = "replear"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "einops>=0.8.2",
+    "gdown>=5.2.1",
+    "h5py>=3.14.0",
+    "lime>=0.2.0.1",
+    "matplotlib>=3.9.4",
+    "medmnist>=3.0.2",
+    "numba>=0.53.1",
+    "pandas>=2.3.3",
+    "scikit-learn>=1.6.1",
+    "seaborn>=0.13.2",
+    "timm>=1.0.25",
+    "torch>=2.8.0",
+    "torchvision>=0.23.0",
+    "tqdm>=4.67.1",
+    "umap-learn>=0.5.11",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.31.0",
+]

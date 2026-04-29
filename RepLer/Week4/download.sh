@@ -1,0 +1,1 @@
+wget https://partage.imt.fr/index.php/s/xeLJdgRY67FgzFz/download/resnet18_simclr_500epochs_stl10.pth.tar
