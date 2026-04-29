@@ -1,0 +1,15 @@
+\textbf{Text prompts.}
+Class labels are represented using natural language templates
+rather than raw class names.
+
+\textbf{Why it matters.}
+Zero-shot performance is \textbf{highly sensitive} to prompt wording.
+
+\textbf{Prompt ensembling.}
+Using multiple templates
+(e.g.\ ``a photo of a \{class\}'', ``a blurry photo of a \{class\}'')
+and averaging their embeddings improves accuracy.
+
+\textbf{Key insight.}
+The text encoder effectively \textbf{generates classifier weights}
+from natural language descriptions.

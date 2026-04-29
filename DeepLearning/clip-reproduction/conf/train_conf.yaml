@@ -1,0 +1,36 @@
+model: clip
+# model options: clip, cnn, resnet50_finetuning
+# dataset options: cifar100, mnist
+dataset: cifar100
+data_root: ./data
+output_dir: ./outputs/checkpoints
+
+epochs: 20
+batch_size: 64
+lr: 3e-4
+weight_decay: 0.01
+num_workers: 2
+val_ratio: 0.1
+seed: 42
+image_size: 64
+
+log_every: 100
+eval_every: 1
+
+# CLIP-specific params (used when model=clip)
+encoder: vit
+context_length: 77
+embed_dim: 512
+vision_width: 64
+vision_layers: 6
+vision_heads: 8
+vision_patch_size: 16
+text_width: 512
+text_layers: 2
+text_heads: 8
+dropout: 0.0
+
+hydra:  
+  output_subdir: null  
+  run:  
+    dir: .

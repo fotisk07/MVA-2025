@@ -1,0 +1,18 @@
+seed: 42
+model: resnet50
+dataset: cifar10
+image_size: 128
+openai_model_name: openai/clip-vit-base-patch16
+
+data_root: ./data
+cache_dir: ./data/feature_cache
+
+batch_size: 256
+num_workers: 2
+use_cuda: true
+
+logreg_c: 1.0
+
+hydra:
+  run:
+    dir: ./logs/probing/${dataset}/${model}

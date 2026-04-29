@@ -1,0 +1,9 @@
+data
+.venv
+
+# Latex stuff
+*.aux
+*.fls
+*.gz
+*.fdb_latexmk
+*.log

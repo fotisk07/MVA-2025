@@ -1,0 +1,105 @@
+\documentclass[25pt, a0paper, portrait]{tikzposter}
+
+% =========================
+% Poster metadata
+% =========================
+\title{CLIP: Contrastive Language--Image Pretraining}
+\author{DEGENEVE Hugo, KAPOTOS Fotios}
+\date{}
+\institute{CentraleSupélec}
+
+\usepackage{amsmath}
+
+\begin{document}
+\maketitle
+
+% =========================================================
+% INTRODUCTION
+% What is CLIP? Why it matters? Core idea.
+% =========================================================
+\block{Introduction}{
+    \input{sections/introduction.tex}
+}
+
+% =========================================================
+% TRAINING SETUP
+% How is CLIP trained and on what data?
+% =========================================================
+\begin{columns}
+
+    \column{0.6}
+    \block{Training Objective}{
+        \input{sections/objective.tex}
+    }
+
+    \column{0.4}
+    \block{Dataset}{
+        \input{sections/dataset.tex}
+    }
+
+\end{columns}
+
+% =========================================================
+% SYSTEM OVERVIEW (EARLY VISUAL ANCHOR)
+% =========================================================
+\begin{columns}
+
+    \column{0.7}
+    \block{CLIP Training and Inference Pipeline}{
+        \begin{tikzfigure}
+            \centering
+            \includegraphics[width=\linewidth]{figures/clip_pipeline.png}
+        \end{tikzfigure}
+    }
+
+    \column{0.3}
+    \block{CLIP Training Details}{
+        \input{sections/diagram.tex}
+    }
+
+\end{columns}
+
+%
+% INFERENCE & PERFORMANCE (3-COLUMN COMPRESSION)
+% =========================================================
+\begin{columns}
+
+    \column{0.33}
+    \block{Zero-Shot Classification}{
+        \input{sections/zeroshot.tex}
+    }
+
+    \column{0.33}
+    \block{Results}{
+        \input{sections/results.tex}
+    }
+
+    \column{0.34}
+    \block{Prompt Engineering}{
+        \input{sections/prompting.tex}
+    }
+
+\end{columns}
+
+
+
+% DISCUSSION
+% =========================================================
+% \begin{columns}
+
+%     \column{0.6}
+%     \block{Why Contrastive Learning?}{
+%         \input{sections/intuition.tex}
+%     }
+
+%     \column{0.4}
+%     \block{Limitations}{
+%         \input{sections/limitations.tex}
+%     }
+
+% \end{columns}
+\block{Limitations}{
+    \input{sections/limitations.tex}
+}
+
+\end{document}

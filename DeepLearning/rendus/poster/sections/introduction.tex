@@ -1,0 +1,22 @@
+\textbf{What is CLIP?}
+CLIP (Contrastive Language--Image Pretraining) learns a \textbf{shared embedding space}
+for images and natural language using large-scale image--text pairs.
+
+\textbf{Training signal.}
+Instead of labeled classes, supervision comes from \textbf{natural language captions}
+collected at web scale.
+
+\textbf{Paradigm shift.}
+Traditional vision models learn
+\[
+\text{image} \rightarrow \text{fixed label set}.
+\]
+CLIP learns
+\[
+\text{image} \leftrightarrow \text{text},
+\]
+enabling \textbf{open-vocabulary} recognition.
+
+\textbf{Core idea.}
+Matched image--text pairs are pulled together in the embedding space,
+while mismatched pairs are pushed apart using a contrastive objective.

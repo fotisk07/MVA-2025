@@ -1,0 +1,35 @@
+\textbf{Encoders.}
+\begin{itemize}
+    \item Image encoder \textbf{CNN or Vision Transformer}
+    \item Text encoder \textbf{Transformer}
+    \item \textbf{No cross-attention}: modalities interact only through the loss
+\end{itemize}
+
+\textbf{Training loss (contrastive).}
+\begin{itemize}
+    \item For a batch of \(N\) image--text pairs, compute all \(N \times N\) similarities
+    \item Image-to-text loss:
+    \[
+    \mathcal{L}_{\text{img}\rightarrow\text{text}}
+    = - \frac{1}{N} \sum_{i=1}^N
+    \log \frac{\exp(s_{ii}/\tau)}{\sum_{j=1}^N \exp(s_{ij}/\tau)}
+    \]
+    \item Text-to-image loss defined symmetrically
+    \item Final loss:
+    \[
+    \mathcal{L}
+    = \tfrac{1}{2}
+    \left(
+    \mathcal{L}_{\text{img}\rightarrow\text{text}}
+    +
+    \mathcal{L}_{\text{text}\rightarrow\text{img}}
+    \right)
+    \]
+\end{itemize}
+
+\textbf{Inference (zero-shot).}
+\begin{itemize}
+    \item Embed text prompts once
+    \item Classify images by \textbf{nearest-neighbor retrieval}
+    \item No task-specific training required
+\end{itemize}

@@ -1,0 +1,22 @@
+\textbf{Learning objective.}
+CLIP is trained using a \textbf{contrastive learning} objective
+that aligns images and text in a shared embedding space.
+
+\textbf{Batch-wise training.}
+Given a batch of \(N\) image--text pairs:
+\begin{itemize}
+    \item each image is encoded independently,
+    \item each text caption is encoded independently,
+    \item all \(N \times N\) similarities are computed.
+\end{itemize}
+
+\textbf{Optimization goal.}
+\begin{itemize}
+    \item matching image--text pairs $\rightarrow$ high similarity,
+    \item mismatched pairs $\rightarrow$ low similarity.
+\end{itemize}
+
+\textbf{Key property.}
+The objective is symmetric (image$\leftrightarrow$text)
+and uses other samples in the batch as \textbf{implicit negatives},
+making it scalable to very large datasets.
