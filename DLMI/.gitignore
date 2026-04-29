@@ -1,0 +1,16 @@
+__pycache__
+
+.vscode
+*.zip
+data/*
+!data/download.sh
+logs
+outputs/
+
+checkpoints
+weights/*
+!weights/kimianet.sh
+
+report/*
+!report/midl-fullpaper.tex
+!report/midl-fullpaper.pdf
