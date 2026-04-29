@@ -1,0 +1,240 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{unknown}{unknown}{}
+      \name{author}{3}{}{%
+        {{hash=092aa158943a238824129bff381200d3}{%
+           family={Choi},
+           familyi={C\bibinitperiod},
+           given={Shing\bibnamedelimb Wan\bibnamedelima Sam},
+           giveni={S\bibinitperiod\bibinitdelim W\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=f3f2791a0cdc8bbfc25b417090a166f8}{%
+           family={Mak},
+           familyi={M\bibinitperiod},
+           given={Timothy},
+           giveni={T\bibinitperiod}}}%
+        {{hash=d8089750d68e68fc4b61a8b8bf8ae51e}{%
+           family={O’Reilly},
+           familyi={O\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{94eb617a3bfe470f9add7cd7ba8d3227}
+      \strng{fullhash}{94eb617a3bfe470f9add7cd7ba8d3227}
+      \strng{bibnamehash}{94eb617a3bfe470f9add7cd7ba8d3227}
+      \strng{authorbibnamehash}{94eb617a3bfe470f9add7cd7ba8d3227}
+      \strng{authornamehash}{94eb617a3bfe470f9add7cd7ba8d3227}
+      \strng{authorfullhash}{94eb617a3bfe470f9add7cd7ba8d3227}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{09}
+      \field{title}{A guide to performing Polygenic Risk Score analyses}
+      \field{year}{2018}
+      \verb{doi}
+      \verb 10.1101/416545
+      \endverb
+    \endentry
+    \entry{FISCHL2012774}{article}{}
+      \name{author}{1}{}{%
+        {{hash=e4210e5a0305aced45740a9ccb645743}{%
+           family={Fischl},
+           familyi={F\bibinitperiod},
+           given={Bruce},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{e4210e5a0305aced45740a9ccb645743}
+      \strng{fullhash}{e4210e5a0305aced45740a9ccb645743}
+      \strng{bibnamehash}{e4210e5a0305aced45740a9ccb645743}
+      \strng{authorbibnamehash}{e4210e5a0305aced45740a9ccb645743}
+      \strng{authornamehash}{e4210e5a0305aced45740a9ccb645743}
+      \strng{authorfullhash}{e4210e5a0305aced45740a9ccb645743}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{FreeSurfer is a suite of tools for the analysis of neuroimaging data that provides an array of algorithms to quantify the functional, connectional and structural properties of the human brain. It has evolved from a package primarily aimed at generating surface representations of the cerebral cortex into one that automatically creates models of most macroscopically visible structures in the human brain given any reasonable T1-weighted input image. It is freely available, runs on a wide variety of hardware and software platforms, and is open source.}
+      \field{issn}{1053-8119}
+      \field{journaltitle}{NeuroImage}
+      \field{note}{20 YEARS OF fMRI}
+      \field{number}{2}
+      \field{title}{FreeSurfer}
+      \field{volume}{62}
+      \field{year}{2012}
+      \field{pages}{774\bibrangedash 781}
+      \range{pages}{8}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.neuroimage.2012.01.021
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S1053811912000389
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S1053811912000389
+      \endverb
+      \keyw{Morphometry,Registration,Segmentation,MRI}
+    \endentry
+    \entry{ghosal2021gmind}{inproceedings}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=f9508212fb384c3eb5afe29b806372b8}{%
+           family={Ghosal},
+           familyi={G\bibinitperiod},
+           given={Soumya},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{e501d347bdbc0c87f628752551425b92}
+      \strng{fullhash}{e501d347bdbc0c87f628752551425b92}
+      \strng{bibnamehash}{e501d347bdbc0c87f628752551425b92}
+      \strng{authorbibnamehash}{e501d347bdbc0c87f628752551425b92}
+      \strng{authornamehash}{e501d347bdbc0c87f628752551425b92}
+      \strng{authorfullhash}{e501d347bdbc0c87f628752551425b92}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Medical Imaging 2021: Image Processing}
+      \field{title}{G-MIND: An End-to-End Multimodal Imaging-Genetics Framework for Biomarker Identification and Disease Classification}
+      \field{year}{2021}
+    \endentry
+    \entry{jaume2024survpath}{inproceedings}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=477209a892d83751adefb032b41bd93c}{%
+           family={Jaume},
+           familyi={J\bibinitperiod},
+           given={Guillaume},
+           giveni={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{c4f147b2979aea4de7b48b84dadc5d30}
+      \strng{fullhash}{c4f147b2979aea4de7b48b84dadc5d30}
+      \strng{bibnamehash}{c4f147b2979aea4de7b48b84dadc5d30}
+      \strng{authorbibnamehash}{c4f147b2979aea4de7b48b84dadc5d30}
+      \strng{authornamehash}{c4f147b2979aea4de7b48b84dadc5d30}
+      \strng{authorfullhash}{c4f147b2979aea4de7b48b84dadc5d30}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}
+      \field{title}{Modeling Dense Multimodal Interactions Between Biological Pathways and Histology for Survival Prediction}
+      \field{year}{2024}
+    \endentry
+    \entry{10.1093/nar/28.1.27}{article}{}
+      \name{author}{2}{}{%
+        {{hash=ec3c5c5b7d5449aed63041d60bdd719e}{%
+           family={Kanehisa},
+           familyi={K\bibinitperiod},
+           given={Minoru},
+           giveni={M\bibinitperiod}}}%
+        {{hash=48a0595aea8e691ed3e8261a79e07c62}{%
+           family={Goto},
+           familyi={G\bibinitperiod},
+           given={Susumu},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{f68b31ccae19db8b9e875ee051389aca}
+      \strng{fullhash}{f68b31ccae19db8b9e875ee051389aca}
+      \strng{bibnamehash}{f68b31ccae19db8b9e875ee051389aca}
+      \strng{authorbibnamehash}{f68b31ccae19db8b9e875ee051389aca}
+      \strng{authornamehash}{f68b31ccae19db8b9e875ee051389aca}
+      \strng{authorfullhash}{f68b31ccae19db8b9e875ee051389aca}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{KEGG (Kyoto Encyclopedia of Genes and Genomes) is a knowledge base for systematic analysis of gene functions, linking genomic information with higher order functional information. The genomic information is stored in the GENES database, which is a collection of gene catalogs for all the completely sequenced genomes and some partial genomes with up-to-date annotation of gene functions. The higher order functional information is stored in the PATHWAY database, which contains graphical representations of cellular processes, such as metabolism, membrane transport, signal transduction and cell cycle. The PATHWAY database is supplemented by a set of ortholog group tables for the information about conserved subpathways (pathway motifs), which are often encoded by positionally coupled genes on the chromosome and which are especially useful in predicting gene functions. A third database in KEGG is LIGAND for the information about chemical compounds, enzyme molecules and enzymatic reactions. KEGG provides Java graphics tools for browsing genome maps, comparing two genome maps and manipulating expression maps, as well as computational tools for sequence comparison, graph comparison and path computation. The KEGG databases are daily updated and made freely available (http://www.genome.ad.jp/kegg/ ).}
+      \field{issn}{0305-1048}
+      \field{journaltitle}{Nucleic Acids Research}
+      \field{month}{01}
+      \field{number}{1}
+      \field{title}{KEGG: Kyoto Encyclopedia of Genes and Genomes}
+      \field{volume}{28}
+      \field{year}{2000}
+      \field{pages}{27\bibrangedash 30}
+      \range{pages}{4}
+      \verb{doi}
+      \verb 10.1093/nar/28.1.27
+      \endverb
+      \verb{eprint}
+      \verb https://academic.oup.com/nar/article-pdf/28/1/27/9895154/280027.pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1093/nar/28.1.27
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1093/nar/28.1.27
+      \endverb
+    \endentry
+    \entry{wang2024neuropathx}{inproceedings}{}
+      \name{author}{6}{}{%
+        {{hash=a7f00e3b44c27b01e3f0bffb888dd0d6}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Jueqi},
+           giveni={J\bibinitperiod}}}%
+        {{hash=202b980fb18003430b21fa2abaa68d12}{%
+           family={Jacokes},
+           familyi={J\bibinitperiod},
+           given={Zachary},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=723486551fe87979e8a0a69e2a62e6ae}{%
+           family={Van\bibnamedelima Horn},
+           familyi={V\bibinitperiod\bibinitdelim H\bibinitperiod},
+           given={John\bibnamedelima Darrell},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=47ad7303ee380a09796d61f3d7ee2f75}{%
+           family={Schatz},
+           familyi={S\bibinitperiod},
+           given={Michael\bibnamedelima C.},
+           giveni={M\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=68a9c5b177125392d90a7001850e5abd}{%
+           family={Pelphrey},
+           familyi={P\bibinitperiod},
+           given={Kevin\bibnamedelima A.},
+           giveni={K\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=da111382d89695b691060c3592a4f427}{%
+           family={Venkataraman},
+           familyi={V\bibinitperiod},
+           given={Archana},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{fd5299eb23e833fcfe30bc9fcf9f0b7e}
+      \strng{fullhash}{7d5f058586078e7188d1f6bc86289a35}
+      \strng{bibnamehash}{fd5299eb23e833fcfe30bc9fcf9f0b7e}
+      \strng{authorbibnamehash}{fd5299eb23e833fcfe30bc9fcf9f0b7e}
+      \strng{authornamehash}{fd5299eb23e833fcfe30bc9fcf9f0b7e}
+      \strng{authorfullhash}{7d5f058586078e7188d1f6bc86289a35}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Conference Proceedings}
+      \field{title}{Learning Explainable Imaging-Genetics Associations Related to a Neurological Disorder}
+      \field{year}{2024}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

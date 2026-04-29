@@ -1,0 +1,18 @@
+\section{Critical Assessment}
+
+\paragraph{Strengths.}
+The paper presents a well-motivated approach to multimodal imaging-genetics integration that combines predictive modeling with interpretability. A primary strength lies in the biologically structured representation of genetic data. A second strength is the pathway-guided cross-attention architecture, which directly models interactions between pathway-level genetic representations and brain regions. Unlike latent-fusion approaches that combine modality embeddings in a compressed space, the proposed formulation explicitly produces a pathway-ROI interaction matrix.
+
+Another methodological contribution is the use of attention-level regularization. The sparsity loss encourages selective pathway-brain associations, preventing the attention matrix from becoming dense and difficult to interpret. The pathway similarity loss further stabilizes the learned representations. These design choices demonstrate a deliberate effort to align the learning objective with the interpretability goals of imaging-genetics studies.
+
+\paragraph{Weaknesses and limitations.}
+Despite these strengths, several limitations remain. First, the predictive performance improvements over competing approaches are relatively modest. While the model achieves the highest accuracy and specificity in the reported experiments, the margin over other deep learning baselines is limited, suggesting that the primary advantage of the method lies more in interpretability than in predictive performance.
+
+Second, the datasets used for evaluation are relatively small for deep learning models, particularly the ACE dataset ($N=165$). Although dimensionality reduction through pathway aggregation partially mitigates this issue, the limited sample size may still affect the stability of the learned attention patterns and raises concerns about potential overfitting.
+
+Another limitation concerns the interpretation of attention weights. While the attention matrix is presented as representing pathway-brain interactions, attention values do not necessarily correspond to causal biological relationships.
+
+Finally, the biological preprocessing pipeline introduces several assumptions that may influence the results. In particular, the mapping of SNPs to genes using a fixed $\pm50$ kb window and the aggregation of genes into predefined KEGG pathways rely on curated biological databases that may be incomplete or context-dependent. These design choices, while necessary for dimensionality reduction, may constrain the types of genetic effects that the model can capture.
+
+\paragraph{Recommendations for improvement.}
+Several improvements could strengthen the study. First, additional validation on larger or independent cohorts would help assess the robustness of the learned pathway-brain interactions. Second, incorporating statistical stability analyses, such as evaluating the consistency of attention patterns across cross-validation folds, could provide stronger evidence for the biological relevance of the identified associations. Finally, providing quantitative metrics for interpretability, rather than relying primarily on qualitative inspection of attention patterns, would further strengthen the empirical evaluation of the proposed framework.
