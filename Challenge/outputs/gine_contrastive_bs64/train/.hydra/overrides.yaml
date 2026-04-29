@@ -1,4 +1,0 @@
-- exp_name=gine_contrastive_bs64
-- model=gine
-- task=contrastive
-- batch_size=64

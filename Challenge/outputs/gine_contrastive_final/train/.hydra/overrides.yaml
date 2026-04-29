@@ -1,5 +1,0 @@
-- exp_name=gine_contrastive_final
-- model=gine
-- task=contrastive
-- batch_size=64
-- epochs=15
