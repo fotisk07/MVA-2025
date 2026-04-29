@@ -1,0 +1,23 @@
+\subsection{Role CPD} \label{sec:rolecpd}
+
+The goal of RoleCPD \cite{Kim2022SoccerCPD} is to detect long-term tactical changes in player roles (e.g., a winger swapping sides with another winger permanently) while ignoring temporary switches (e.g., overlapping runs or covering defensive duties). This process operates within a single Formation Period $(T_i)$ identified in the previous step. Figure~\ref{fig:rolecpd_groundtruth} in Appendix~\ref{sec:annex_rolecpd} illustrates the ground truth of such role assignments with simulated tactical switches.
+
+\subsubsection{Formal Representation}
+We define the inputs and mathematiccal framework based on the SoccerCPD protocol:
+
+\textbf{Input:} A sequence of "Temporary Role Permutations" $\{\pi_t\}_{t=1}^{|T_i|}$.
+
+\textbf{Role Permutation ($\pi_t$):} At every frame $t$, the Role Representation step assigns a role $X_p$ to every player $p$. Since roles are distinct, this assignement is a permutation of the initial canonical role: $$\beta_t (p) = \pi_t (X_p)$$ Where $\beta_t$ is the player-to-temporary-role mapping at time $t$.
+
+\subsubsection{The Distance Metric}
+To detect a change, we must quantify the difference between the team's configuration at time $t$ and time $t'$. Since the data consists of permutations (non-Euclidean), we cannot use standard Euclidean distance. We use the Hamming Distance normalized by the number of roles ($N = 10$ outfield players): $$d(\pi_t, \pi_{t'}) = \frac{1}{N} \sum_{p \in P} \mathbbm{1}_{\pi_t(X_p) \neq \pi_{t'}(X_p)}$$ This metric represents the "Switch Rate" or the proportion of players whose roles differ between two frames. Figure~\ref{fig:rolecpd_switchrate} plots this switch rate over time, showing it fluctuates relative to a dominant permutation.
+
+\subsubsection{Change-Point Detection Algorithm}
+The paper utilizes Discrete g-segmentation, a graph-based change-point detection method effective for repeated observations in non-Euclidean space.
+The procedure is as follows:
+\begin{enumerate}
+  \item \textbf{Preprocessing:} Calculate the Switch Rate relative to the dominant permutation. Exclude frames with a switch rate $> 0.7$ (likely temporary switches during set-pieces or abnormal situations).
+  \item \textbf{Segmentation:} Apply the dectection algorithm recursively on the sequence of permutations using the Hamming distance. Figure~\ref{fig:rolecpd_onedetectedphase} shows the result of a single segmentation step, while Figure~\ref{fig:rolecpd_detectedphases} demonstrates the final output after recursive segmentation captures all tactical phases, accurately recovering the ground truth on the synthetic example.
+  \item \textbf{Significance Test:} A change point $\tau$ is significant if: the p-value of the scan statistic is $< 0.01$, the segmentation duration is sufficient (robustness against noise), and the most frequent permutations (Instructed Roles) in the segments before and after $\tau$ must be distinct.
+\end{enumerate}
+

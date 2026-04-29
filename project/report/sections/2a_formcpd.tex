@@ -1,0 +1,76 @@
+% \subsection{Formation Change-Point Detection (FormCPD)} \label{sec:formcpd}
+
+% The FormCPD pipeline transforms raw player trajectories \(X(t) \in \mathbb{R}^{N \times 2}\) into a temporal sequence of formation graphs \(\{A(t)\}_{t \in T}\). Discrete g-segmentation is then applied to the sequence \(\{A(t)\}\) to detect change-points \(T_1 < \cdots < T_m\) such that \(A(t) \sim \mathcal{F}_i\) for all \(t \in T_i\). Finally, the resulting segments are clustered through role alignment and hierarchical aggregation to extract canonical formation types.
+
+% \subsubsection{Role Assignment}
+
+% The first step of FormCPD assigns each player a latent spatial role following \cite{Bialkowski2014LargeScale}, aiming to model stable positional zones rather than player identities. Each role \(k \in \{1,\dots,N\}\) is represented by a Gaussian component \((\mu_k,\Sigma_k)\). At time \(t\), player positions \(x_{i,t} \in \mathbb{R}^2\) are modeled as
+% \[
+% x_{i,t} \sim \mathcal{N}(\mu_{z_{i,t}}, \Sigma_{z_{i,t}}),
+% \]
+% under the hard constraint that no two players share the same role at a given frame.
+
+% Parameters are estimated via a constrained EM algorithm. In the E-step, a cost matrix built from negative log-likelihoods is solved using Hungarian matching to assign players to roles one-to-one. In the M-step, \((\mu_k,\Sigma_k)\) are updated from all positions assigned to each role across time. This produces hard, frame-wise coupled assignments while enforcing temporal consistency through shared role parameters.
+
+% Figure~\ref{fig:role_swap} illustrates how role-based coloring reveals coherent spatial clusters even when player trajectories cross, highlighting the ability of the model to capture stable formation structure.
+
+
+% \subsubsection{Encoding Spatial Structure via Delaunay Triangulation}
+
+% Once role assignments are available, each frame is encoded as a graph describing the local spatial relationships between roles. This is obtained by computing a Delaunay triangulation of the role locations
+% \[
+% V(t) = \{v_1(t), \dots, v_N(t)\} \subset \mathbb{R}^2 .
+% \]
+
+% The Delaunay triangulation connects two roles when they share an edge in the triangulated mesh, defining adjacency based solely on relative geometry without introducing distance thresholds or fixed neighborhood sizes. From this, a binary role-adjacency matrix \(A(t) \in \{0,1\}^{N \times N}\) is constructed.
+
+% Each frame is therefore represented as an undirected graph whose vertices correspond to roles and whose edges encode local spatial proximity. This representation emphasizes the \emph{topological} structure of the formation rather than precise metric distances. Combined with role indexing, it remains invariant to player permutations: transient exchanges of positions do not alter the role-adjacency graph as long as players remain within the same spatial zones.
+
+% Figure~\ref{fig:delaunay_examples} shows Delaunay triangulations computed from simulated role positions before and after a formation change from 4--4--2 to 3--4--3. The change induces a clear reconfiguration of spatial adjacency relationships.
+
+% Figure~\ref{fig:adjacency_experiment} presents the corresponding role-adjacency matrices. Instantaneous matrices (top row) exhibit small fluctuations due to geometric noise, whereas averaging over each formation segment (bottom row) yields stable, formation-specific patterns used as inputs for clustering.
+
+% \subsubsection{Change-Point Detection via Discrete g-Segmentation}
+
+% Formation change-points are detected on the temporal sequence of role-adjacency matrices \(\{A(t)\}\) using discrete g-segmentation \cite{zhang2019graphbasedtwosampletestsdata}, a graph-based CPD method suitable for high-dimensional and discrete observations. Pairwise dissimilarities are measured with the Manhattan distance
+% \[
+% d_M\big(A(t),A(t')\big) = \|A(t)-A(t')\|_{1,1}.
+% \]
+% Frames with excessive role switching (rate \(>0.7\)) are removed to discard abnormal game situations. The scan statistic identifies candidate change-points \(\tau\), which are retained as significant if they satisfy constraints on \(p\)-value (\(<0.01\)), segment duration (at least 5 minutes on both sides), and inter-segment dissimilarity. A recursive procedure is applied to recover multiple change-points, yielding a partition of the match into formation intervals \(T_1 < \cdots < T_m\).
+
+% \subsubsection{Formation Clustering}
+
+% Each formation segment \(T_i\) is represented by a formation graph \(F(T_i)=(V(T_i),A(T_i))\), obtained by averaging the role locations and role-adjacency matrices over the stable frames \(t \in T_i^*\).  
+
+% When comparing formations across segments or matches, role indices are not directly comparable since labels are arbitrary. We therefore align roles between two formation graphs by solving an optimal assignment problem using the Hungarian algorithm on the Euclidean distances between vertex sets \(V(T_i)\) and \(V(T_j)\), yielding a permutation matrix \(Q\). This alignment ensures that homologous spatial roles are matched prior to comparison.  
+
+% Formation similarity is then measured using the Manhattan distance between aligned adjacency matrices,
+% \[
+% d(F_i, F_j) = \| Q A(T_i) Q^\top - A(T_j) \|_{1,1},
+% \]
+% which captures differences in \emph{topological structure} rather than absolute positioning. Based on these pairwise distances, agglomerative hierarchical clustering is applied to group formation graphs into a small number of canonical formation types.
+
+\subsection{Formation Change-Point Detection (FormCPD)} \label{sec:formcpd}
+
+FormCPD converts raw player trajectories \(X(t) \in \mathbb{R}^{N \times 2}\) into a temporal sequence of role-based formation graphs \(\{A(t)\}_{t \in T}\). Discrete g-segmentation is then applied to detect change-points \(T_1 < \cdots < T_m\) such that formations are stationary within each segment. Finally, formation segments are aligned and clustered to extract canonical formation types.
+
+\subsubsection{Role Assignment}
+
+Players are assigned to latent spatial roles following \cite{Bialkowski2014LargeScale}, modeling stable positional zones rather than player identities. Each role \(k\) is represented by a Gaussian component \((\mu_k, \Sigma_k)\) with the constraint that each role is occupied by exactly one player per frame.
+
+Parameters are estimated via a constrained EM algorithm: the E-step solves a one-to-one assignment using Hungarian matching on negative log-likelihoods, while the M-step updates role parameters from all assigned positions across time.
+
+\subsubsection{Change-Point Detection on Graphs via Delaunay Triangulation}
+
+Given role locations \(V(t) = \{v_1(t), \dots, v_N(t)\}\), each frame is encoded as a role-adjacency graph using Delaunay triangulation. Two roles are connected if they share an edge in the triangulation, producing a binary adjacency matrix \(A(t) \in \{0,1\}^{N \times N}\).
+Formation changes are detected on the sequence \(\{A(t)\}\) using discrete g-segmentation \cite{zhang2019graphbasedtwosampletestsdata}. Dissimilarity between frames is measured by the Manhattan distance. Frames with excessive role switching (rate \(>0.7\)) are discarded. Candidate change-points are retained if they satisfy constraints on statistical significance (\(p < 0.01\)), minimum segment duration (5 minutes), and inter-segment dissimilarity. A recursive procedure recovers multiple change-points, partitioning the match into formation intervals.
+
+\subsubsection{Formation Clustering}
+
+Each segment \(T_i\) is summarized by a formation graph \(F(T_i) = (V(T_i), A(T_i))\), obtained by averaging role positions and adjacency matrices over stable frames. Since role labels are arbitrary across segments, formations are aligned using Hungarian matching on Euclidean distances between \(V(T_i)\) and \(V(T_j)\), yielding a permutation matrix \(Q\).
+
+Formation similarity is defined as
+\[
+d(F_i, F_j) = \| Q A(T_i) Q^\top - A(T_j) \|_{1,1},
+\]
+capturing differences in topological structure. Agglomerative hierarchical clustering on these distances produces a small set of canonical formation types.

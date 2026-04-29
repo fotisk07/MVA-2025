@@ -1,0 +1,70 @@
+% =========================
+% THEME & STYLE
+% =========================
+\usetheme{Madrid}
+\usecolortheme{default}
+\useoutertheme{split}
+\useinnertheme{circles}
+
+% =========================
+% PACKAGES
+% =========================
+\usepackage{xcolor}
+\usepackage{mathrsfs}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{animate}
+\usepackage{caption}
+\usepackage{bbm}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
+
+
+\captionsetup[figure]{font=tiny}
+
+% =========================
+% BIBLIOGRAPHY
+% =========================
+\usepackage[
+    backend=biber,
+    style=numeric,
+    sorting=none
+]{biblatex}
+\addbibresource{bib.bib}
+
+% =========================
+% COLORS (CS / ENS)
+% =========================
+\definecolor{CSred}{RGB}{160,32,60}
+\definecolor{CSgrey}{RGB}{136,121,150}
+\definecolor{UPSred}{RGB}{97,21,58}
+
+\setbeamercolor{titlelike}{bg=CSred}
+\setbeamerfont{title}{series=\bfseries}
+\setbeamercolor{palette primary}{bg=CSred,fg=white}
+\setbeamercolor{palette secondary}{bg=CSred,fg=white}
+\setbeamercolor{palette tertiary}{bg=CSgrey,fg=white}
+\setbeamercolor{palette quaternary}{bg=CSgrey,fg=white}
+\setbeamercolor{structure}{fg=CSgrey}
+
+% =========================
+% METADATA
+% =========================
+\title[Time Series]{Machine Learning for Time Series}
+\subtitle{Presentation - Mini-Project}
+
+\author[Jamal, Kapotos]{
+Adonis~JAMAL \and Fotios~KAPOTOS\\
+SoccerCPD: Formation and Role Change-Point Detection in Soccer Matches Using Spatiotemporal Tracking Data
+}
+
+\institute[ENS Paris-Saclay]{
+École Normale Supérieure Paris-Saclay - MVA
+}
+
+\date[Dec 17, 2025]{December 17th 2025}
+
+\titlegraphic{
+    \includegraphics[height=1.2cm]{img/logo_mva.jpg}
+}

@@ -1,0 +1,45 @@
+\section{Data Analysis}
+
+\begin{frame}{Data Sources \& Challenges}
+    \frametitle{High-Frequency vs. Sparse Event Data}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Tracking Data (GPS)}
+                \begin{minipage}[t][2.5cm][t]{\linewidth}
+                    \begin{itemize}
+                        \item \textbf{Source:} Fitogether (10Hz), SkillCorner (10Hz) \cite{SkillCorner2020OpenData}.
+                        \item \textbf{Quality:} Dense, clean signals.
+                        \item \textbf{Prep:} Normalized to centered metric pitch.
+                    \end{itemize}
+                \end{minipage}
+            \end{block}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Event Data (StatsBomb)}
+                \begin{minipage}[t][2.5cm][t]{\linewidth}
+                    \begin{itemize}
+                        \item \textbf{Source:} On-ball events only.
+                        \item \textbf{Challenge:} Extreme sparsity ($<10$ pts/min).
+                        \item \textbf{Bias:} Spatial bias toward the ball.
+                    \end{itemize}
+                \end{minipage}
+            \end{block}
+        \end{column}
+    \end{columns}
+    
+    \vspace{0.3cm}
+    
+    \textbf{Novel Adaptation for Event Data:}
+    \begin{itemize}
+        \item \textbf{Pseudo-Trajectories:} Aggregated events over 5-minute rolling windows.
+        \item \textbf{Proxy Graph:} Average adjacency matrices instead of frame-by-frame Delaunay.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Data Diagnosis}
+    \frametitle{Density Comparison}
+    \centering
+    \includegraphics[width=1.0\linewidth]{../figures/data-heatmap_comparison.png}
+    \captionof{figure}{Spatial density comparison between continuous Fitogether GPS tracking data and StatsBomb event-based data (right). The GPS data shows continuous coverage of player positions, while the event data is sparse and concentrated around ball actions.}
+\end{frame}

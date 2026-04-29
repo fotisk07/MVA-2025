@@ -1,0 +1,140 @@
+\section{Results \& Extensions}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% SENSITIVITY ANALYSIS
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Sensitivity Analysis}
+\begin{frame}{Experiments on SoccerCPD : Robustness Analysis}
+\textbf{Comparison across CPD backends (single match).}
+\begin{itemize}
+    \item Four backends tested: \texttt{gseg\_avg}, \texttt{gseg\_union}, \texttt{kernel\_rbf}, \texttt{kernel\_linear}.
+    \item Identical preprocessing and hyperparameters.
+    \item All methods detect formation changes at similar times.
+    \item Differences correspond to sensitivity (extra/missing CPs), not different segmentations.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Sensitivity to hyperparameters (\texttt{gseg\_avg}).}
+\begin{itemize}
+    \item Increasing \texttt{min\_fdist} reduces the number of segments while preserving CP locations.
+    \item \texttt{min\_fdist} acts as a pruning threshold for minor structural variations.
+    \item Varying \texttt{min\_pdur} has no effect, indicating well-separated formation changes.
+\end{itemize}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% FORMATIONS
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Extension 1: Possession Context}
+\begin{frame}{Extension 1: Formations}
+    \frametitle{Contextualizing Formations: Attack vs. Defense}
+    \begin{block}{Problem}
+        A single "average" centroid formation ignores game state.
+    \end{block}
+    \vspace{0.2cm}
+
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \textbf{Method:}
+            \begin{itemize}
+                \item Filter frames by possession status.
+                \item Compute formations separately.
+            \end{itemize}
+            \textbf{Insight:}
+            \begin{itemize}
+                \item \textcolor{blue}{Defense:} Compact block.
+                \item \textcolor{red}{Attack:} New attacking shape.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.6\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{../figures/Experiments_AttDefFormations_1925299.png}
+            \captionof{figure}{Detected formations for match "1925299" (A-League, SkillCorner) separated by phase of play: defending (left) vs. attacking (right). }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% STATIONARITY
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Extension 2: Player Stationarity}
+\begin{frame}{Extension 2: Player Stationarity Metric}
+    \frametitle{Quantifying Role Fluidity via Stationarity}
+    \begin{block}{Motivation}
+        Beyond average position, how consistently does a player occupy their role's spatial zone?
+    \end{block}
+    \textbf{Definition:} Standard deviation of Euclidean distance from the role center.
+    
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{itemize}
+                \item \textbf{Fixed Roles:} CBs show low Stationarity.
+                \item \textbf{Roaming Roles:} Wingers/Midfielders show high Stationarity.
+                \item Validates tactical roles beyond simple coordinates.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{../figures/Experiments_Player_Stationarity_Phase1_1925299.png}
+            \captionof{figure}{Player stationarity during Phase 1 of match "1925299" (A-League, SkillCorner) separated by phase of play: attacking (red) vs. defending (blue).}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% EVENT DATA
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Extension 3: Event Data Generalization}
+\begin{frame}{Validation 1: Event Data Formations}
+    \frametitle{Offensive vs. Defensive Structures (FC Barcelona)}
+    \begin{block}{Challenge}
+        Sparse event data lacks continuous player trajectories. Does the SoccerCPD framework still reveal tactical shapes?
+    \end{block}
+
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{itemize}
+                \item Despite low data density, distinct shapes emerge when aggregated over time.
+                \item \textbf{Defense:} High density in some zones (winning back possession).
+                \item \textbf{Attack:} More spread out, reflects offensive maneuvers.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=0.8\linewidth]{../figures/Experiments_Barca_Formations_By_Phase.png} 
+            \captionof{figure}{Detected formations for FC Barcelona using StatsBomb data separated by different tactical phases within the match.}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Validation 2: Event Data Stationarity}
+    \frametitle{Quantifying Fluidity in Event Data}
+    \begin{block}{Challenge}
+        Sparse event data may not capture fine-grained movement.
+    \end{block}
+    \vspace{0.2cm}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \textbf{Consistency:} The "Fixed" vs. "Fluid" distinction persists.
+            
+            \textbf{Phase Analysis (Barcelona):} 
+                \begin{itemize}
+                    \item Similar average stationarity across phases.
+                    \item But different players show role fluidity shifts between phases.
+                \end{itemize}
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{../figures/Experiments_Barca_Stationarity_Phase1.png} 
+            \captionof{figure}{Player stationarity during Phase 1 of FC Barcelona match (StatsBomb).}
+        \end{column}
+    \end{columns}
+\end{frame}

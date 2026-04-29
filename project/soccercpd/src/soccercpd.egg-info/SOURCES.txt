@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+src/soccercpd/core.py
+src/soccercpd/form_manager.py
+src/soccercpd/match.py
+src/soccercpd/myconstants.py
+src/soccercpd/record_manager.py
+src/soccercpd/rolerep.py
+src/soccercpd/switch_pattern.py
+src/soccercpd.egg-info/PKG-INFO
+src/soccercpd.egg-info/SOURCES.txt
+src/soccercpd.egg-info/dependency_links.txt
+src/soccercpd.egg-info/requires.txt
+src/soccercpd.egg-info/top_level.txt

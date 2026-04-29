@@ -1,0 +1,39 @@
+\section{Results} \label{sec:results}
+
+\subsection{Experiments using SoccerCPD}
+We directly use the SoccerCPD implementation of \cite{Kim2022SoccerCPD} (with slight pratical modifications)
+
+\paragraph{Comparison across CPD backends (single match).}
+We compare several formation CPD backends (\texttt{gseg\_avg}, \texttt{gseg\_union}, \texttt{kernel\_rbf}, \texttt{kernel\_linear}) on a single reference match, using identical preprocessing and hyperparameters. The objective is not to rank methods, but to assess whether different CPD formulations produce consistent formation change-point timelines.
+
+As shown in Figure~\ref{fig:exp1_cp_timeline_methods}, all backends detect formation changes at broadly similar temporal locations. Differences mostly correspond to additional or missing change-points rather than large temporal shifts, indicating variations in sensitivity rather than fundamentally different segmentations of the match.
+
+\paragraph{Sensitivity analysis of formation CPD.}
+We analyze the sensitivity of the formation CPD pipeline to its main hyperparameters on the same match, using the \texttt{gseg\_avg} backend and varying one parameter at a time.
+
+Figure~\ref{fig:exp2_fdist} illustrates the effect of the formation distance threshold \texttt{min\_fdist}. Increasing \texttt{min\_fdist} monotonically reduces the number of detected formation segments (Figure~\ref{fig:exp2_segments_fdist}), while the remaining change-points remain temporally stable (Figure~\ref{fig:exp2_cp_timeline_fdist}). This indicates that \texttt{min\_fdist} primarily acts as a pruning mechanism that filters minor structural variations without altering the main segmentation.
+
+Finally, varying the minimum period duration \texttt{min\_pdur} does not affect either the number or the locations of detected change-points in this match, suggesting that the identified formation changes are temporally well separated and not driven by short-lived fluctuations.
+
+
+
+\subsection{Extensions to SoccerCPD} \label{sec:extensions}
+To enhance the interpretability of the tactical segments identified by SoccerCPD, we introduced two novel analytical layers: a contextual separation of formations based on possession and a quantifying metric for role fluidity.
+
+\subsubsection{Possession Context: Attacking vs. Defending Shapes}
+A limitation of the standard FormCPD output is that it produces a single "average" formation for a detected time segment. However, modern soccer teams adopt vastly different shapes depending on possession status.
+We extended the pipeline to filter frames based on the possession context (Attack vs. Defense, based on a centroid threshold since possession event data is unavailable for GPS tracking) before computing the formation centroids. 
+\begin{itemize}
+    \item \textbf{Attacking Formation:} Computed using only frames where the team is in possession. 
+    \item \textbf{Defensive Formation:} Computed using frames where the opponent is in possession.
+\end{itemize}
+The results, visualized in Figure~\ref{fig:exp_att_def_formations} (Appendix~\ref{sec:annex_results}) for Match ID 1925299 (A-League, SkillCorner) and Figure~\ref{fig:exp_barca_formations_by_phase} (FCBarcelona, StatsBomb), reveal significant structural differences that are lost in a global average. For both matches, the attacking shape is wider and higher up the pitch, whereas the defensive shape compresses, with wingers dropping deeper to form a compact block. This granular analysis confirms that a single "stable" phase detected by SoccerCPD actually comprises two distinct, alternating tactical configurations. The StatsBomb FCBarcelona match illustrates this particularly well, with the team shifting from a high-pressing 4-3-3 when attacking to a more conservative 4-4-2 block when defending. It must be noted, however, that the sparsity of event-stream data limits the precision of these formation estimates compared to high-frequency tracking data. This is why we see a player such as Pjanic, who typically plays as a central midfielder, being detected in a very deep defensive position in both the attacking and defensive formations of Phase 1. The events involving him mostly occur when the team is defending, leading to a biased estimation of his average position. That is not the case in phase 2, where he is detected in a more reasonable midfield position.
+
+\subsubsection{Player Stationarity Metric}
+While the original SoccerCPD model assigns a Gaussian mean ($\mu_k$) and covariance ($\Sigma_k$) to each role, it does not explicitly quantify how strictly a player adheres to that role. We defined a Player Stationarity metric, calculated as the standard deviation of the Euclidean distance between a player's actual position and their assigned role's center ($\mu_k$) over a formation phase.
+A lower value indicates a "fixed" positional role (e.g., a center-back holding the line), while a higher value indicates a "fluid" or "roaming" role. Applying this to the sampled StatsBomb FC Barcelona match, we observed distinct behavioral patterns. As shown in Figure~\ref{fig:exp_player_stationarity_phase1_barca} in Appendix~\ref{sec:annex_results}, midfield roles exhibited higher stationarity (lower deviation) compared to defensive fullbacks or attacking roles. For instance, during Phase 1, the average spatial deviation was approximately 9.8m, but specific attacking and even defensive roles showed deviations exceeding 12m, quantifying the "free-roaming" nature of Barcelona players compared to their midfielders, who distribute the ball and keep possession. These results can also be compared to phase 2 in Figure~\ref{fig:exp_player_stationarity_phase2_barca}, where the average spatial deviation increased, as players where much more fluid in both attack and defense.
+
+We also validated this metric on the A-League tracking data (Match ID 1925299), as illustrated in Figure~\ref{fig:exp_player_stationarity_phase1}. The metric successfully captures the variance in player movement within a stable tactical phase, providing coaches with a concrete measure of positional discipline.
+
+\section{Conclusion}
+This report presented a comprehensive reproduction and extension of the SoccerCPD framework for detecting tactical formation changes in soccer using spatiotemporal data. We successfully implemented both stages of the pipeline, FormCPD and RoleCPD, verifying their effectiveness on synthetic datasets and real-world matches. Our contributions included the introduction of a player stationarity metric to quantify role fluidity, as well as the refinement of formation analysis by separating frames based on possession context (attack vs. defense). These extensions provided deeper insights into team tactics and individual player behaviors. We finally applied the adapted framework to event-stream data from the StatsBomb repository, demonstrating its versatility across different data types. Overall, our work validates the SoccerCPD approach while enhancing its interpretability and applicability in football analytics.

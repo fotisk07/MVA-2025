@@ -1,0 +1,59 @@
+\frametitle{FormCPD: Spatial Structure (Visual Overview)}
+\centering
+\begin{tikzpicture}[
+    node distance=1.6cm,
+    every node/.style={font=\small},
+    box/.style={draw, rounded corners, thick, align=center, minimum width=2.8cm, minimum height=1.1cm},
+    arrow/.style={->, thick},
+]
+
+% --- Nodes ---
+\node[box] (traj) {Player\\Trajectories\\\(X(t)\)};
+\node[box, right=of traj] (roles) {Latent\\Roles};
+\node[box, right=of roles] (graph) {Delaunay\\Graph\\\(A(t)\)};
+\node[box, right=of graph] (cpd) {Graph CPD};
+
+% --- Arrows ---
+\draw[arrow] (traj) -- node[above] {EM + Hungarian} (roles);
+\draw[arrow] (roles) -- node[above] {Topology} (graph);
+\draw[arrow] (graph) -- node[above] {g-segmentation} (cpd);
+
+% --- Bottom illustrations ---
+\node[below=1.2cm of roles] (roles_vis) {
+\begin{tikzpicture}[scale=0.55]
+    \foreach \i/\x/\y in {1/0/0,2/1/1,3/2/0,4/1/-1}
+        \filldraw[blue!60] (\x,\y) circle (2pt);
+\end{tikzpicture}
+};
+
+\node[below=1.2cm of graph] (graph_vis) {
+\begin{tikzpicture}[scale=0.55]
+    \coordinate (a) at (0,0);
+    \coordinate (b) at (1,1);
+    \coordinate (c) at (2,0);
+    \coordinate (d) at (1,-1);
+    \draw (a)--(b)--(c)--(d)--(a)--(c);
+    \foreach \p in {a,b,c,d}
+        \filldraw[red!70] (\p) circle (2pt);
+\end{tikzpicture}
+};
+
+\node[below=1.2cm of cpd] (cpd_vis) {
+\begin{tikzpicture}[scale=0.55]
+    \draw[thick] (0,0) -- (4,0);
+    \draw[very thick, red] (2,0.3) -- (2,-0.3);
+    \node at (2,-0.7) {\scriptsize CP};
+\end{tikzpicture}
+};
+
+% --- Labels ---
+\node[below=0.2cm of roles_vis] {\scriptsize Stable spatial zones};
+\node[below=0.2cm of graph_vis] {\scriptsize Topological structure};
+\node[below=0.2cm of cpd_vis] {\scriptsize Formation change};
+
+\end{tikzpicture}
+
+\vspace{0.3cm}
+\small
+\textit{Formation changes are detected as topological reconfigurations of role-based graphs.}
+

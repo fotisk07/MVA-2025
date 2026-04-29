@@ -1,0 +1,16 @@
+\section{Data} \label{sec:data}
+% The Data section (indicative length : 1 page) should provide a deep analysis of the data used for experiment. In particular, we are interested here in your capacity to provide relevant and thoughtful feedbacks on the data and to demonstrate that you master some "data diagnosis" tools that have been dealt with in the lectures/tutorials.
+
+Our study utilizes and analyzes two distinct spatiotemporal dataset types: high-frequency GPS tracking data and event-stream data.
+
+\textbf{High-Frequency Tracking Data:} We utilized the provided sample dataset and supplementary public data from SkillCorner (A-League, 10 Hz) \cite{SkillCorner2020OpenData} and Last Row (20 Hz) \cite{Tavares2020LastRow}. All inputs were converted to the Fitogether format (K-League, 10 Hz), represented as a sequence of 2D coordinates $x_{i, t} \in \mathbb{R}^2$.
+\begin{itemize}
+    \item \textbf{Diagnosis:} The signals are clean (missing values <1\%) but exhibit high-frequency jitter consistent with GPS noise. Shapiro-Wilk tests on role clusters indicate deviations from normality due to tactical behaviors (e.g., pressing), yet clusters remain sufficiently separable for EM algorithm convergence.
+    \item \textbf{Preprocessing:} : We normalized pitch coordinates to a centered metric system to satisfy the model's Gaussian distribution assumption.
+\end{itemize}
+
+\textbf{StatsBomb Event Data:} To address the scarcity of tracking data, we adapted StatsBomb event-stream data, which records location $(x, y)$ only during on-ball actions.
+\begin{itemize}
+    \item \textbf{Challenges:} The data exhibits extreme sparsity (<10 points/min vs. $\approx 600$ for GPS) and inherent spatial bias toward the ball, challenging the EM algorithm's density requirements.
+    \item \textbf{Adaptation:} We projected coordinates ($[0, 120] \times [0,80]$) to the centered metric system. To mitigate sparsity, we generated pseudo-trajectories by aggregating events over temporal windows. Finally, we replaced frame-wise Delaunay graphs with aggregate adjacency matrices based on 5-minute average positions to serve as a proxy for the role-adjacency matrix.
+\end{itemize}

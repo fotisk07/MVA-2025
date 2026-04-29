@@ -1,0 +1,64 @@
+\section{Conclusion}
+\subsection{Conclusion}
+\begin{frame}{Conclusion}
+    \begin{itemize}
+        \item \textbf{Successful Reproduction:} Implemented FormCPD and RoleCPD, validating the framework on synthetic and real matches.
+        \item \textbf{Robustness:} Confirmed method stability via sensitivity analysis.
+        \item \textbf{Key Extensions:} 
+        \begin{itemize}
+            \item \textbf{Possession Context:} Revealed distinct attacking/defensive shapes.
+            \item \textbf{Stationarity Metric:} Provided quantitative insights into player role adherence.
+        \end{itemize}
+        \item \textbf{Versatility:} Demonstrated applicability to sparse event-stream data.
+    \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%
+% REFERENCES
+%%%%%%%%%%%%%%%%%
+\subsection{References}
+\begin{frame}[allowframebreaks]{Bibliography}
+    \printbibliography[heading=none]
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%
+% ANNEX
+%%%%%%%%%%%%%%%%%
+\subsection{Annex}
+\begin{frame}{Annex: RoleCPD}
+    \frametitle{RoleCPD: Hamming Distance Switch Rate}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{../figures/RoleCPD_SwitchRate.png}
+        \captionof{figure}{Hamming distance-based switch rate time series used for change point detection.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Annex: RoleCPD}
+    \frametitle{RoleCPD: Formation Ground Truth}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{../figures/RoleCPD_GroundTruth.png}
+        \captionof{figure}{Ground truth role assignments over time with two tactical switches at frames 150 and 300.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Annex: RoleCPD}
+    \frametitle{RoleCPD: Need for Recursive Segmentation}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{../figures/RoleCPD_OneDetectedPhase.png}
+        \captionof{figure}{Visualization of one detected tactical phase with dominant role assignments. This shows the need for recursive segmentation to capture multiple phases.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Annex: Results StatsBomb}
+    \frametitle{Stationarity: FC Barcelona Phase 2 (Event Data)}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\linewidth]{../figures/Experiments_Barca_Stationarity_Phase2.png} 
+        \captionof{figure}{Player stationarity during Phase 2 of FC Barcelona match, illustrating the consistency of player positions within the tactical phase, even with event-stream data.}
+    \end{figure}
+\end{frame}

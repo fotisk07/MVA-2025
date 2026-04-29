@@ -1,0 +1,55 @@
+\section{Methodology}
+
+\begin{frame}{FormCPD: Formation Change-Point Detection}
+\begin{columns}
+
+\begin{column}{0.53\textwidth}
+\begin{enumerate}
+    \item \textbf{Role Assignment:} Map players to latent spatial zones via EM.
+    \item \textbf{Graph Encoding:} Build adjacency matrices using Delaunay triangulation.
+    \item \textbf{Change Detection:} Use recursive g-segmentation to find where graph topology shifts.
+    \item \textbf{Pattern Clustering:} Group segments into canonical types via alignment.
+\end{enumerate}
+\end{column}
+
+\begin{column}{0.47\textwidth}
+    \centering
+    \includegraphics[
+        width=\linewidth,
+        height=0.75\textheight,
+        keepaspectratio
+    ]{../figures/pp_illus.png}
+    \captionof{figure}{Pipeline}
+\end{column}
+
+
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%
+% ROLECPD
+%%%%%%%%%%%%%%%%%%
+\subsection{Role Change-Point Detection}
+\begin{frame}{RoleCPD: Method & Algorithm}
+    \frametitle{RoleCPD: Detecting Intraphase Swaps}
+    \textbf{Goal:} Detect permanent swaps within a stable formation.
+
+    \textbf{Metric:} Hamming Distance on permutation sequence $\pi_t$: $$d(\pi_t, \pi_{t'}) = \frac{1}{N} \sum_p \mathbb{I}_{\pi_t(X_p) \neq \pi_{t'}(X_p)}$$
+            
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \textbf{Recursive Segmentation Algorithm}
+            \begin{itemize}
+                \item \textbf{Filter:} Ignore high-noise frames (Switch Rate $> 0.7$).
+                \item \textbf{Search:} Recursive discrete g-segmentation (graph-based).
+                \item \textbf{Stop:} If $p\text{-value} > 0.01$ or segment $< 5$ min.
+            \end{itemize}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{../figures/RoleCPD_DetectedPhases.png}
+            \captionof{figure}{Visualization of all detected tactical phases after recursive binary segmentation, showing accurate recovery of the ground truth phases.}
+        \end{column}
+    \end{columns}
+\end{frame}

@@ -1,0 +1,46 @@
+\section{Introduction and contributions}
+
+% The Introduction section (indicative length : less than 1 page) should detail the scientific context of the article you chose, as well as the task that you want to solve (especially if you apply it on novel data). \textbf{The last paragraph of the introduction must contain the following information}:
+% \begin{itemize}
+%     \item Repartition of work between the two students
+%     \item Use of available source code or not, percentage of the source code that has been reused, etc.
+%     \item Use of existing experiments or new experiments (e.g. test of the influence of parameter that was not conducted in the original article, application of the method on a novel task/data set etc.)
+%     \item Improvement on the original method (e.g. new pre/post processing steps, grid search for optimal parameters etc.)
+% \end{itemize}
+% 
+% % ================================
+% 
+% \paragraph{Contributions and Work Sharing}
+% \begin{itemize}
+% \item Repartition of work between the students: ...
+% \item Percentage of reused source code: ...
+% \item New experiments conducted: ...
+% \item Improvements beyond the original paper: ...
+% \end{itemize}
+
+% In the rapidly evolving field of sports analytics, understanding team tactics is crucial for performance analysis. In fluid team sports like soccer, analyzing team formation is one of the most intuitive methods to interpret tactics from the perspective of domain participants. However, extracting these insights from spatiotemporal tracking data presents significant challenges. Players frequently switch positions temporarily or engage in abnormal situations like set-pieces, making it difficult to distinguish between a genuine tactical change instructed by a coach and a transient movement noise. Existing approaches often fail to address this dynamic, either assuming formations remain constant throughout a match or reacting too sensitively to frame-by-frame changes \cite{Bialkowski2014LargeScale, narizuka2018characterizationformationstructureteam, Narizuka_2019}.
+% 
+% To address these limitations, this project studies the framework proposed by Kim et al. in \cite{Kim2022SoccerCPD}. The article introduces a novel, unsupervised change-point detection (CPD) framework designed to distinguish tactically intended formation changes from temporary role swaps. The methodology consists of two distinct phases: Formation Change-Point Detection (FormCPD), which identifies shifts in the global spatial configuration of the team, and Role Change-Point Detection (RoleCPD), which detects long-term tactical changes in individual player roles within a specific formation period. By utilizing graph-based statistics and Delaunay triangulation, the method aims to provide a robust timeline of tactical instructions. 
+% 
+% \paragraph{Contributions and Work Repartition}
+% In alignment with the course requirements, this report details our reproduction and extension of the SoccerCPD framework. The organization of the project is as follows:
+% \begin{itemize}
+%   \item \textbf{Work Repartition:} The workload was divided based on the two-step nature of the pipeline. Fotios Kapotos focused on the first stage, FormCPD, analyzing the generation of role-adjacency matrices and the segmentation of formation periods. Adonis Jamal concentrated on the second stage, RoleCPD, investigating the sequence of role permutations and the detection of intra-formation tactical shifts.
+%   \item \textbf{Source Code:} We utilized the open-source Python implementation provided by the authors to run the core algorithms. However, we performed a deep-dive analysis into the code to understand the underlying mechanics of the discrete g-segmentation and re-implemented specific analytical components to verify limitations.
+%   \item \textbf{Experiments:} Beyond verifying the results on sample data, we conducted a novel experiment titled the "Messi Effect". This analysis aims to compare formation structural differences and player stationarity in matches involving Lionel Messi versus those without him, testing the model's ability to capture player-centric tactical gravity. Moreover, we explored the stationarity of players across different formations and roles, providing insights into individual player behavior within team tactics. Finally, we address a limitation of the original method by providing offensive and defensive formation change-point detection, enhancing the interpretability of tactical shifts.
+% \end{itemize}
+
+
+%%% SHORTENED VERSION %%%
+In modern sports analytics, identifying team formations is essential for interpreting tactics. However, tracking data in fluid sports like soccer is noisy; players frequently swap positions temporarily, making it difficult to distinguish permanent tactical shifts from transient adjustments. To address this, we examine SoccerCPD \cite{Kim2022SoccerCPD}, a change-point detection framework designed to identify distinct tactical phases. The method operates in two stages: first, FormCPD detects formation changes using role-adjacency matrices derived from Delaunay triangulations. Second, RoleCPD identifies role swaps within those formations using permutation sequences.
+
+\paragraph{Contributions and Work Repartition}
+In alignment with the course requirements, this report details our reproduction and extension of the SoccerCPD framework:
+
+\textbf{Work Repartition:} The workload followed the pipeline's structure. One student focused on the \textbf{FormCPD} stage, implementing the Delaunay-based adjacency generation and formation change detection. The other concentrated on \textbf{RoleCPD}, handling the generation of synthetic role data, permutation analysis, and the recursive segmentation algorithm.
+
+\textbf{Source Code \& Implementation:} We adapted the SoccerCPD code to be used as a python package. We also reproduced the core analysis by implementing it in Python, integrating an R-based backend for the Generalized Edge-Count test (g-segmentation) to improve detection accuracy. We also implemented a Python-based fallback for change-point detection to ensure robustness when the R-bridge encounters errors. Full code can be found here : https://github.com/fotisk07/TimeSeries-MiniProject
+
+\textbf{Experiments:} We verified the method on synthetic datasets, successfully detecting ground-truth change points. We also performed a sensitivity analysis using the provided source code. For real-world applications, we analyzed a Barcelona match, specifically detecting tactical phases and visualizing role allocations.
+
+\textbf{Novel Analysis:} Beyond reproduction, we extended the analysis by introducing a "Player Stationarity" metric. This measures the spatial standard deviation of players to quantify how "fixed" or "fluid" a role is. Furthermore, we refined the formation analysis by separating frames based on Possession Context (Attack vs. Defense), allowing for a more granular understanding of team shape during different game states.

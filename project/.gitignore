@@ -1,0 +1,26 @@
+# Latex stuff
+*.aux
+*.bbl
+*.bbl
+*.fls
+*.fdb_latexmk
+*.out
+*.blg
+*.gz
+*.log
+*.xsim
+report.log
+*.pdf
+
+.venv/
+__pycache__/
+report/report.xsim
+*.parquet
+opendata/ 
+
+main.log
+main.xsim
+report/main.pdf
+report/main.log
+report/main.xsim
+convert_lastrow.py

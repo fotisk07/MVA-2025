@@ -1,0 +1,82 @@
+% \section{Introduction}
+% \subsection{Context and Problem Statement}
+% \begin{frame}{Context \& Problem Statement}
+%     \frametitle{Context: The Fluidity of Soccer}
+%     \begin{columns}
+%         \begin{column}{0.6\textwidth}
+%             \textbf{The Challenge in Sports Analytics}
+%             \begin{itemize}
+%                 \item \textbf{Dynamic Formations:} Teams constantly reshape (e.g., 4-4-2 $\to$ 3-5-2) based on game state.
+%                 \item \textbf{Noisy Data:} Players swap positions temporarily (overlap, pressing).
+%                 \item \textbf{The Gap:} Standard methods often assume static formations or are too sensitive to noise.
+%             \end{itemize}
+            
+%             \vspace{0.5cm}
+            
+%             \textbf{Project Goal}
+%             \begin{itemize}
+%                 \item Reproduce and extend \textbf{SoccerCPD} \cite{Kim2022SoccerCPD}, a change-point detection framework.
+%                 \item Distinguish \textbf{Strategic Changes} (permanent) from \textbf{Tactical Adjustments} (temporary).
+%             \end{itemize}
+%         \end{column}
+%         \begin{column}{0.4\textwidth}
+%             \centering
+%             \includegraphics[width=0.9\linewidth]{../figures/delany_form_change.png}
+%             \captionof{figure}{Formation shifts captured via Delaunay triangulation.}
+%         \end{column}
+%     \end{columns}
+% \end{frame}
+
+
+% \subsection{Work Done \& Contributions}
+% \begin{frame}{Contributions}
+%     \frametitle{Work Repartition \& Novel Contributions}
+    
+%     \textbf{1. Reproduction \& Implementation}
+%     \begin{itemize}
+%         \item \textbf{Full Pipeline:} Python package with R backend (for \texttt{g-segmentation}).
+%         \item \textbf{FormCPD:} Delaunay-based spatial change detection.
+%         \item \textbf{RoleCPD:} Permutation-based role switch detection.
+%     \end{itemize}
+
+%     \vspace{0.3cm}
+
+%     \textbf{2. Novel Extensions (Beyond the Paper)}
+%     \begin{itemize}
+%         \item \textbf{Possession Context:} Separating Attacking vs. Defensive shapes.
+%         \item \textbf{Player Stationarity Metric:} Quantifying role fluidity (Fixed vs. Roaming).
+%         \item \textbf{Event Data Generalization:} Adapting the framework for sparse StatsBomb data.
+%     \end{itemize}
+% \end{frame}
+    
+\begin{frame}{Motivation}
+
+\textbf{Problem.}
+Team formations in soccer are \emph{fluid but structured}: players temporarily swap roles (pressing, overlaps), while genuine tactical changes occur at specific moments.
+\vspace{0.3cm}
+
+\textbf{Solution.}
+We study \textbf{SoccerCPD}~\cite{Kim2022SoccerCPD}, a change-point detection framework that segments a match into tactically consistent periods by:
+\begin{enumerate}
+    \item detecting formation changes from role-adjacency graphs (FormCPD)
+    \item detecting role switches via permutation dynamics (RoleCPD).
+\end{enumerate}
+
+% \vspace{0.3cm}
+\end{frame}
+
+\begin{frame}{Contributions}
+\frametitle{Work Done}
+\textbf{Reproduction \& Benchmarking}
+    \begin{itemize}
+        \item \textbf{Reproduction}: Reproduction of the core algorithms
+        \item \textbf{Sensitivity Analysis} : Experiments using the python package on provided data
+    \end{itemize}
+\textbf{Our Contributions (Beyond the Paper).}
+\begin{itemize}
+    \item \textbf{Context-aware formations:} separation of attacking vs.\ defensive shapes using possession.
+    \item \textbf{Role stationarity metric:} quantifying player role stability (fixed vs.\ roaming).
+    \item \textbf{Data generalization:} adaptation of the framework to sparse event-based data (StatsBomb).
+\end{itemize}
+
+\end{frame}

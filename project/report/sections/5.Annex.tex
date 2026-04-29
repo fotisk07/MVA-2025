@@ -1,0 +1,208 @@
+\section{Appendix: Visual Examples for FormCPD}
+\label{sec:annex_formcpd}
+This appendix gathers all visual material related to the FormCPD pipeline
+(Role assignment, Delaunay encoding, and adjacency representations) referenced
+in Section~\ref{sec:formcpd}.
+
+% -------------------------
+% Role assignment example
+% -------------------------
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{../figures/role_swap.png}
+    \caption{Player versus role-based coloring of trajectories during a simulated position swap.}
+    \label{fig:role_swap}
+\end{figure}
+
+% -------------------------
+% Delaunay triangulation
+% -------------------------
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../figures/delany_form_change.png}
+    \caption{Delaunay triangulations of role locations at two frames before and after a synthetic formation change (4--4--2 $\rightarrow$ 3--4--3).}
+    \label{fig:delaunay_examples}
+\end{figure}
+
+% -------------------------
+% Adjacency matrices
+% -------------------------
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[height=3.8cm,keepaspectratio]{../figures/A_examples.png}
+        \caption{Single-frame binary adjacency matrices before and after the simulated formation change (4--4--2 $\rightarrow$ 3--4--3) (Green = 1).}
+        \label{fig:adj_frames}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[height=3.8cm,keepaspectratio]{../figures/A_mean.png}
+        \caption{Mean role-adjacency matrices averaged over each formation period (Green = 1).}
+        \label{fig:adj_means}
+    \end{subfigure}
+    \caption{Delaunay-based adjacency representation on a synthetic formation change.}
+    \label{fig:adjacency_experiment}
+\end{figure}
+
+
+
+% -------------------------
+% ROLECPD VISUALS
+% -------------------------
+\section{Appendix: Visual Examples for RoleCPD}
+\label{sec:annex_rolecpd}
+This appendix gathers all visual material related to the RoleCPD pipeline (Hamming distance, Change Point Detection, and Segmentation) referenced in Section~\ref{sec:rolecpd}.
+
+% -------------------------
+% Ground truth
+% -------------------------
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../figures/RoleCPD_GroundTruth.png}
+    \caption{Ground truth role assignments over time with two tactical switches at frames 150 and 300.}
+    \label{fig:rolecpd_groundtruth}
+\end{figure}
+
+% -------------------------
+% Hamming distance
+% -------------------------
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../figures/RoleCPD_SwitchRate.png}
+    \caption{Hamming distance-based switch rate time series used for change point detection.}
+    \label{fig:rolecpd_switchrate}
+\end{figure}
+
+% -------------------------
+% One Detected Phase
+% -------------------------
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../figures/RoleCPD_OneDetectedPhase.png}
+    \caption{Visualization of one detected tactical phase with dominant role assignments. This shows the need for recursive segmentation to capture multiple phases.}
+    \label{fig:rolecpd_onedetectedphase}
+\end{figure}
+
+% -------------------------
+% Detected Phases
+% -------------------------
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../figures/RoleCPD_DetectedPhases.png}
+    \caption{Visualization of all detected tactical phases after recursive binary segmentation, showing accurate recovery of the ground truth phases.}
+    \label{fig:rolecpd_detectedphases}
+\end{figure}
+
+
+
+%%% -------------------------
+%%% DATA VISUALS
+%%% -------------------------
+\section{Appendix: Visual Results for Data Analysis}
+\label{sec:annex_data}
+This appendix gathers all visual material related to the data analysis referenced in Section~\ref{sec:data}.
+
+% -------------------------
+% Spatial density comparison
+% -------------------------
+\begin{figure}
+    \centering
+    \includegraphics[width=1.0\textwidth]{../figures/data-heatmap_comparison.png}
+    \caption{Spatial density comparison between continuous Fitogether GPS tracking data and StatsBomb event-based data (right). The GPS data shows continuous coverage of player positions, while the event data is sparse and concentrated around ball actions.}
+    \label{fig:data-comparison}
+\end{figure}
+
+
+%%% -------------------------
+%%% RESULTS VISUALS
+%%% -------------------------
+\section{Appendix: Visual Results for Experiments}
+\label{sec:annex_results}
+This appendix gathers all visual material related to the experiments referenced in Section~\ref{sec:results}.
+
+% -------------------------
+% CPD backends
+% -------------------------
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../figures/CPD_backends.png}
+    \caption{
+    Formation change-points detected by different CPD backends on a common timeline.
+    }
+    \label{fig:exp1_cp_timeline_methods}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \begin{subfigure}[t]{0.42\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../figures/min_fdist.png}
+        \caption{Number of formation segments}
+        \label{fig:exp2_segments_fdist}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.55\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../figures/exp2_cp_timeline_min_fdist.png}
+        \caption{Formation change-point timeline}
+        \label{fig:exp2_cp_timeline_fdist}
+    \end{subfigure}
+    \caption{
+    Sensitivity of formation change-point detection to the formation distance threshold \texttt{min\_fdist}.
+    Increasing the threshold reduces the number of detected segments while preserving the temporal locations of the most salient change-points.
+    }
+    \label{fig:exp2_fdist}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../figures/Experiments_AttDefFormations_1925299.png}
+    \caption{Detected formations for match "1925299" (A-League, SkillCorner) separated by phase of play: defending (left) vs. attacking (right). This highlights tactical adjustments based on possession context.}
+    \label{fig:exp_att_def_formations}
+\end{figure}
+
+% -------------------------
+% Formations by phase: FCBarcelona
+% -------------------------
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../figures/Experiments_Barca_Formations_By_Phase.png}
+    \caption{Detected formations for FC Barcelona using event-stream StatsBomb data separated by different tactical phases within the match. Each phase reflects a distinct formation strategy employed by the team.}
+    \label{fig:exp_barca_formations_by_phase}
+\end{figure}
+
+% -------------------------
+% Player stationarity: Phase 1
+% -------------------------
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../figures/Experiments_Player_Stationarity_Phase1_1925299.png}
+    \caption{Player stationarity during Phase 1 of match "1925299" (A-League, SkillCorner), illustrating the consistency of player positions within the tactical phase.}
+    \label{fig:exp_player_stationarity_phase1}
+\end{figure}
+
+% -------------------------
+% Player stationarity 1: FCBarcelona
+% -------------------------
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../figures/Experiments_Barca_Stationarity_Phase1.png}
+    \caption{Player stationarity during Phase 1 of FC Barcelona match, illustrating the consistency of player positions within the tactical phase, even with event-stream data.}
+    \label{fig:exp_player_stationarity_phase1_barca}
+\end{figure}
+
+% -------------------------
+% Player stationarity 2: FCBarcelona
+% -------------------------
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../figures/Experiments_Barca_Stationarity_Phase2.png}
+    \caption{Player stationarity during Phase 2 of FC Barcelona match, illustrating the consistency of player positions within the tactical phase, even with event-stream data.}
+    \label{fig:exp_player_stationarity_phase2_barca}
+\end{figure}
