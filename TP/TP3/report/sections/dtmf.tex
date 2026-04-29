@@ -1,0 +1,37 @@
+\section{Dual-tone multi-frequency signaling (DTMF)}
+
+\href{https://en.wikipedia.org/wiki/Dual-tone\_multi-frequency\_signaling}{Dual-tone multi-frequency signaling} is a procedure to encode symbols using an audio signal.
+The possible symbols are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, *, \#, A, B, C, and D.
+A symbol is represented by a sum of cosine waves: for $t=0,1,\dots, T-1$,
+
+$$
+y_t = \cos(2\pi f_1 t/f_s) + \cos(2\pi f_2 t/f_s)
+$$
+where each combination of $(f_1, f_2)$ represents a symbols.
+The first frequency has four different levels (low frequencies), and the second frequency has four other levels (high frequencies); there are 16 possible combinations.
+In the notebook, you can find an example symbol sequence encoded with sound and corrupted by noise (white noise and a distorted sound).
+
+\begin{exercise}
+Design a procedure that takes a sound signal as input and outputs the sequence of symbols. 
+To that end, you can use the provided training set.
+The signals have a varying number of symbols with a varying duration. 
+There is a brief silence between each symbol.
+
+Describe in 5 to 10 lines your methodology and the calibration procedure (give the hyperparameter values). Hint: use the time-frequency representation of the signals, apply a change-point detection algorithm to find the starts and ends of the symbols and silences, and then classify each segment. 
+
+\end{exercise}
+\begin{solution}
+The decoding procedure utilizes a time-frequency representation via a Short-Time Fourier Transform (STFT) with a 4096-point FFT to achieve high frequency resolution at $f_s = 22.05$ kHz. Segmentation is performed by applying the Pruned Exact Linear Time (PELT) algorithm with an $L_2$ cost function to the normalized, median-filtered frame energy. Valid segments are isolated from noise using an energy threshold, and dominant frequencies in the low ($650-1000$ Hz) and high ($1150-1700$ Hz) bands are identified via spectral peak detection and mapped to the DTMF grid. Hyperparameters, including the segmentation penalty, energy threshold, and window length, were calibrated through an exhaustive grid search. This optimization process targeted the minimization of the mean Levenshtein distance between predicted and ground-truth symbol sequences. The final calibrated parameters were determined to be a window of $512$ samples, a penalty of $0.1$, and an energy threshold of $0.7$, resulting in an average distance of $3.06$.
+
+\end{solution}
+
+\begin{exercise}
+What are the two symbolic sequences encoded in the test set?
+\end{exercise}
+
+\begin{solution}
+    \begin{itemize}
+        \item Sequence 1: 51C9\*
+        \item Sequence 2: \#\*17\#126\#1
+    \end{itemize}
+\end{solution}

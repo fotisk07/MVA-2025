@@ -1,0 +1,45 @@
+\section{Spatio-temporal graph}
+
+%%%%%%%%%%%%%%%%%%%%
+% QUESTION 7
+%%%%%%%%%%%%%%%%%%%%
+\begin{exercise}
+The previous graph $G$ only uses spatial information.
+To take into account the temporal dynamic, we construct a larger graph $H$ as follows: a node is now \textit{a station at a particular time} and is connected to neighbouring stations (with respect to $G$) and to itself at the previous timestamp and the following timestamp.
+Notice that the new spatio-temporal graph $H$ is the Cartesian product of the spatial graph $G$ and the temporal graph $G'$ (which is simply a line graph, without loop).
+
+\begin{itemize}
+    \item Express the Laplacian of $H$ using the Laplacian of $G$ and $G'$ (use Kronecker products).
+    \item Express the eigenvalues and eigenvectors of the Laplacian of $H$ using the eigenvalues and eigenvectors of the Laplacian of $G$ and $G'$.
+    \item Compute the wavelet transform of the temperature signal.
+    \item Classify nodes into low/medium/high frequency and display the same figure as in the previous question.
+\end{itemize}
+\end{exercise}
+
+\begin{solution}
+\begin{itemize}
+    %%%% Laplacian of H %%%%
+    \item Let $L_H, L_G, L_{G'}$ be the Laplacians of graphs $H, G, G'$ respectively. We have: $H = G \times G'$. Denoting by $I_n$ the identity matrix of size $n$, and using Kronecker products, we have: $$L_H = L_G \otimes I_{T} + I_{N} \otimes L_{G'}$$ where $N$ is the number of stations and $T$ the number of timestamps.
+    %%%% Eigenvalues and eigenvectors of H %%%%
+    \item The Laplacian $L_H$ has $N + T$ eigenvectors. Let $u, v$ be eigenvectors of $L_G, L_{G'}$ with eigenvalues $\lambda, \mu$ respectively. Then, \begin{equation*}\begin{aligned}
+        L_H (u \otimes v)
+        &= L_G u \otimes I_T v + I_N u \otimes L_{G'} v \\
+        &= \lambda (u \otimes v) + \mu (u \otimes v) \\
+        &= (\lambda + \mu) (u \otimes v)
+    \end{aligned}\end{equation*}
+    Thus, the eigenvalues of $L_H$ are all the sums $\lambda + \mu$ where $\lambda, \mu$ are eigenvalues of $L_G, L_{G'}$ respectively, and the corresponding eigenvectors are $u \otimes v$.
+\end{itemize}
+
+
+\begin{figure}
+    \centering
+    \begin{minipage}[t]{0.8\textwidth}
+    \centerline{\includegraphics[width=\textwidth]{../figures/average_temperature_markers_wavelet_transform.png}}
+    \end{minipage}
+    \caption{Average temperature. Markers' colours depend on the majority class.}
+    \label{fig:average_temperature_markers_wavelet_transform}
+\end{figure}
+
+As we can see in Figure~\ref{fig:average_temperature_markers_wavelet_transform}, the classification based on the wavelet transform finds mid-frequency as well as high-frequency nodes. The computed graphs in the notebook also show that the low-frequency nodes appear mostly near the sea, the mid-frequency nodes are usually more inland, and the high-frequency nodes are even more inland.
+\end{solution}
+

@@ -1,0 +1,22 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+
+# Latex generated files
+*.log
+*.fls
+*xsim
+*gz
+*.out
+*.fdb_latexmk
+*.fls
+*.aux
+

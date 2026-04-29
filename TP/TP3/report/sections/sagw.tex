@@ -1,0 +1,43 @@
+\section{Wavelet transform for graph signals}
+Let $G$ be a graph defined a set of $n$ nodes $V$ and a set of edges $E$. A specific node is denoted by $v$ and a specific edge, by $e$.
+The eigenvalues and eigenvectors of the graph Laplacian $L$ are $\lambda_1\leq\lambda_2\leq\dots\leq \lambda_n$ and $u_1$, $u_2$, \dots, $u_n$ respectively.
+
+For a signal $f\in\RR^{n}$, the Graph Wavelet Transform (GWT) of $f$ is $ W_f: \{1,\dots,M\}\times V \longrightarrow \RR$:
+\begin{equation}
+    W_f(m, v) := \sum_{l=1}^n \hat{g}_m(\lambda_l)\hat{f}_l u_l(v)
+\end{equation}
+where $\hat{f}= [\hat{f}_1,\dots,\hat{f}_n]$ is the Fourier transform of $f$ and $\hat{g}_m$ are $M$ kernel functions.
+The number $M$ of scales is a user-defined parameter and is set to $M:=9$ in the following.
+Several designs are available for the $\hat{g}_m$; here, we use the Spectrum Adapted Graph Wavelets (SAGW).
+Formally, each kernel $\hat{g}_m$ is such that
+\begin{equation}
+    \hat{g}_m(\lambda) := \hat{g}^U(\lambda - am) \quad (0\leq\lambda\leq\lambda_n)
+\end{equation}
+where $a:=\lambda_n / (M+1-R)$,
+\begin{equation}
+    \hat{g}^U(\lambda) := \frac{1}{2}\left[ 1 + \cos\left( 2\pi\left(\frac{\lambda}{a R}  + \frac{1}{2} \right)\right) \right]\one(-Ra \leq \lambda < 0)
+\end{equation}
+and $R>0$ is defined by the user.
+
+\begin{exercise}
+Plot the kernel functions $\hat{g}_m$ for $R=1$, $R=3$ and $R=5$ (take $\lambda_n=12$) on Figure~\ref{fig:sagw_kernels}. What is the influence of $R$?
+\end{exercise}
+
+\begin{solution}
+The parameter \(R\) directly controls the spectral support of each kernel, which is
+\[
+\mathrm{supp}(\hat g_m) = [a_m - Ra,\, a_m).
+\]
+As \(R\) increases, the kernels become wider in the spectral domain, leading to stronger
+overlap between adjacent scales and smoother frequency coverage.
+Conversely, smaller values of \(R\) produce narrower kernels with reduced overlap,
+resulting in a more localized and selective spectral tiling.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{../figures/sagw_kernels.png}
+    \caption{Spectrum Adapted Graph Wavelet kernels \(\hat g_m(\lambda)\) for
+    \(M=9\), \(\lambda_n=12\), and different values of the overlap parameter \(R\).
+    Each curve corresponds to one scale \(m\).}
+    \label{fig:sagw_kernels}
+\end{figure}
+\end{solution}

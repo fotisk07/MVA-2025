@@ -1,0 +1,21 @@
+[project]
+name = "tp3"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "contextily>=1.7.0",
+    "geopandas>=1.1.1",
+    "loadmydata>=0.0.11",
+    "networkx>=3.4.2",
+    "pygsp>=0.6.1",
+    "python-levenshtein>=0.27.3",
+    "ruptures>=1.1.10",
+    "scipy>=1.15.3",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.1.0",
+]

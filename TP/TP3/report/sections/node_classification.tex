@@ -1,0 +1,66 @@
+\section{Node frequency classification}
+
+
+%%%%%%%%%%%%%%%%%%%%
+% QUESTION 5
+%%%%%%%%%%%%%%%%%%%%
+\begin{exercise}
+(For the remainder, set $R=3$ for all wavelet transforms.)
+
+For each node $v$, the vector $[W_f(1, v), W_f(2, v),\dots, W_f(M, v)]$ can be used as a vector of features. We can for instance classify nodes into low/medium/high frequency: 
+\begin{itemize}
+    \item a node is considered low frequency if the scales $m\in\{1,2,3\}$ contain most of the energy,
+    \item a node is considered medium frequency if the scales $m\in\{4,5,6\}$ contain most of the energy,
+    \item a node is considered high frequency if the scales $m\in\{6,7,9\}$ contain most of the energy.
+\end{itemize}
+
+
+For both signals from the previous question (smoothest and least smooth) as well as the first available timestamp, apply this procedure and display on the map the result (one colour per class).
+
+\end{exercise}
+
+\begin{solution}
+\begin{figure}
+    \centering
+    \begin{minipage}[t]{0.45\textwidth}
+    \centerline{\includegraphics[width=\textwidth]{../figures/node_classification_least_smooth.png}}
+    \centerline{(a) Least smooth signal}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}    \centerline{\includegraphics[width=\textwidth]{../figures/node_classification_smoothest.png}}
+    \centerline{(b) Smoothest signal}
+    \end{minipage}
+    \vskip1em
+    \begin{minipage}[t]{0.45\textwidth}    \centerline{\includegraphics[width=\textwidth]{../figures/node_classification_first.png}}
+    \centerline{(c) First available timestamp}
+    \end{minipage}
+    \caption{Classification of nodes into low/medium/high frequency}
+    \label{fig:node-classif}
+\end{figure}
+
+As we can see in Figure~\ref{fig:node-classif}, all nodes are considered low frequency for the first available timestamp (c) and for the smoothest signal (b). The least smooth signal (a) however presents some medium and high frequency nodes.
+
+\end{solution}
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+% QUESTION 6
+%%%%%%%%%%%%%%%%%%%%
+\begin{exercise}
+Display the average temperature and for each timestamp, adapt the marker colour to the majority class present in the graph.
+\end{exercise}
+
+\begin{solution}
+\begin{figure}
+    \centering
+    \begin{minipage}[t]{0.8\textwidth}
+    \centerline{\includegraphics[width=\textwidth]{../figures/average_temperature_markers.png}}
+    \end{minipage}
+    \caption{Average temperature. Markers' colours depend on the majority class.}
+    \label{fig:avg-temp-markers}
+\end{figure}
+
+Figure~\ref{fig:avg-temp-markers} shows only low frequency markers, indicating that the average temperature signal is very smooth across the graph.
+
+\end{solution}
