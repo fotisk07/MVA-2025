@@ -1,0 +1,13 @@
+.venv
+.ruff_cache
+datasets
+test.png
+
+#### Latex ####
+*.bbl
+*.gz
+
+Challenge/
+
+__pycache__
+data/
