@@ -1,0 +1,66 @@
+[I 2026-02-05 20:51:31.318 ServerApp] jupyter_lsp | extension was successfully linked.
+[I 2026-02-05 20:51:31.321 ServerApp] jupyter_server_terminals | extension was successfully linked.
+[W 2026-02-05 20:51:31.323 LabApp] 'token' has moved from NotebookApp to ServerApp. This config will be passed to ServerApp. Be sure to update your config before our next release.
+[W 2026-02-05 20:51:31.325 ServerApp] ServerApp.token config is deprecated in 2.0. Use IdentityProvider.token.
+[I 2026-02-05 20:51:31.326 ServerApp] jupyterlab | extension was successfully linked.
+[I 2026-02-05 20:51:31.329 ServerApp] notebook | extension was successfully linked.
+[I 2026-02-05 20:51:31.537 ServerApp] notebook_shim | extension was successfully linked.
+[W 2026-02-05 20:51:31.550 ServerApp] All authentication is disabled.  Anyone who can connect to this server will be able to run code.
+[I 2026-02-05 20:51:31.550 ServerApp] notebook_shim | extension was successfully loaded.
+[I 2026-02-05 20:51:31.552 ServerApp] jupyter_lsp | extension was successfully loaded.
+[I 2026-02-05 20:51:31.553 ServerApp] jupyter_server_terminals | extension was successfully loaded.
+[I 2026-02-05 20:51:31.555 LabApp] JupyterLab extension loaded from /raid/home/fotis/.cache/uv/archive-v0/l1HoYP5bOotzEZnZ7QzAL/lib/python3.10/site-packages/jupyterlab
+[I 2026-02-05 20:51:31.555 LabApp] JupyterLab application directory is /raid/home/fotis/.cache/uv/archive-v0/l1HoYP5bOotzEZnZ7QzAL/share/jupyter/lab
+[I 2026-02-05 20:51:31.555 LabApp] Extension Manager is 'pypi'.
+[I 2026-02-05 20:51:31.579 ServerApp] jupyterlab | extension was successfully loaded.
+[I 2026-02-05 20:51:31.582 ServerApp] notebook | extension was successfully loaded.
+[I 2026-02-05 20:51:31.583 ServerApp] Serving notebooks from local directory: /raid/home/fotis/MVA/DLP/Week3
+[I 2026-02-05 20:51:31.583 ServerApp] Jupyter Server 2.17.0 is running at:
+[I 2026-02-05 20:51:31.583 ServerApp] http://dgxa100:8888/tree
+[I 2026-02-05 20:51:31.583 ServerApp]     http://127.0.0.1:8888/tree
+[I 2026-02-05 20:51:31.583 ServerApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[I 2026-02-05 20:51:31.598 ServerApp] Skipped non-installed server(s): basedpyright, bash-language-server, dockerfile-language-server-nodejs, javascript-typescript-langserver, jedi-language-server, julia-language-server, pyrefly, pyright, python-language-server, python-lsp-server, r-languageserver, sql-language-server, texlab, typescript-language-server, unified-language-server, vscode-css-languageserver-bin, vscode-html-languageserver-bin, vscode-json-languageserver-bin, yaml-language-server
+[W 2026-02-05 20:51:57.277 ServerApp] 404 GET /hub/api (f01b7bf1ffda46a29cbcbae663d619c6@127.0.0.1) 13.89ms referer=None
+[I 2026-02-05 20:51:57.280 ServerApp] 302 GET / (@127.0.0.1) 0.26ms
+[W 2026-02-05 20:51:57.292 ServerApp] 404 GET /login? (39493a4dd94d40e29a162995a994f6e9@127.0.0.1) 0.71ms referer=None
+[I 2026-02-05 20:52:39.189 ServerApp] Kernel started: 3654018e-f6b9-4af3-a7b8-6eede44e130e
+Cannot read termcap database;
+using dumb terminal settings.
+[I 2026-02-05 20:52:39.540 ServerApp] Adapting from protocol version 5.3 (kernel 3654018e-f6b9-4af3-a7b8-6eede44e130e) to 5.4 (client).
+[I 2026-02-05 20:52:39.541 ServerApp] Connecting to kernel 3654018e-f6b9-4af3-a7b8-6eede44e130e.
+[W 2026-02-05 20:52:39.543 ServerApp] The websocket_ping_timeout (90000) cannot be longer than the websocket_ping_interval (30000).
+    Setting websocket_ping_timeout=30000
+[I 2026-02-05 20:52:39.698 ServerApp] 302 GET / (@127.0.0.1) 0.71ms
+[I 2026-02-05 20:52:39.700 ServerApp] 302 GET / (@127.0.0.1) 0.79ms
+[I 2026-02-05 20:52:39.700 ServerApp] 302 GET / (@127.0.0.1) 0.79ms
+[I 2026-02-05 20:52:39.703 ServerApp] 302 GET / (@138.195.195.185) 0.83ms
+[I 2026-02-05 20:52:39.703 ServerApp] 302 GET / (@138.195.195.185) 0.83ms
+[W 2026-02-05 20:52:39.731 ServerApp] 404 GET /login? (140526bc465349d9b834f343c0e40a2b@127.0.0.1) 1.61ms referer=None
+[W 2026-02-05 20:52:39.732 ServerApp] 404 GET /login? (a5cdad3bf3b14e34a32dadb1d9ab34ea@127.0.0.1) 1.97ms referer=None
+[W 2026-02-05 20:52:39.748 ServerApp] 404 GET /login? (bdac7cb9e50548aaa491163d17e38218@138.195.195.185) 5.93ms referer=None
+[W 2026-02-05 20:52:39.749 ServerApp] 404 GET /login? (2ba7e6cfcc504f59ac6162b9eb7c25fe@138.195.195.185) 6.42ms referer=None
+[W 2026-02-05 20:52:39.750 ServerApp] 404 GET /login? (2e4083af8626404da647748f804fcc94@127.0.0.1) 0.92ms referer=None
+[W 2026-02-05 20:52:40.996 ServerApp] 404 GET /nbextensions/jupyter-js-widgets/extension.js (8d2772018378454093704287af37f082@127.0.0.1) 1.30ms referer=None
+[W 2026-02-05 20:52:40.997 ServerApp] 404 GET /nbextensions/jupyter-js-widgets/extension.js (5b0fc494a172491db22c795726147af0@127.0.0.1) 1.73ms referer=None
+[I 2026-02-05 21:49:11.926 ServerApp] Kernel restarted: 3654018e-f6b9-4af3-a7b8-6eede44e130e
+[I 2026-02-05 21:49:11.929 ServerApp] Starting buffering for 3654018e-f6b9-4af3-a7b8-6eede44e130e:90055e36-9110-4ba6-bf7c-7db9fe8de2a9
+[I 2026-02-05 21:49:11.934 ServerApp] Adapting from protocol version 5.3 (kernel 3654018e-f6b9-4af3-a7b8-6eede44e130e) to 5.4 (client).
+[I 2026-02-05 21:49:11.934 ServerApp] Connecting to kernel 3654018e-f6b9-4af3-a7b8-6eede44e130e.
+[I 2026-02-05 21:49:11.935 ServerApp] Restoring connection for 3654018e-f6b9-4af3-a7b8-6eede44e130e:90055e36-9110-4ba6-bf7c-7db9fe8de2a9
+Cannot read termcap database;
+using dumb terminal settings.
+[I 2026-02-05 21:52:22.146 ServerApp] Kernel restarted: 3654018e-f6b9-4af3-a7b8-6eede44e130e
+[I 2026-02-05 21:52:22.148 ServerApp] Starting buffering for 3654018e-f6b9-4af3-a7b8-6eede44e130e:90055e36-9110-4ba6-bf7c-7db9fe8de2a9
+[I 2026-02-05 21:52:22.152 ServerApp] Adapting from protocol version 5.3 (kernel 3654018e-f6b9-4af3-a7b8-6eede44e130e) to 5.4 (client).
+[I 2026-02-05 21:52:22.153 ServerApp] Connecting to kernel 3654018e-f6b9-4af3-a7b8-6eede44e130e.
+[I 2026-02-05 21:52:22.153 ServerApp] Restoring connection for 3654018e-f6b9-4af3-a7b8-6eede44e130e:90055e36-9110-4ba6-bf7c-7db9fe8de2a9
+Cannot read termcap database;
+using dumb terminal settings.
+[I 2026-02-05 21:57:49.315 ServerApp] Kernel interrupted: 3654018e-f6b9-4af3-a7b8-6eede44e130e
+[I 2026-02-05 21:57:51.348 ServerApp] Kernel restarted: 3654018e-f6b9-4af3-a7b8-6eede44e130e
+[I 2026-02-05 21:57:51.350 ServerApp] Starting buffering for 3654018e-f6b9-4af3-a7b8-6eede44e130e:90055e36-9110-4ba6-bf7c-7db9fe8de2a9
+[I 2026-02-05 21:57:51.354 ServerApp] Adapting from protocol version 5.3 (kernel 3654018e-f6b9-4af3-a7b8-6eede44e130e) to 5.4 (client).
+[I 2026-02-05 21:57:51.354 ServerApp] Connecting to kernel 3654018e-f6b9-4af3-a7b8-6eede44e130e.
+[I 2026-02-05 21:57:51.354 ServerApp] Restoring connection for 3654018e-f6b9-4af3-a7b8-6eede44e130e:90055e36-9110-4ba6-bf7c-7db9fe8de2a9
+Cannot read termcap database;
+using dumb terminal settings.

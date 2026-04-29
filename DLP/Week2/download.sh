@@ -1,0 +1,1 @@
+wget https://www.lri.fr/~gcharpia/dlip/2026/TP2/output_seal.png

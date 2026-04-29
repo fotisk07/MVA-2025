@@ -1,0 +1,22 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+venv
+
+USPS
+*.zip
+*.pt
+*.pth
+Week3/raw
+data
+*.png
+*.log
+
+slurm*

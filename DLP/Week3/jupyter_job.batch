@@ -1,0 +1,28 @@
+#!/bin/bash
+#SBATCH --job-name=jupyter_gpu
+#SBATCH --output=logs/jupyter_%j.out
+#SBATCH --error=logs/jupyter_%j.err
+#SBATCH --partition=prod10
+#SBATCH --gres=gpu:1g.10gb:1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=16G
+#SBATCH --time=08:00:00
+
+
+# Pick a port and print helpful info
+PORT=8888
+HOSTNAME=$(hostname)
+echo "====================================================================="
+echo " Job running on node: ${HOSTNAME}"
+echo " To connect from your local machine, run the following command:"
+echo
+echo "   ssh -L ${PORT}:${HOSTNAME}:${PORT} fotis@dgx"
+echo
+echo " Then open in your browser: http://localhost:${PORT}"
+echo "====================================================================="
+
+# Run Jupyter via uv
+uv run --with jupyter jupyter notebook --no-browser --ip=0.0.0.0 --port=${PORT} --NotebookApp.token=''
+
+
