@@ -6,7 +6,7 @@ Each course or project is kept in its own folder. Most runnable projects use `uv
 
 ## Repository Map
 
-- `AlteGrad/`: https://moodle.ip-paris.fr/course/info.php?id=10507
+- `AlteGrad/`: labs and the molecular graph/text challenge in `challenge/`. Course: https://moodle.ip-paris.fr/course/info.php?id=10507
 - `DeepLearning/`:
 - `DLMI/`:
 - `DLP/`: https://www.lri.fr/~gcharpia/dlip/
@@ -15,6 +15,10 @@ Each course or project is kept in its own folder. Most runnable projects use `uv
 - `Interactions/`: interacting particle systems / systemic risk experiments.
 - `RepLer/`: https://pietrogori.github.io/teaching/RepLearnMVA
 - `TimeSeries/`: (https://www.laurentoudre.fr/ast.html)
+
+## Consolidation
+
+See [CONSOLIDATION.md](CONSOLIDATION.md) for source repositories, pending imports, and privacy limitations. `CONSOLIDATION.json` records imported source commits and file checksums. Imports are file snapshots; original Git histories remain in the standalone repositories.
 
 ## Setup
 

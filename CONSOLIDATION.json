@@ -1,0 +1,270 @@
+[
+  {
+    "repository": "fotisk07/AlteGrad-Challenge",
+    "commit": "465d582de86eb437cd5360778d04002e4bb607dc",
+    "destination": "AlteGrad/challenge",
+    "files": [
+      {
+        "path": "AlteGrad/challenge/.gitignore",
+        "sha256": "3b33dc9c6bd260dbc5c78b25e968e70b78031d0cdd84bb03679d419ff849fa80"
+      },
+      {
+        "path": "AlteGrad/challenge/.pre-commit-config.yaml",
+        "sha256": "2fbc364eac5693da9a1d10de38375b65b12ea998216c2fe55ce5c74376b20f08"
+      },
+      {
+        "path": "AlteGrad/challenge/.python-version",
+        "sha256": "3ec15f7f82d24dbcd050ce11c3994d981499b029772da41c37a2cd0acce87f6e"
+      },
+      {
+        "path": "AlteGrad/challenge/Challenge Description.pdf",
+        "sha256": "8ee69636b64f15785dcbc5c498c88a37ef8517ce5b1ff0e03186bb0cb5a7ed61"
+      },
+      {
+        "path": "AlteGrad/challenge/README.md",
+        "sha256": "086e1bd236d71b2e660f4d35edf8c9ea3781fe5863239fecf56ce9f0315bd709"
+      },
+      {
+        "path": "AlteGrad/challenge/data/processed/.gitkeep",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "AlteGrad/challenge/data/raw/download_data.sh",
+        "sha256": "1de8fea18a145deabec466fdf929fb381076707df673fc7d2eb83d073a063130"
+      },
+      {
+        "path": "AlteGrad/challenge/notebooks/F_00_data_exploration.ipynb",
+        "sha256": "f5f1bcf00213bdb5bdb89fbd4ee33e351f47e3b66f1ce0077648c012c4787e77"
+      },
+      {
+        "path": "AlteGrad/challenge/notebooks/F_01_embeddings.ipynb",
+        "sha256": "6e044a89013457dbaa612c31266a8e102e287c762c5d358690b51fa18a8a292f"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive/predict/.hydra/config.yaml",
+        "sha256": "2ba0ac9762a24152d5cb7bdf2d57741d7399ff4e3dc36d07205d9d366f96d28a"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive/predict/.hydra/hydra.yaml",
+        "sha256": "21c0d96975ea35415d7691d2cabeb14878a911708b1a74810ad8a509823405a1"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive/predict/.hydra/overrides.yaml",
+        "sha256": "ab2b0160b044d5820ff77e155b9142e979d2e7ecf6d3123672b2d65aa3821b13"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive/predict/predictions.csv",
+        "sha256": "f0ea1eb5bf8bc8bbf9a184cf0229b1d1068e930fc6a04c0938643e912c397fd0"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive/train/.hydra/config.yaml",
+        "sha256": "869a00a21adce72ec675fa32747601b6b2dd3d67af0fb3ba88be55536627a8d6"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive/train/.hydra/hydra.yaml",
+        "sha256": "24e396facf7912dc4a5e3aaaa1737113373d62ec4b3885ea6fb84f410079e2f9"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive/train/.hydra/overrides.yaml",
+        "sha256": "ab2b0160b044d5820ff77e155b9142e979d2e7ecf6d3123672b2d65aa3821b13"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive_bs64/train/.hydra/config.yaml",
+        "sha256": "d37221b0be034fe6cea07f5a0f47dbd8e4cda3a27132cc2d54555c0dfb8afe98"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive_bs64/train/.hydra/hydra.yaml",
+        "sha256": "8904f339ea61f4e394ee6741ad4d73b9408b6ee7f2d7276e7bc98fb2e4573852"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive_bs64/train/.hydra/overrides.yaml",
+        "sha256": "801b9c02105759c0afdd2cd52a028b16f547f3e3da0070a1ca020d80ff15a07d"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive_final/predict/.hydra/config.yaml",
+        "sha256": "78bf782d56ea3de16d3a86624c9769fc92dfdca4584e98ed2eb7233df345a7b2"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive_final/predict/.hydra/hydra.yaml",
+        "sha256": "9026a1620286cd8a5e4ab4b2b5f67b008228070ff44fecbdf18c9e0b26fdc1a6"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive_final/predict/.hydra/overrides.yaml",
+        "sha256": "a01b4cb19ef5cb708be71676cddca80c3805e897498c3e635c9447e5ccb12f6f"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive_final/predict/predictions.csv",
+        "sha256": "cacad5230f1ca0036231d26faa7c652ee446a4549d1f0bb158b345ae7c9adfe0"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive_final/train/.hydra/config.yaml",
+        "sha256": "dcb04e81d5d5a92454fecbde17ab0e840ed08873318ee236ff4b91117922965a"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive_final/train/.hydra/hydra.yaml",
+        "sha256": "b185c5b7f1e50c9ca9907ffeef9e8161f68b3bc5fa603f0aa563f6ddf2a8c599"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_contrastive_final/train/.hydra/overrides.yaml",
+        "sha256": "3c21b85c8a0934bb2425d0102d0306c65b7e298575bef43b7b90afdbd2c6d438"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_mse/train/.hydra/config.yaml",
+        "sha256": "8ecde486f107f0b2929001decc3d701377c6bd663fe006c5df2297e712df05ab"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_mse/train/.hydra/hydra.yaml",
+        "sha256": "cae662a065c8b201b5cb506062aff5608c41264dd9cd30f2a49b295de65b3e2c"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/gine_mse/train/.hydra/overrides.yaml",
+        "sha256": "d2893ec4f0b41fe782154a72459372a378ce48a1704c8125a2666b0900547f65"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/predictions_reranked.csv",
+        "sha256": "c497e5cdb00b4d135990ee6d05a32f5ea98d8fdf99208b680b0077de0f9420ac"
+      },
+      {
+        "path": "AlteGrad/challenge/outputs/predictions_top10.csv",
+        "sha256": "81fa37e57cd7d150340253f30eaee6d17a9a98e4507d49c2a5a74eac0a51ea69"
+      },
+      {
+        "path": "AlteGrad/challenge/pyproject.toml",
+        "sha256": "4ae5d431507fb2d29ec34d061acfa3fabe3ad1db1ebbe127a20f058cf6efd900"
+      },
+      {
+        "path": "AlteGrad/challenge/run_slurm.sh",
+        "sha256": "ee3d2a47f3c8809b46335a5976e5ef97e4629fdd0b4b7e99e93593097c68e0ce"
+      },
+      {
+        "path": "AlteGrad/challenge/src/moleculecs/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "AlteGrad/challenge/src/moleculecs/data_utils.py",
+        "sha256": "40533991db902855f92e51a7f95010bf49915761725b1b562e7570d94ad3915a"
+      },
+      {
+        "path": "AlteGrad/challenge/src/moleculecs/features/baseline_description_embeddings.py",
+        "sha256": "178677987c5ec2aac12bd037c9b2c6c585edb372ac9c422f7ef2ce23955b1e35"
+      },
+      {
+        "path": "AlteGrad/challenge/src/moleculecs/features/sentence_transformer.py",
+        "sha256": "adb91b472398d1a10e0e7a639951f6e9c943cc38f7d0bd26a8f017c34b185e41"
+      },
+      {
+        "path": "AlteGrad/challenge/src/moleculecs/models/gcn_graph_encoder.py",
+        "sha256": "36a30ef7c5407ba5f0b879ff50f8806cea3f9ce3e275cb7eeff3b9fa2a4de265"
+      },
+      {
+        "path": "AlteGrad/challenge/src/moleculecs/predict.py",
+        "sha256": "cb9875b5da419265a0a7276d763350ba4eb07a1c40abea6c8d6695431925838d"
+      },
+      {
+        "path": "AlteGrad/challenge/src/moleculecs/predict_argmax.py",
+        "sha256": "4bc42013e53ad97485b112538cdae55075f59b3d8803862518d16f22f5716570"
+      },
+      {
+        "path": "AlteGrad/challenge/src/moleculecs/predict_reranker.py",
+        "sha256": "af5325ea211a0d054fe2870e903cd767dd693cabf51203f3abd4a8e9c941a0f2"
+      },
+      {
+        "path": "AlteGrad/challenge/src/moleculecs/train_clip.py",
+        "sha256": "3172b78d8f2a7df8eb87db77f841ab0453f8352b830c133117481d4f134683c2"
+      },
+      {
+        "path": "AlteGrad/challenge/src/moleculecs/train_reranker.py",
+        "sha256": "b371ba652ba0e45698ef381ca79cd527b33c6773c3c6ef77f1ebccbae31a8c2a"
+      },
+      {
+        "path": "AlteGrad/challenge/src/moleculecs/visualisation/inspect_graph_data.py",
+        "sha256": "6284765dbe1aad1b7ab4b81e72df82df4901ea7106ce8d8ad1b89e959420f24a"
+      },
+      {
+        "path": "AlteGrad/challenge/submit.sh",
+        "sha256": "91d6827ad0e85e990d1f37e8f8c82478e0b4bca7a27f60771d89e44d39b904e3"
+      },
+      {
+        "path": "AlteGrad/challenge/uv.lock",
+        "sha256": "53ba2abf6f59c44264d6d3848bd554355d188bed3a69fbe993023e4e8c6558c5"
+      }
+    ],
+    "excluded_generated_or_submodule_config": [
+      "outputs/gine_contrastive/predict/predict.log",
+      "outputs/gine_contrastive/train/train.log",
+      "outputs/gine_contrastive_bs64/train/train.log",
+      "outputs/gine_contrastive_final/predict/predict.log",
+      "outputs/gine_contrastive_final/train/train.log",
+      "outputs/gine_mse/train/train.log"
+    ],
+    "preserved_conflicting_versions": []
+  },
+  {
+    "repository": "fotisk07/DLMI",
+    "commit": "980991d0b6be42e1e3e418cccb12e1313ae67ce7",
+    "destination": "DLMI",
+    "files": [
+      {
+        "path": "DLMI/Guidelines.pdf",
+        "sha256": "eca471286d53eb3f4493f78908dec82ebe2de8812a84a8ce425e9cc47e9e4f88"
+      }
+    ],
+    "excluded_generated_or_submodule_config": [],
+    "preserved_conflicting_versions": []
+  },
+  {
+    "repository": "fotisk07/TimeSeries-MiniProject",
+    "commit": "7a56895bf561eddce5c60d21535b6ed3d3aec28c",
+    "destination": "TimeSeries/project",
+    "files": [
+      {
+        "path": "TimeSeries/project/2206.10926.pdf",
+        "sha256": "37489a534cd798897746f43ed48169be751536169dfa6be416faf6072891afae"
+      },
+      {
+        "path": "TimeSeries/project/presentation/presentation.pdf",
+        "sha256": "6d81bcf0a8fbb1adfbf43bf440ed4b74530a8bb61dcb88cc9aca01a8ac6cfc84"
+      },
+      {
+        "path": "TimeSeries/project/report/main.pdf",
+        "sha256": "cbe316f8cc7f35ba587ed6321fa927d8630ea41950cd262c3408ccf4c5ba7822"
+      }
+    ],
+    "excluded_generated_or_submodule_config": [],
+    "preserved_conflicting_versions": []
+  },
+  {
+    "repository": "fotisk07/DisTrain",
+    "commit": "4068fa966b8b14d58365cddd79bfa98c461c0001",
+    "destination": "DisTrain",
+    "source_private": true,
+    "publication_approved": true,
+    "files": [
+      {
+        "path": "DisTrain/Week1/Lab1.ipynb",
+        "sha256": "0046bdf296174af66e9c69ad40aeb838d642ddb190dbc62f03f1904417842bbf"
+      },
+      {
+        "path": "DisTrain/Week1/Lecture-1-MVA-training-large-models.pdf",
+        "sha256": "d185b342e68710c060d1a356945912408521e60f2675b43756e459df85fad99c"
+      },
+      {
+        "path": "DisTrain/Week2/Lab2.ipynb",
+        "sha256": "6d636ad359fb99323919211e773685c255346a0f2e34ddb881b62cb71e960aef"
+      },
+      {
+        "path": "DisTrain/Week2/Lecture-2-MVA-training-large-models.pdf",
+        "sha256": "7e5f972bdad08c22e0fcbeb0bffbfd6220e612ae153a9b62291a5e8b193be1bd"
+      },
+      {
+        "path": "DisTrain/Week3/Lab3.ipynb",
+        "sha256": "1b564bacf07ee88098d755726c631d15b4166cdb86bbaf7ce234e5d22026d528"
+      }
+    ],
+    "excluded_generated_or_submodule_config": [
+      ".gitignore",
+      ".gitmodules"
+    ],
+    "preserved_conflicting_versions": []
+  }
+]
