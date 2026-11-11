@@ -18,17 +18,17 @@ configuration was not copied because nested projects are being consolidated into
 ordinary directories. Existing files were not overwritten. Source Git histories,
 issues, releases, and branches have not been imported or deleted.
 
-## Remaining submodule review
+## DisTrain submodules resolved
 
-`MVA-2025` is public. Publication approval covers only the imported DisTrain files,
-not additional private submodule content.
+The owner approved best-effort cleanup even if some old homework cannot be recovered.
+The broken `DisTrain/HW` gitlink was removed: its source repository is unavailable,
+and no homework contents are claimed to be backed up. Commit references are retained
+in `DisTrain/README.md` in case a copy is found later.
 
-- `fotisk07/DisTrain-project`: most files already match the consolidated project,
-  but its `nanoGPT` submodule still needs an explicit handling decision.
-
-The existing `DisTrain/HW` gitlink also needs review: the consolidated repository
-has no root `.gitmodules`, and its referenced `DisTrain-HW` repository was not
-present in the accessible repository inventory. Do not assume it is backed up.
+The project uses its included model implementation. The old upstream nanoGPT
+submodule is documented as a pinned reference link, not copied or required as a
+nested checkout. Python caches and empty training logs were removed from this
+project. Original standalone repositories remain unchanged.
 
 ## Excluded from MVA
 
